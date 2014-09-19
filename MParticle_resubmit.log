@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  19 SEP 2014 16:19
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  19 SEP 2014 18:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -528,38 +528,38 @@ T1/cmr/m/n/10 + 1)\OML/cmm/m/it/10 ; [] ; S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 n^
  []
 
 ** ATTENTION: \proof is deprecated (line 172). Use \IEEEproof instead.
-(./appendix_immediatefeedbackproof.tex
-Overfull \hbox (7.64125pt too wide) in paragraph at lines 37--37
+(./appendix_distributedproof.tex
+Overfull \hbox (7.64125pt too wide) in paragraph at lines 39--39
 [] 
  []
 
 [5]
-Overfull \hbox (11.23476pt too wide) in paragraph at lines 61--61
+Overfull \hbox (11.23476pt too wide) in paragraph at lines 63--63
 [] 
  []
 
 
 LaTeX Warning: Reference `stability_sufficient' on page 6 undefined on input li
-ne 62.
+ne 64.
 
 
-Overfull \hbox (4.34067pt too wide) in paragraph at lines 93--93
+Overfull \hbox (4.34067pt too wide) in paragraph at lines 95--95
 [] 
  []
 
 
-Overfull \hbox (11.57669pt too wide) in paragraph at lines 99--99
+Overfull \hbox (11.57669pt too wide) in paragraph at lines 101--101
 [] 
  []
 
 [6]
-Underfull \hbox (badness 5681) in paragraph at lines 106--108
+Underfull \hbox (badness 5681) in paragraph at lines 108--110
 \OT1/ptm/m/n/10 These $\OML/cmm/m/it/10 []$ \OT1/ptm/m/n/10 are de-rived by fi
 rst in-clud-ing in []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--108
+Underfull \hbox (badness 10000) in paragraph at lines 108--110
 \OT1/ptm/m/n/10 the $\OT1/cmr/m/n/10 0$\OT1/ptm/m/n/10 -valued term $\OT1/cmr/m
 /n/10 [\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 
 )\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 )(\OML
@@ -569,7 +569,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 106--108
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--108
+Underfull \hbox (badness 10000) in paragraph at lines 108--110
 \OML/cmm/m/it/10 c\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 )\OML/c
 mm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 )(\OML/cmm/m/
 it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 w\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; 
@@ -578,41 +578,56 @@ hen as-sum-ing that
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--127
+Underfull \hbox (badness 10000) in paragraph at lines 124--129
 \OT1/ptm/m/n/10 Furthermore, we know that the term
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--127
+Underfull \hbox (badness 10000) in paragraph at lines 124--129
 []$ \OT1/ptm/m/n/10 is
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--127
+Underfull \hbox (badness 10000) in paragraph at lines 124--129
 \OT1/ptm/m/n/10 Us-ing these re-la-tions and the ob-ser-va-tions that
  []
 
 
-Overfull \hbox (19.21695pt too wide) in paragraph at lines 131--131
+Overfull \hbox (19.21695pt too wide) in paragraph at lines 133--133
 [] 
  []
 
-) (./appendix_cycleproof.tex
 
-LaTeX Warning: Reference `stability_sufficient' on page 7 undefined on input li
-ne 5.
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
+
+ []
+
+
+LaTeX Warning: Reference `alpha1_w' on page 7 undefined on input line 173.
+
+
+LaTeX Warning: Reference `alphabound' on page 7 undefined on input line 193.
 
 [7]
+
+LaTeX Warning: Reference `alpha1_w' on page 8 undefined on input line 245.
+
+) (./appendix_cycleproof.tex
+
+LaTeX Warning: Reference `stability_sufficient' on page 8 undefined on input li
+ne 5.
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 41--49
 
  []
 
-
+[8]
 Overfull \hbox (7.09822pt too wide) in paragraph at lines 78--78
 [] 
  []
 
-[8]
+
 Overfull \hbox (11.0824pt too wide) detected at line 106
 \OT1/cmr/m/n/10 2 [][\OML/cmm/m/it/10 f[]r\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; 
 m\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 c\OT1/cmr/m/n/10 (\OML
@@ -624,7 +639,7 @@ sy/m/n/10 ^^@\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 "^^Q\OMS/cmsy/m/n/10 j\OML/cmm/m
 /it/10 X\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 j
  []
 
-
+[9]
 Overfull \hbox (8.28154pt too wide) detected at line 189
 \OMS/cmsy/m/n/10 j [] []\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 f[]r\OT1/cmr/m/n/10 (
 \OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 c\
@@ -640,13 +655,13 @@ Overfull \hbox (5.85675pt too wide) in paragraph at lines 194--194
 [] 
  []
 
-[9]) (./appendix_distributedproof.tex)
+)
 
 LaTeX Warning: Reference `stability_sufficient' on page 10 undefined on input l
-ine 209.
+ine 210.
 
 
-LaTeX Warning: Reference `IF_BOUNDS' on page 10 undefined on input line 242.
+LaTeX Warning: Reference `IF_BOUNDS' on page 10 undefined on input line 243.
 
 ) (./numerical.tex <./i15network.png, id=47, 712.6625pt x 324.21124pt>
 File: ./i15network.png Graphic file (type png)
@@ -709,6 +724,10 @@ File: ./VehicleStopsPlot-eps-converted-to.pdf Graphic file (type pdf)
 Package pdftex.def Info: ./VehicleStopsPlot-eps-converted-to.pdf used on input 
 line 38.
 (pdftex.def)             Requested size: 253.04987pt x 135.1126pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 )
 No file MParticle_resubmit.bbl.
 [11 <./VehicleCountsPlot-eps-converted-to.pdf> <./VehicleDelayPlot-eps-converte
@@ -721,13 +740,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4317 strings out of 493315
- 66557 string characters out of 6137904
- 146557 words of memory out of 5000000
- 7660 multiletter control sequences out of 15000+600000
+ 4311 strings out of 493315
+ 66419 string characters out of 6137904
+ 146514 words of memory out of 5000000
+ 7657 multiletter control sequences out of 15000+600000
  39065 words of font info for 74 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,14n,38p,1843b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,14n,38p,1843b,217s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -745,7 +764,7 @@ texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist
 /fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/ty
 pe1/urw/times/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/ti
 mes/utmri8a.pfb>
-Output written on MParticle_resubmit.pdf (11 pages, 322412 bytes).
+Output written on MParticle_resubmit.pdf (11 pages, 320993 bytes).
 PDF statistics:
  127 PDF objects out of 1000 (max. 8388607)
  89 compressed objects within 1 object stream
