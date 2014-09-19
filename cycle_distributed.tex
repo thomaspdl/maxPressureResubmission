@@ -1,0 +1,39 @@
+% !TEX root = ./MParticle.tex
+\section{Cycle-Allocated Max Pressure}
+
+\subsection*{Definition}
+
+We now combine the cycle max pressure and allocated max pressure: once every $\tau$ model time steps, a relaxed controller $S^r$ is chosen and then applied at each of the subsequent $\tau$ time steps. In other words, a single relaxed controller $S^r(t)$ is applied for the set of time steps $\{t+1, t+2, \ldots, t+\tau -1 \}$. Then, at time $t+\tau$, a new relaxed controller $S^r (\tau)$ is calculated to be applied at $\{t+\tau+1, \ldots, t+2\tau -1 \}$. 
+
+\subsection*{Stability of cycle-allocated max pressure}
+\begin{Thm}\label{StabCycleDistributedMP}
+The sequence of cycle-allocated max pressure controller stabilizes the network
+ whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands
+$ D_{\kappa}$ defined above.
+%Under this condition, the quantity:
+%\begin{equation}
+%\dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert}
+%\end{equation}
+%is bounded for any time horizon $T$.
+\end{Thm}
+
+\vspace{0.5cm}
+
+The stability of the cycle-allocated max pressure control follows from a logical combination of the stability proofs of cycle and allocated variations. Explicitly, the result for cycle max pressure in Appendix \ref{cycleproof} still holds in the case of a relaxed controller when one assumes that demand flow satisfies the modified cycle-by-cycle admissibility condition introduced for allocated max pressure in Section \ref{sec:distributed}. 
+%
+%
+%Consider a flow admissible in the same sense as the Distributed MP controller in Section \ref{sec:distributed}: $\exists S^{r} \in conv_{\kappa}$ such that $f_{l} r(l,m) < c(l,m)S^{r}(l,m)$. When a distributed MP controller is applied every time step,
+%\begin{equation}\label{stabMP}
+%\mathbb{E}[ \vert X(t + 1) \vert^2 - \vert X(t) \vert^2 \vert X(t) ]  < \\ -\varepsilon \vert X(t) \vert + K  
+%\end{equation}
+%by Theorem \ref{StabDistributedMP}, with $\varepsilon$ and $K$ as defined in \eqref{epsDef} and \eqref{constCalc}, respectively.
+%
+%We have also shown that for a binary controller, if \eqref{stabMP} holds then following inequality also holds:
+%\begin{align} \nonumber 
+%&\mathbb{E}[ \vert X(\tau + p + 1) \vert^2 - \vert X(\tau + p) \vert^2 \vert X(\tau),...,X(\tau + p) ]  \\ \label{stabcycleMP}
+%&\qquad <    -\varepsilon \vert X(\tau + p) \vert + K  + C(p) 
+%\end{align}
+%for $C(p)$ as in \eqref{Cpdef}.
+%The generalization of this bound for relaxed controllers is trivial. 
+%%\end{itemize}
+%Hence \eqref{stabcycleMP} must also hold in the case of cycle-distributed MP controller, and stability follows from a calculation similar to \eqref{equivalencestabcycleMP}.

@@ -1,0 +1,76 @@
+% !TEX root = ./MParticle.tex
+\section{Cycle Max Pressure}
+
+Cycle max pressure enables the control to act at a slower time scale than the queue dynamics, as would be the case in a practical traffic application. Suppose that we are given the model dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}, but the controller $S^*(t)$ can only be updated every $\tau$ model time steps (or once per \emph{cycle}). The ``$\tau$-non updated'' control sequence is therefore composed of control matrices repeated for at least $\tau$ model time steps: for a fixed cycle size $\tau$ and integer $n$, 
+\begin{align} \nonumber
+S(n\tau&+1)  = S(n\tau +2) = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
+&=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  
+ \label{CYCLE_CONTROLLER}
+\end{align}
+Physically, the controller that maximizes the pressure at time step $n\tau + 1$ is continuously applied until time step $(n + 1)\tau$.
+
+\subsection*{$\tau$-admissible flows}
+We first prove that this set of $\tau$-admissible flows (demands that can be accommodated using $\tau$-non updated sequences) is in fact the same set of flows that is admissible under typical updated control sequences, defined in equation \eqref{feasible_demand}. 
+
+\noindent Define the following sets:
+\begin{itemize}
+\item $U$ is the set of admissible control matrices as in \eqref{feasible_demand},
+\item $U_{\mathbb{N}}$ is the set of control sequences $\{S(1), S(2) \ldots S(t) \ldots |  S(\cdot) \in U\} $ where elements are applied at consecutive time steps,
+\item $U_{\tau\mathbb{N}}$ is the set of control sequences $\{S(1), S(1), \ldots ,  S(\tau + 1),S(\tau + 1), \ldots , S(n\tau + 1),S(n\tau + 1), \ldots |  S(\cdot) \in U\} $ where controls are updated only once every $\tau$ steps,
+\item $conv(U) = \Big\{\lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) | \{S(1), S(2), \ldots , \\ S(t), \ldots \}\in U_{\mathbb{N}} \Big\} $ 
+\item $conv(U_\tau ) = \Big\{\lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) | \{S(1), S(1), \ldots, \\ S(\tau + 1),S(\tau + 1), \ldots\}\in U_{\tau\mathbb{N}} \Big\} $ 
+\end{itemize}
+Obviously, $conv(U_{\tau}) \subset conv(U)$. But we can also show that $conv(U) \subset conv(U_{\tau})$:  
+
+\noindent Suppose $M \in conv(U)$, so $\exists \{ S(1) \ldots S(t) \ldots \}$ such that $M = \lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t)$.
+\begin{align*}
+M &= \lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t)\\
+&= \lim\inf_{T} \dfrac{1}{\tau T}\sum_{t=1}^{\tau T}  \tilde{S}(t) \; \\ 
+& \qquad \text{ with } \tilde{S} = \{S(1), \ldots, S(1), \ldots, S(t), \ldots, S(t), \ldots \} \\
+&= \lim\inf_{T} \dfrac{1}{ T}\sum_{t=1}^{T}  \tilde{S}(t) \\
+\end{align*}
+Trivially, $\tilde{S }\in conv(U_\tau)$. Because $conv(U_{\tau})\subset conv(U)$ and $cont(U) \subset conv(U_{\tau})$, it must hold that $conv(U) = conv(U_{\tau})$.  This establishes Property \ref{equality_property}: 
+
+\begin{Prop} \label{equality_property}
+\begin{equation*} conv(U) = conv(U_{\tau}) \end{equation*}
+\end{Prop}
+
+This property implies that a $\tau$-non updated control sequence can accommodate the same set of flows as a control sequence updated at every time step. The equivalence becomes intuitive when one considers that our definition of feasible flows considers only the long-term average of demand and service rates: note that a $\tau$ control matrix in $\tilde S$ is simply the average of the corresponding $\tau$ matrices in $\overline S$, such that $M_{\tilde S} = M_{\overline S}$. Hence,
+\begin{align}
+f_{l} r(l,m) < c(l,m)M_{\overline{S} }(l,m) \implies \\ f_{l} r(l,m) < c(l,m)M_{\tilde{S} }(l,m). \nonumber
+\end{align}
+However, as we will show in the following sections, the bound on queue lengths when the cycle controller is applied will be larger than in the immediate feedback setting.
+%, which immediately seems counterintuitive. However, note that our current model framework assumes infinite link buffer capacities. With the $\tau$-non updated controller, instantaneous link queues will be higher but the same \emph{long-term average} service rates can be achieved -- and thus by our definition, this flow can be equally accommodated by either controller type. 
+%We have shown that the same flows are ``admissible'' when control sequences updated only every $\tau$ time steps as when they are updated every time step. 
+%During a single time step, the average flow arriving at queue $(l,m)$ is $f_{l}r(l,m)$ and the maximum number of vehicles capable of leaving is $c(l,m) M(l,m)$. Similarly, the average flow arriving between time steps $t$ and $t+\tau$ is $\tau f_{l} r(l,m) $, and the number of vehicles capable of leaving is $\tau c(l,m) M(l,m)$. So if a flow is admissible using an updated control sequence $\overline S$%with average service $M_{\overline S}$
+%, it can be similarly accommodated with a non-updated sequence $\tilde S$, where each consecutive set of
+
+\subsection*{Stability of cycle max pressure}
+
+Here we extend the previous proof of stability of an immediate feedback max pressure controller to the case of a cycle max pressure controller: 
+
+\begin{Thm}\label{stabCycleMP}
+A cycle max pressure controller updated every $\tau$ iterations stabilizes the network whenever the demand is within the set of feasible demands $D^{0}$.
+%In other words, the quantity
+%\begin{equation}
+%\dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert}
+%\end{equation}
+%is bounded for any time horizon $T$.
+\end{Thm}
+
+In Appendix \ref{cycleproof}, we prove Theorem \ref{stabCycleMP} by showing that
+\begin{align} \label{CYCLE_BOUNDS}
+\dfrac{1}{\tau T} \displaystyle\sum_{t=1}^{\tau T} \expectation{\vert X(t)}< \dfrac{1}{2\varepsilon\eta\tau T}& \expectation{\vert X(1) \vert^{2}} \\ \nonumber
+& + \dfrac{1}{2\varepsilon\eta\tau}\displaystyle\sum_{p=0}^{\tau - 1} (B(p) + \tau K)
+\end{align}
+where $\varepsilon$, $\eta$ and $K$ are constants which depend on network topology and demand.
+
+
+
+\subsection*{Increased bound on queue length}
+Max pressure controllers that are only updated every $\tau$ model time steps will stabilize a network; however the resulting bound on the queues will be higher than in the immediate feedback setting. 
+Comparing \eqref{IF_BOUNDS} and \eqref{CYCLE_BOUNDS}, note that the constants are increased by a factor of
+\begin{equation}
+\dfrac{1}{\varepsilon \tau} \sum_{p=1}^{\tau - 1} B(p) = \dfrac{1}{\varepsilon \tau}  \dfrac{\tau(\tau - 1)}{2}\cdot(\text{constant}) = \dfrac{\tau - 1}{2\varepsilon} \cdot(\text{constant})
+\end{equation}
+The relative cost to queue bounds is therefore linear in $\tau$. 

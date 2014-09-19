@@ -1,0 +1,34 @@
+% !TEX root = ./MParticle.tex
+\label{distributedproof}
+Consider the relaxed control matrix $S^{r*}$ specified by \eqref{distMP_LP}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
+\begin{align} \nonumber
+\sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
+&\leq \sum_{l,m}c(l,m)w(l,m)(X(t))S^{r*}(l,m) 
+\end{align}
+with equality only if $S^r = S^{r*}$. 
+Therefore $\forall S^r \neq S^{r*}$,
+\begin{align} \nonumber
+ \sum_{l,m}&\big[f_{l}r(l,m) - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
+&<   \sum_{l,m}\big[f_{l}r(l,m) - c(l,m)S^r(l,m)\big]w(l,m)(X(t))
+\end{align}
+If the demand flow is admissible according to \eqref{admissible_relaxed}, then 
+$\exists \Sigma \in conv_{\kappa}$ such that 
+\begin{equation} \nonumber
+c(l,m)\Sigma(l,m) = \begin{cases}
+        f_{l}r(l,m) + \varepsilon & \text{ if } w(l,m)(X(t)) > 0 \\
+        0 & \text{ otherwise}
+    \end{cases}
+\end{equation}
+Hence following the same logic as in \eqref{alpha1_w}, 
+\begin{align} \nonumber
+ \sum_{l,m}&\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
+&  < -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\
+&\qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
+\end{align}
+We assume that by our choice of $\sigma(l,m)$, $f_{l}r(l,m) > \varepsilon$ (omitting the cases where $r(l,m) = 0$). Therefore:
+\begin{align}\nonumber
+\sum_{l,m}\big[ f_{l}r(l,m) & - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
+&< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
+\end{align}
+
+Notice that besides the modified flow admissibility conditions required due to the non-binary control matrix, the proof presented in this section follows exactly the stability proof for the immediate feedback controller in section \ref{sec:immediatefeedback}. 

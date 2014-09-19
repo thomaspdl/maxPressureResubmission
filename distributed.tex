@@ -1,0 +1,114 @@
+% !TEX root = ./MParticle.tex
+
+\section{Allocated Max Pressure} \label{sec:distributed}
+
+Next, we want to reformulate the controller so that instead of a single phase being chosen for actuation at every model step, all feasible phases are actuated in parallel during the time step at a proportionally reduced rate. The control output will no longer be a binary matrix, but rather will be a \emph{relaxed} control matrix $S^r (t)$ which is a convex combination of all elements in the set of feasible control phases $U$. Each element $S^r (t)(i,j) \in [0,1]$ will represent fraction of the flow capacity at time step $t$ that is allocated to movement $(i,j)$.  Physically, one could consider one model time step to represent an entire light cycle, during which each signal phase will be sequentially actuated for some proportional amount of the period. (Although this would suggest a serial division of the time period between independent phases rather than the parallel implementation that is represented here mathematically.)  
+
+\subsection*{Minimum cycle time}
+Consider that the length $T$ of the controller update time period (signal cycle) is not pre-defined. However, there is a known amount of \emph{lost time} $L$ per cycle during which no phases can be actuated to account for physical clearance of the intersection between actuated phases. Hence it must be the case that $T>L$.  We furthermore impose that each feasible phase has an associated minimum proportion constraint: phase $S$ must be actuated for at least $\lambda_S T$ seconds during any one cycle. We then want to determine the minimum control period or \emph{cycle length} for which a fixed demand flow can be served while the stated phase proportion constraints are satisfied. 
+
+Unlike the previous case where we constrained our analysis to flows which could be served in average over an arbitrary long-term time horizon, here our proof of stability depends on the assumption that the average demand is served \textit{within a single cycle}. As suggested in \cite{MaxPressureStochastic}, we then pose the selection of a cycle length as a convex optimization problem with constraints applied to enforce the desired minimum phase proportions $\kappa$:
+\begin{equation} \label{sum_lambda}
+\begin{aligned}
+& \underset{\lambda = (\lambda_{S})_{S}}{\text{minimize}}
+& & \sum_{S\in U} \lambda_{S} \\
+& \text{subject to}
+& &  \lambda_{S} \geq \kappa_S\\
+&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
+%&&& \sum_{S} \lambda_{S} < 1
+\end{aligned}
+\end{equation}
+where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. 
+%
+%This is an obvious extension of the the linear program for a single intersection proposed by Allsop \cite{Allsop} and an implicit version of the formulation of Wong and Yang \cite{Wong}
+
+Let us denote $\Lambda^{*}$ to be the optimum of  \eqref{sum_lambda}. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any length time step. If $\Lambda^* < 1$, then the flow is admissible for a time step of length 
+\begin{equation} T > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
+We can now use this lower bound to select an appropriate cycle length. 
+
+
+\subsection*{Phase distribution within a cycle}
+We next investigate how the max pressure controller must be altered to allow the minimum proportion constraints on each phase in the set of allowable phases $\mathcal U$.
+
+Let $T$ be the cycle length satisfying \eqref{minTime} and $\kappa_S$ be the minimum proportion of the cycle which must be allocated to each $S\in U$. %By definition, our controller must therefore satisfy the following condition:
+%\begin{equation}
+%T = (\sum_{S \in \mathcal U } \lambda_{S})T+ L
+%\end{equation}
+The allocated max pressure controller selects a set of $\lambda_S$ that maximizes alleviated pressure under the following constraints:
+\begin{itemize}
+\item $\lambda_{S} \geq \kappa_S$ 
+\item $f_{l}r_{l,m} < \sum_{S}\lambda_{S} c(l,m)S(l,m)$
+\item $ \sum_{S} \lambda_{S} = 1 - \frac{L}{T}$
+\end{itemize}
+%We therefore formulate the following convex optimization problem: 
+%\begin{equation*}
+%\begin{aligned}
+%& \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{\text{maximize}}
+%& & \displaystyle\displaystyle\sum_{l,m} w(l,m)(t)c(l,m)(\displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}S(l,m))  \\
+%& \text{subject to}
+%& &  \lambda_{S} \geq \kappa_S \\
+%&&& \displaystyle\sum_{S} \lambda_{S} \leq 1 - \dfrac{L}{T}
+%\end{aligned}
+%\end{equation*}
+The desired controller is therefore determined by the solution to the following linear program: 
+\begin{align} \nonumber
+\{ \lambda^*_S \} = \; & \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max} & & \sum_{S \in \mathcal{U}}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
+\nonumber & \text{subject to}
+\nonumber & &  \lambda_{S} \geq \kappa_s\\
+&&&\sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{T}  \label{distMP_LP}
+\end{align}
+%The selected $\{\lambda_S\}$ should also maximizes the pressure under those conditions:
+%
+%$$
+%\max_{\lambda_{1},...,\lambda_{\vert S \vert}}\displaystyle\sum_{l,m} w(l,m)(t)c(l,m)(\sum_{S}\lambda_{S}S(l,m)) 
+%= \max_{\lambda_{1},...,\lambda_{\vert S \vert}}\sum_{S}\lambda_{S}\sum_{l,m}w(l,m)(t)c(l,m)S(l,m)) 
+%$$
+%This is exactely equivalent to the Linear Programming problem: 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{equation*}
+%\begin{aligned}
+%& \underset{\lambda_{1},...,\lambda_{\vert S\vert}}{\text{min}}
+%& & \displaystyle\displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}(-\displaystyle\sum_{l,m} w(l,m)(t)c(l,m) S(l,m))  \\
+%& \text{subject to}
+%& &  \lambda_{S} > \kappa\\
+%&&& \displaystyle\sum_{S} \lambda_{S} <1
+%\end{aligned}
+%\end{equation*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+The solution to \eqref{distMP_LP} selects coefficients $\{ \lambda_{S}^{*} \} $ which form a corresponding relaxed control
+matrix \begin{equation} S^{r*} = \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S\end{equation}
+
+
+
+
+
+
+\subsection*{Stability of allocated max pressure}
+
+We now show that the allocated max pressure controller $S^{r*}$ is stable in the sense of \eqref{stability_sufficient} under conditions slightly modified from those assumed in the stability proofs of immediate feedback and cycle max pressure.
+
+Define $conv_{\kappa}$ as the set of convex combinations of control matrices with coefficients larger than $\kappa$:
+\begin{equation}
+conv_{\kappa} = \Big\{ \sum_{S}\lambda_{S}S \big| \; \lambda_S > \kappa_S \; \forall S\in U\Big\}
+\end{equation}
+Also define a set of reduced admissible demands $D_{\kappa}$ which can in average be served in a single cycle with a relaxed control matrix that maintains the minimum time allocation for a given cycle time (as in \eqref{sum_lambda}):
+\begin{align} \nonumber
+d \in D_{\kappa} \; & \text{iff} \; \exists \; S^r \in conv_{\kappa} \; \\ & \text{such that} \; f_{l}r(l,m) < c(l,m)S^r(l,m)
+\label{admissible_relaxed}
+\end{align} 
+%A stability result exist for distributed MP when the demand is within the set $D_{k}$ of feasible demands.
+The following Theorem is proven in Appendix \ref{distributedproof}:
+\begin{Thm}\label{StabDistributedMP}
+The sequence of allocated max pressure controller stabilizes the network
+ whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands
+$ D_{\kappa}$.
+%Under this condition, the quantity:
+%\begin{equation}
+%\dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert}
+%\end{equation}
+%is bounded for any time horizon $T$.
+\end{Thm}
+
+
+

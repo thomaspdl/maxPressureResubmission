@@ -1,0 +1,93 @@
+% !TEX root = ./MParticle.tex
+\section{Model Framework} \label{sec:framework}
+
+\subsection*{Definitions}
+
+We consider a network of arterial roads with infinite storage capacity, modeled topologically as a graph with road links being edges and intersections being vertices. An individual link $l\in\linkset$  can be either at the entry of the network ($l \in \entrylinks$) or in the interior of the network ($l \in\linkset\backslash \entrylinks $). The inflow on entry links is a defined entirely by a random demand $d_{l}$, while the input flows of all other links depend on queues on upstream links and the relevant set of physical flow constraints are defined within the network. We require that each link has an exit path, that is, a continuous set of subsequent links on which vehicles can travel from the link to eventually exit the network.  Each link in the network model can have multiple \emph{queues} corresponding to individual \emph{movements}:  all vehicles in a given queue on any link are intending to advance onto the same subsequent link (though not necessarily the same subsequent queue). 
+
+We describe the dynamics of these queues as a discrete time dynamical model using the following notation: 
+\begin{itemize}
+\item A \emph{movement} $(l,m)$ distinguishes an intention to travel from link $l$ to link $m$,
+(in that case, say that $m \in Out(l)$ where $Out(l)$ is the set of links immediately downstream $l$);
+\item A \emph{queue} $x(l,m)(t)$ is the number of vehicles on link $l$ waiting to enter link $m$ at timestep $t$, and $X(t)$ is the set (vector or matrix) of all the queue lengths on the network at timestep $t$;
+\item A \emph{saturation flow} $c(l,m)$ is the expected number of vehicles that can travel from link $l$ to link $m$ per time step given maximum demand for the queue $x(l,m)$, and $C(l,m)(t)$ is the \emph{realized saturation flow} at time $t$; 
+\item The \emph{turn ratio} $r(l,m)$ is the expected proportion of vehicles that are leaving $l$ which are intending to enter $m$, and $R(l,m)(t)$ is the \emph{realized turn ratio} at time $t$;
+\item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
+\item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
+\end{itemize}
+Note that there is necessarily a linear relationship between the flow vector $f$ and the demand vector $d$: $f=dP$ where the matrix $P$ depends only on routing proportions. 
+
+
+
+\subsection*{Controller}
+
+A road intersection is modeled as a node in our framework. Controllers (traffic signals) are placed at every node to limit the set of queues permitted to discharge at any given time. A set of movements that can be simultaneously actuated without flow conflicts is called a \emph{phase}.  Each permissible phase for a given intersection can be represented as a binary control matrix $S$ defined as follows: 
+\begin{equation}
+S(l,m) = \begin{cases}
+        1 & \text{if movement $(l,m)$ is activated }  \\
+        0 & \mbox{otherwise}
+    \end{cases}
+\end{equation}
+We denote $U_n$ the known finite set of permissible control matrices for node $n$. Note that in this article, we often drop the subscript $n$ for ease of notation. 
+
+While more than one phase cannot realistically be simultaneously actuated, a ``relaxed" controller can also be defined as a matrix representing the fraction of each time step allocated to each phase:
+\begin{equation}
+S^r(l,m) = \lambda_{l,m} \in [0,1]
+\end{equation}
+Such a relaxed controller can be seen as a convex combination of all possible control matrices,
+\begin{equation}
+S^r = \displaystyle\sum_{S\in U}\lambda_{S}S
+\end{equation}
+
+We suppose that at each model time step $t$, a controller selects a single control matrix $S(t)$ that encodes which set of queues approaching the intersection are permitted to discharge during that time step.
+In general, the determination of such a controller is based on the state of the network at a previous time step.
+
+\subsection*{Queue Dynamics}
+
+The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $t+1$ is a function of only the network state at time $t$ and external demand vector $d$,
+\begin{equation}
+X(t+1) = F(X(t),d)
+\end{equation}
+Define $[\,a \wedge b\,]:=\min\{a,b\}$. To describe queue dynamics explicitly, we must make a distinction between entry links and internal links: if $l\in \entrylinks$,
+\begin{align} \label{entrydynamics}
+x(l,m)&(t+1) = x(l,m)(t) + d_{l}(t+1) \\ &  \;  - [C(l,m)(t+1)S(l,m)(t+1) \wedge x(l,m)(t)] \nonumber 
+\end{align}
+and if $l\in \linkset\backslash\entrylinks$,
+\begin{align}\label{internaldynamics}
+&x(l,m)(t+1) = x(l,m)(t) + \\ \nonumber
+& \sum_{k}[C(k,l)(t+1)S(k,l)(t+1) \wedge x(k,l)(t)]R(l,m)(t+1) \\ \nonumber 
+&\qquad  \qquad- [C(l,m)(t+1)S(l,m)(t+1) \wedge x(l,m)(t)] 
+\end{align} 
+
+
+
+\subsection*{Stability conditions}
+
+We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \mathcal{L}_{e})}$ are \emph{feasible}\textemdash that is, the network is servicing a distribution of inflows for which it is possible to find a controller that allows \textit{in average} more departures than arrivals at each link. For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t),...\}$, we define the \emph{long-term control proportion} matrix $M_{\overline S}$ as follows: 
+\begin{equation}
+M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
+\end{equation}
+We define $co(U)$ as the convex hull of the set of permissible control matrices $U$. The following property can be shown: 
+\begin{Prop}
+As shown in \cite{MaxPressureStochastic}, $M \in co(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
+\begin{equation}
+M(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}S(l,m)(t)
+\end{equation}
+\end{Prop}
+%Mathematically, a demand is feasible if there exists a control sequence $\overline S'$ such that average service exceeds demand: for every movement $(l,m)$, 
+%\begin{equation} \label{feasible_demand}
+%c(l,m)M_{\overline S'}(l,m) > f_{l}r(l,m)
+%\end{equation}
+\begin{Prop}
+As defined in \cite{MaxPressureStochastic}, a demand is feasible if and only if  $\exists \; M_{\overline S} \in co(U)$ and $ \varepsilon > 0$ such that
+ \begin{equation}  \label{feasible_demand} 
+ c(l,m)M_{\overline S}(l,m) > f_{l}r(l,m) + \varepsilon. 
+ \end{equation}
+\end{Prop}
+Furthermore, we say that a network is \emph{stable} if the following quantity is bounded:
+\begin{equation} \label{stability_condition}
+ \dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert_{1}}
+ \end{equation}
+where $\vert X\vert_{1} = \sum_{l,m} \vert x(l,m)\vert$.
+If the demand on a network is feasible, then it is possible to find a controller that stabilizes this network as shown by Varaiya \cite{MaxPressureStochastic}.
+

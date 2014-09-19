@@ -1,0 +1,207 @@
+% !TEX root = ./MParticle.tex
+\label{cycleproof}
+%In this appendix we show Theorem \ref{stabCycleMP}:\\
+%\underline{Proof of Theorem \ref{stabCycleMP}:} \\
+First we establish a bound on the incremental queue differences within a cycle of length $\tau$, following the form of \eqref{stability_sufficient}: 
+\begin{Lem} \label{lemma_p} 
+For a given cycle consisting of time steps $\{t, t+1, \ldots,  t+\tau\}$,  $\forall p \in [0, \tau - 1 ]$, 
+\begin{align} \nonumber 
+&\expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p - 1)} \\
+&< -2\varepsilon \eta \vert X(t + p )\vert + B(p) + K \label{boundCycleMP}
+\end{align}
+where
+\begin{align}  \label{Kdef}
+K = 2 \sum_{l,m}&c(l,m)\overline{C}(l,m) \\ \nonumber 
+& + N \sum_{l,m} \max\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l), \overline{d}(l,m) \} ^2
+\end{align}
+and
+\begin{align} \nonumber 
+B(p) &= p\left(2\varepsilon \eta  \sum_{l,m} + 2  (\sum_{l,m}[f_{l}r(l,m) + c(l,m)]) \right) \\
+& \qquad \qquad \cdot \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\} \label{Cpdef}
+\end{align}
+\end{Lem}
+Once we establish Lemma \ref{lemma_p}, we can show that for a time step $t$ within any number of cycles $T$, the following quantity is bounded:
+\begin{align} \nonumber 
+&\sum_{t = 1}^{\tau T} \expectation{\vert X(t + 1)\vert^2 - \vert X(t)\vert^2 \vert X(t)}\\ \nonumber
+&=\sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} \expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t + p)}\\ \nonumber
+&< \sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} (-2\varepsilon\eta \vert X(t + p )\vert + B(p) + K ) \\
+&< -2\varepsilon \eta \sum_{t=1}^{\tau T} \vert X(t )\vert  + (T - 1) \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \label{equivalencestabcycleMP}
+\end{align}
+Which, when taking the expectation, yields
+\begin{align} \nonumber 
+& \expectation{\vert X(\tau T + 1)\vert^2 - \vert X(1)\vert^2 } \\
+& <  -2\varepsilon\eta \sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}+ (T - 1) ( \sum_{p=0 }^{\tau - 1} B(p) + \tau K)
+\end{align}
+Or, rearranging we obtain
+\begin{align} \nonumber 
+\dfrac{1}{\tau T}& \sum_{t=1}^{\tau T}  \expectation{\vert X(t )\vert} < \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X(1)\vert^2 - \vert X(\tau T + 1)\vert^2  }\\ \nonumber 
+&\qquad \qquad \qquad \qquad \qquad + \dfrac{ T -1}{2\varepsilon\eta\tau T} \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \\
+&< \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X( 1)\vert^2}
++ \dfrac{ 1}{2\varepsilon\eta\tau } \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right)
+\end{align}
+This establishes stability: the quantity $\dfrac{1}{\tau T}\sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}$ must then be bounded.\\ 
+\newline
+%%%%%%%
+%cycle MP proof
+%%%%%%%
+\underline{Proof of Lemma \ref{lemma_p}:} \\
+Recall that for immediate feedback MP, we analyzed the following bounds on expected queue behavior per model timestep:
+\begin{align} \label{immediate_to_bound} 
+ |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
+ & = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)   
+\end{align}
+where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the controller applied at time step $t + p$, as defined in Section \ref{sec:immediatefeedback}:
+\begin{align*}
+\beta (t+p)  &= \vert X(t + p + 1) - X(t + p) \vert^{2} \\
+\alpha_{1} (t+p) &=  \sum_{l,m} \Big(f_{l}r(l,m) - c(l,m)S(l,m)(t)\Big)\\ 
+& \qquad \qquad \cdot w(l,m)(X(t + p)) \\
+ \alpha_{2}  (t+p)&= \sum_{l,m} \bigg(c(l,m)S(l,m)(t) \\ 
+ - \expectation{ & \big[C(l,m)(t+p + 1)\wedge x(l,m)(t + p)\big] \big| X(t + p) }\bigg)\\
+&\qquad \qquad \cdot w(l,m)(X(t + p))
+ \end{align*}
+As previously derived, the following bounds on $\beta(\cdot)$ and $\alpha_2(\cdot)$ will hold for any binary control matrix: 
+\begin{align}
+%\label{a1bound_original} \alpha_1 &<  -\varepsilon \eta \left| X(t ) \right| \\ 
+\label{a2bound_original} \alpha_2 (\cdot)&<  \sum_{l \in \linkset,m} c(l,m)\overline{C} (l,m) \\ 
+\label{bbound_original} \beta (\cdot)  &<  N \displaystyle\sum_{l,m} \max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}^2
+\end{align}
+These two terms form the constant $K$ from \eqref{constCalc}, which also appears in \eqref{boundCycleMP}. To complete the bound in  \eqref{boundCycleMP} we are only left with the $\alpha_1$ term, which is directly dependent on the explicit form of the binary controller $S$:
+
+\begin{align}
+\nonumber
+&\expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p)} \\
+\nonumber
+& = \expectation{ 2\alpha_{1} (t+p) + 2\alpha_{2}(t+p) +\beta (t+p)    \vert  X(t) \ldots X(t + p)  }\\
+\nonumber
+&< \expectation{2\alpha_{1} (t+p) \vert X(t) \ldots X(t + p) } + K \\
+&= 2\sum_{l,m} {[f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t + p))} + K \label{withK}
+\end{align}
+
+%%Therefore we try to show that  $\forall p \in [0,\tau - 1 ]$, $\exists C(p)$ such that
+%\begin{equation}
+%\expectation{\alpha_{1}(t + p)\vert X(t)} < -\varepsilon \vert X(t) \vert  + C(p)
+%\end{equation}
+Examine the remaining  term, $\alpha_1(t)$: %$2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t + p) )$:
+\begin{align} \nonumber 
+&2\sum_{l,m} [f_{l}  r(l,m) -  c(l,m)S(l,m)(t) ]  w(l,m)(X(t + p))   \\ \nonumber
+&=  2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t) )  \\ \nonumber
+& \qquad  + 2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ] \\ \nonumber 
+&\qquad \cdot \big(w(l,m)(X(t + p ) - X(t))\big) \\ \nonumber
+&= 2 \xi_{1} + 2 \xi_{2}
+\label{2terms}
+\end{align}
+With
+\begin{align} 
+\xi_{1} (t,S) = \sum_{l,m} \left[f_{l}r(l,m) - c(l,m)S(l,m)(t) \right]w(l,m)(X(t) )
+\end{align}
+and
+\begin{align}\nonumber
+\xi_{2} (t,p,S) &= \sum_{l,m} \left[f_{l}r(l,m) - c(l,m)S(l,m)(t) \right]\\
+&\qquad \cdot\big(w(l,m)(X(t + p ) - X(t))\big)
+\end{align}
+\underline{Bound on $\xi_{1}$} \\
+By Lemma \ref{alpha1bound} we know that
+\begin{equation*}
+2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t )) < -2\varepsilon \eta \vert X(t) \vert
+\end{equation*}
+Then noting that
+\begin{align*}
+\vert X(t) \vert &= \vert X(t + p) - (X(t + p) - X(t)) \vert \\
+&> \big\vert \vert X(t + p) \vert - \vert  X(t + p) - X(t)   \vert  \big\vert \\
+&>  \vert X(t + p) \vert - \vert  X(t + p) - X(t)   \vert  
+\end{align*}
+we are left with
+\begin{align} \nonumber
+2\xi_1 (t,S) &< -2\varepsilon \eta \big( \vert X(t + p) \vert -  \vert  X(t + p) - X(t)   \vert \big)\\ \nonumber
+&< -2\varepsilon \eta   \vert X(t + p) \vert \\  \nonumber
+&\qquad + 2\varepsilon \eta\sum_{i=1}^{p} \vert  X(t + i) - X(t + i - 1)   \vert  \\ 
+&= -2\varepsilon \eta   \vert X(t + p) \vert + 2\varepsilon \eta\sum_{i=1}^{p} \vert \delta(t + i -1) \vert 
+\label{sump}
+\end{align}
+So by \eqref{sump} and \eqref{betabound}, 
+\begin{align}  \label{first_term}
+2\sum_{l,m} & [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t))  \\ \nonumber
+&  < -2\varepsilon \eta  \vert X(t + p) \vert \\ \nonumber
+& \qquad + 2\varepsilon \eta  p \sum_{l,m} \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\} 
+\end{align}
+Plugging \eqref{first_term} into \eqref{withK}, we have
+
+\begin{align} \nonumber
+&\expectation{\vert X(t + p +  1)\vert^2 - \vert  X(t + p)\vert^2 \vert X(t),\ldots,X(t + p)}  \\ \nonumber
+& < K  -2 \varepsilon \eta \vert X(t + p) \vert  \\ \nonumber
+&\qquad + 2\varepsilon \eta p \sum_{l,m} \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\} \\ \nonumber
+&  \qquad +2 \sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]\\
+&\qquad \qquad \cdot\Big(w(l,m)(X(t + p) ) - w(l,m)(X(t))\Big) \label{combined1}
+\end{align}
+%
+%\begin{align} \nonumber
+%\sum_{l,m} [f_{l}  r(l,m) - & c(l,m)S(l,m)(t) ]  w(l,m)(t + p)   \\ \nonumber
+%& =   \sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(t )  \\
+%&\qquad \qquad \qquad +\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ](w(l,m)(t + p ) - w(l,m)(t)) 
+%\label{2terms}
+%\end{align}
+\underline{Bound on $\xi_{2}$} \\
+We now have to bound the term
+\begin{align}\nonumber
+2\xi_2(t,p,S) &= 2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]\\
+&\quad \cdot \Big(w(l,m)X((t + p) ) - w(l,m)(X(t))\Big)
+\label{2xi2}
+\end{align}
+%
+%\begin{comment}
+%
+%\begin{align*}
+%\expectation{ \vert X(t+p)\vert^2 - \vert X(t+ p - 1)\vert^2  \vert  X(t) } &= \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]w(l,m)(X(t + p)) + \frac{K}{p^2}\\
+%&=   \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]  w(l,m)(X(t + k)) + \frac{K}{p^2}\\
+%%&= \tau K + \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]\sum_{k=1}^{\tau - 1}  
+%%\{ w(l,m)(X(t) ) + w(l,m)(X(t + k )) - w(l,m)(X(t) ) \} \\
+%&=  K + \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]w(l,m)(X(t)) \\
+%&+ \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]  
+%\{ w(l,m)(X(t + k) ) - w(l,m)(X(t) ) \} \\
+%&< K - \varepsilon \vert X(t) \vert + \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)]  
+%\{ w(l,m)(X(t + k) ) - w(l,m)(X(t) ) \} \\
+%\end{align*}
+%
+%\end{comment}
+For that purpose we study the term
+\begin{align} \nonumber
+&w(l,m)(X(t+p))   -  w(l,m)(X(t)) \\ \nonumber
+& = \sum_{n=1}^{p} w(l,m)(X(t+n)) - w(l,m)(X(t + n - 1)) \\ \nonumber
+&= \sum_{n=1}^{p} \Big\{ x(l,m)(t + n) - x(l,m)(t + n - 1)   \\ \nonumber 
+&  \quad - \sum_{s \in Out(m)}[ x(m,s)(t + n) - x(m,s)(t + n - 1) ]r(m,s)  \Big\} \\ 
+&= \sum_{n=1}^{p}  w(l,m)( \delta(t + n - 1)) 
+\end{align}
+By \eqref{deltabound2} and the fact that $w(\cdot)$ is linear,  
+\begin{align} \nonumber
+\vert w(l,m)(\delta&(t + n -1)) \vert \\  \label{wdelta}
+&< \sum_{u,v} \max\Big\{  \overline{C}(u,v), \sum_{k}\overline{C}(k,u), \overline{d}(u,v)\Big\}
+\end{align}
+Therefore plugging \eqref{wdelta} back into \eqref{2xi2}, we get
+\begin{align} \nonumber 
+2\xi_2&(t,p,S) = 2\bigg( \sum_{l,m}\big([f_{l}r(l,m) - c(l,m)S(l,m)] \\  \nonumber
+&\qquad \qquad \qquad \cdot \sum_{n=1}^{p}  w(l,m)( \delta(t + n - 1))\bigg)  \\ \nonumber
+&< 2 \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \\ 
+&\qquad \qquad \cdot\sum_{u,v} \max\Big\{  \overline{C}(u,v), \sum_{k}\overline{C}(k,u), \overline{d}(u,v)\Big\} \label{2xi2_bound1}
+\end{align}
+Also note that 
+\begin{equation}
+\vert \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \vert < p \sum_{l,m}[f_{l}r(l,m) + c(l,m)]
+\end{equation}
+so \eqref{2xi2_bound1} becomes
+\begin{align} \label{2xi2_bound2}
+2\xi_2(t,p,S) < 2 p &\left( \sum_{l,m}[f_{l}r(l,m) + c(l,m)]\right)\\ \nonumber
+&\cdot\left( \sum_{l,m} \max\Big\{  \overline{C}(l,m), \sum_{k}\overline{C}(k,l), \overline{d}(l,m)\Big\} \right)
+\end{align}
+
+Substituting \eqref{2xi2_bound2} into \eqref{combined1} yields the final bound expressed in
+ \eqref{boundCycleMP}:
+
+\begin{align} \nonumber
+\expectation{&\vert X(t + p +  1)\vert^2 - \vert  X(t + p)\vert^2 \vert X(t),\ldots,X(t + p)}  \\ \nonumber
+&<  K  -2 \varepsilon \eta \vert X(t + p) \vert \\ \nonumber
+&\qquad + 2\varepsilon \eta p \sum_{l,m} \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\}  \\ \nonumber
+&  \qquad  + 2 p \left(\sum_{l,m}[f_{l}r(l,m) + c(l,m)]\right) \\ \nonumber
+& \qquad \qquad \cdot \left( \sum_{l,m} \max\Big\{  \overline{C}(l,m), \sum_{k}\overline{C}(k,l), \overline{d}(l,m)\Big\} \right) \\
+&= K  -2 \varepsilon \eta \vert X(t + p) \vert + B(p)
+\end{align}
+with $K$ and $B(p)$ given by \eqref{Kdef} and \eqref{Cpdef}, respectively. 

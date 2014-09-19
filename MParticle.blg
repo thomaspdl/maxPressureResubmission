@@ -1,0 +1,93 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: MParticle.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+I was expecting a `,' or a `}'---line 99 of file references.bib
+ :         
+ :         year = {2012}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 199 of file references.bib
+ : 
+ : year ={2013}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 211 of file references.bib
+ :         
+ :         month = {Dec},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 220 of file references.bib
+ :         
+ :         month = {Dec},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in SynchroComplexNetworks
+Warning--empty year in MultiQueues
+Name 1 in "M. Egerstedt, Y. Wardi, and F. Delmotte" has a comma at the end for entry CDC03OptSwitch
+while executing---line 2411 of file IEEEtran.bst
+Warning--empty year in CDC03OptSwitch
+Warning--empty journal in ModelSignalOpt
+Warning--empty journal in NetworkBarasOne
+Warning--empty journal in NetworkBarasTwo
+Name 1 in "M. Papageorgiou, C. Diakaki, V. Dinopoulou, A. Kotsialos, and Y. Wang" has a comma at the end for entry Papageorgiou
+while executing---line 2411 of file IEEEtran.bst
+Too many commas in name 1 of "M. Papageorgiou, C. Diakaki, V. Dinopoulou, A. Kotsialos, and Y. Wang" for entry Papageorgiou
+while executing---line 2411 of file IEEEtran.bst
+Warning--empty booktitle in Papageorgiou
+Name 1 in "X-F. Xie, S. Smith, L. Lu, and G. Barlow" has a comma at the end for entry Xie
+while executing---line 2411 of file IEEEtran.bst
+Warning--empty year in Xie
+
+Done.
+You've used 15 entries,
+            4024 wiz_defined-function locations,
+            908 strings with 10006 characters,
+and the built_in function-call counts, 10124 in all, are:
+= -- 802
+> -- 210
+< -- 80
++ -- 116
+- -- 34
+* -- 488
+:= -- 1540
+add.period$ -- 32
+call.type$ -- 15
+change.case$ -- 19
+chr.to.int$ -- 186
+cite$ -- 23
+duplicate$ -- 765
+empty$ -- 855
+format.name$ -- 46
+if$ -- 2306
+int.to.chr$ -- 0
+int.to.str$ -- 15
+missing$ -- 127
+newline$ -- 68
+num.names$ -- 15
+pop$ -- 303
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 778
+stack$ -- 0
+substring$ -- 455
+swap$ -- 579
+text.length$ -- 18
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 15
+warning$ -- 8
+while$ -- 45
+width$ -- 17
+write$ -- 156
+(There were 8 error messages)

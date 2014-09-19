@@ -1,0 +1,94 @@
+% !TEX root = ./MParticle.tex
+\section{Introduction}
+
+%The expansion of transportation networks over the past twenty years has motivated much study on the performance of queuing networks. 
+This article investigates the design and stability of decentralized controller for vertical queueing networks. In a \emph{vertical queueing network}, agents traveling across the network are stored in ``point queues'' which do not inhabit a ``horizontal'' position along the length of a network edge, but instead are considered to be ``vertical'' stacks at the front end of each edge. In the present work, we examine a vertical queueing network that can be controlled at junctions. Such networks are good models for urban traffic, but are inherited from other fields such as supply chain management or internet routing.
+ The flows passing through each node of this network are constrained by a controller, similar to how a traffic light dictates allowable flows across a traffic intersection: only a finite set of non-conflicting turning movements or \emph{phases} can be permitted to flow simultaneously across each node. 
+%Furthermore, each of the movements at a node has a maximum flow rate (saturation flow) at which it can be serviced. 
+At some regular interval, each of the the node controllers selects one element from its set of feasible phases to actuate. Hence flows through the network are dictated largely by the control policy applied at the nodes. A signal control policy is said to be \emph{stabilizing} if it ensures that the mean length of the queues waiting at each of the nodes remains bounded for all time. One such stabilizing control policy that is known to maximize network throughput is the \emph{max pressure} controller. Here, we show that such network stabilization is still achieved given various extensions of the original max pressure controller. These extensions are motivated by the practical physical constraints imposed on realistic traffic signal controllers, and they present new mathematical problems in the analysis of queue dynamics which are investigated in this article. 
+
+
+
+
+The general problem of a stabilizing controller in this context was first considered from the point of view of multihop radio networks in Tassiulas et Ephremides \cite{MaxPressureOriginal}. The control of a network is a broad subject with many applications such as wireless networks \cite{StabRelayNetworks}\cite{ControlWireless}, oscilatory networks \cite{SynchroComplexNetworks}, or queuing networks \cite{MultiQueues}\cite{CDC03OptSwitch}. In the particular context of arterial traffic control, little work has been made on the approximation equilibrium of the network, at the exception of Osorio and Bierlaire \cite{ModelSignalOpt}\cite{ModelFiniteNetwork}. Most of the literature focuses on the design of feedback responsive control. Comprehensive on this topic are provided in
+Baras and Levine \cite{NetworkBarasOne}\cite{NetworkBarasTwo}, Mirchandani and Head \cite{Mirchandani}, Papageorgiou et al. \cite{Papageorgiou}, Osorio and Bierlaire \cite{ModelSignalOpt}, and Xie et al. \cite{Xie}.
+%Some insights have also been made into the more general cases of control of networked systems (Murray)CITE THIS. 
+
+The max pressure traffic controller \cite{MaxPressureStochastic} is a specific distributed network signal control policy derived from the concept of a ``back pressure controller'', which was first studied in the context of routing packets through a communications network (see for example the pioneering work of Tassiulas and Ephremides \cite{MaxPressureOriginal}). The ideas has been applied to road traffic management more recently by Varaiya \cite{MaxPressureStochastic}, as well as in the work of Wongpiromsarn et al. \cite{MaxPressureStochasticConcurrent}. 
+
+
+
+The concept of max pressure control is intuitive: at each intersection, give priority to the phase which will be able to service the most traffic while taking into account the subsequent feasibility of downstream demand queues. Variaya's original formulation of this controller in \cite{MaxPressureStochastic}, however, does not fully consider the practical limitations on the rate of queue measurement and signal actuation in practical traffic networks. Using Variaya's stability proof as a starting point, we prove that two extended max pressure controllers that account for these constraints will still provide queue stability. Specifically, we address the fact that a practical control policy cannot be updated at the same time scale as that at which queues form: due to hardware limitations and safety constraints, most existing signal controllers must cycle through all allowable sets of phases while adhering to a fixed cycle length and strict limitations on the minimum and maximum allowable actuation time for each phase within the cycle. During the course of one signal cycle, however, vehicle queues may aggregate (or dissipate) significantly. Therefore, we first show that a ``non-updated'' max pressure controller, or one which only received occasional feedback upon which to update its actuation policy, will still stabilize network queues. We then show that under slightly stronger conditions on admissible input flows, a ``relaxed'' max pressure controller that allocates an entire actuation cycle between each signal phase given occasional feedback will also stabilize the network. We also examine the effect that each of these limitations on control will have on the ultimate bound on queue length relative to the chosen cycle time and network parameters. 
+
+The remainder of this article is organized as follows: first, Section II describes our modeling framework and Section III gives a mathematical definition of controllers and the concept of network stability. Section IV describes the problem the max pressure encounters in practice. Sections V describe the new controller we propose to solve those problems and expose the proof of stability for this new controller. Finally, Section VI outlines  numerical results provided by this controller using a micro-simulation running in the Aimsum platform of a real arterial traffic network within the I-15 corridor which was part of a SANDAG pilot program ran in San Diego, CA. 
+
+
+
+
+%
+%\subsection{Stabilization of Networks}
+%
+%So far, many work has been published on the problem of networks stabilization. 
+%We give a brief, and non exhaustive, overview of the problem of designing feedback policies/control policies for the traffic signals that are function of the current traffic state.
+%This problem has first been considered from the point of view of multihop radio networks by Tassiulas et Ephremides \cite{MaxPressureOriginal}. 
+%In the case of  small scales some interesting properties have been shown by Baras \cite{NetworkBarasOne} and \cite{NetworkBarasTwo}.
+%Pappas focused on the control of wireless networks \cite{StabRelayNetworks} and \cite{ControlWireless}.
+%While Bullo \cite{SynchroComplexNetworks} studied the case of oscillatory networks.
+%Some works have been made in the general cases of control of  Networked Systems (Murray).
+%In the particular case of arterial modelling,
+%Osorio and Bierlaire \cite{ModelSignalOpt} and \cite{ModelFiniteNetwork} set the framework of network of queues that we use in the present article.
+%In the present work we adopt the point of view of Varaiya's work on max pressure control of a network of signalized intersections.
+
+
+%\subsection{Contribution of the article}
+%
+%%Shortcoming of Pravin's Model
+%%Clear statement of contribution -> difference with
+%%Problem statement (more equation)
+%%Numerics
+%
+%In the article of P. Varaiya \cite{varaiyaStochastic}, it is demonstrated  that under an admissibility condition, Max Pressure Controller stabilizes the network. The condition for stability states that, in average, the input flow can be accommodated by a fixed controller.
+%In this particular case, the controller is updated at every time step.
+%The model for traffic management assumes infinite capacity links with random iid arrivals at entries links (point queue model).
+%The outgoing flow from each link is limited only by the number of vehicles in the upstreams links.
+%We assume that the vehicles are stored before leaving each link (store and forward model).
+%The first vehicles to arrive within the network are also the first to leave (first in first out model).
+
+
+%In the special case of a traffic road network, we suppose that the evolution of a single queue  follow an evolution equation:
+%For a single intersection
+%\begin{equation}
+%x(t + 1) = x(t) + c(t) \wedge x(t)+ d(t)
+%\end{equation}
+%This can be generalized to a network of intersections (network of queues)
+%\begin{equation}
+%x_{k}(t + 1) = x_{k}(t)  - C_{k}(t + 1)S_{k}(t) \wedge x_{k}(t) + \sum_{l} a_{k,l}(t)  + d_{k}(t + 1)
+%\end{equation}
+
+
+
+
+
+%\section*{Biblio (to do!!)}
+
+%Stabilisation of networks
+
+%%John Baras \texttt{http://www.isr.umd.edu/~baras/}->traffic networks
+%X. Liu, J.S. Baras, “Understanding Multi-Scaling Network Traffic: A Structural TCP Traffic Model”, submitted.
+%N. Liu, J.S. Baras, “On Scaling Property of Network Traffic in Small Scales”, submitted.
+
+%%George Pappas \texttt{http://www.georgejpappas.org/publications/index.html}
+%Stabilizability over Deterministic Relay Networks. Miroslav Pajic, Shreyas Sundaram, and George J. Pappas. In %Proceedings of the 52nd IEEE Conference on Decision and Control,Florence, Italy, December 2013.
+%Closing the Loop: A simple distributed method for control over wireless networks. Miroslav Pajic, Shreyas %Sundaram, Jerome Le Ny, George J. Pappas, and Rahul Mangharam. In Proceedings of the 11th ACM/IEEE %Conference on Information Processing in Sensor Networks (IPSN), Beijing, China, April 2012.
+
+%%Richard Murray \texttt{http://www.cds.caltech.edu/~murray/wiki/Main_Page}->scheduling policies
+
+%%Francesco Bullo \texttt{http://motion.mee.ucsb.edu/}->oscillatory networks
+%F. Dorfler and F. Bullo. Synchronization in Complex Oscillator Networks: A Survey. Automatica, April 2013. %Note: Submitted.  Keyword(s): Power Networks. [bibtex-entry]
+
+%Magnus Egerstedt http://users.ece.gatech.edu/magnus/
+%Jorge Cortes http://tintoretto.ucsd.edu/jorge/
+%S. Martinez http://motion.me.ucsb.edu/papers/Author/MARTINEZ-S.html
+%Carolina Osorio http://web.mit.edu/osorioc/www/research.html
+
+%\end{document}
