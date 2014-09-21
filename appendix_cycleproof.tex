@@ -2,9 +2,9 @@
 \label{cycleproof}
 %In this appendix we show Theorem \ref{stabCycleMP}:\\
 %\underline{Proof of Theorem \ref{stabCycleMP}:} \\
-First we establish a bound on the incremental queue differences within a cycle of length $\tau$, following the form of \eqref{stability_sufficient}: 
+We then establish a bound on the incremental queue differences within a cycle of length $\tau$, following the form of \eqref{stability_sufficient}: 
 \begin{Lem} \label{lemma_p} 
-For a given cycle consisting of time steps $\{t, t+1, \ldots,  t+\tau\}$,  $\forall p \in [0, \tau - 1 ]$, 
+For a given cycle (i.e. when the controller is not updated) consisting of time steps $\{t, t+1, \ldots,  t+\tau\}$,  $\forall p \in [0, \tau - 1 ]$, 
 \begin{align} \nonumber 
 &\expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p - 1)} \\
 &< -2\varepsilon \eta \vert X(t + p )\vert + B(p) + K \label{boundCycleMP}
@@ -20,32 +20,16 @@ B(p) &= p\left(2\varepsilon \eta  \sum_{l,m} + 2  (\sum_{l,m}[f_{l}r(l,m) + c(l,
 & \qquad \qquad \cdot \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\} \label{Cpdef}
 \end{align}
 \end{Lem}
-Once we establish Lemma \ref{lemma_p}, we can show that for a time step $t$ within any number of cycles $T$, the following quantity is bounded:
-\begin{align} \nonumber 
-&\sum_{t = 1}^{\tau T} \expectation{\vert X(t + 1)\vert^2 - \vert X(t)\vert^2 \vert X(t)}\\ \nonumber
-&=\sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} \expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t + p)}\\ \nonumber
-&< \sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} (-2\varepsilon\eta \vert X(t + p )\vert + B(p) + K ) \\
-&< -2\varepsilon \eta \sum_{t=1}^{\tau T} \vert X(t )\vert  + (T - 1) \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \label{equivalencestabcycleMP}
-\end{align}
-Which, when taking the expectation, yields
-\begin{align} \nonumber 
-& \expectation{\vert X(\tau T + 1)\vert^2 - \vert X(1)\vert^2 } \\
-& <  -2\varepsilon\eta \sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}+ (T - 1) ( \sum_{p=0 }^{\tau - 1} B(p) + \tau K)
-\end{align}
-Or, rearranging we obtain
-\begin{align} \nonumber 
-\dfrac{1}{\tau T}& \sum_{t=1}^{\tau T}  \expectation{\vert X(t )\vert} < \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X(1)\vert^2 - \vert X(\tau T + 1)\vert^2  }\\ \nonumber 
-&\qquad \qquad \qquad \qquad \qquad + \dfrac{ T -1}{2\varepsilon\eta\tau T} \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \\
-&< \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X( 1)\vert^2}
-+ \dfrac{ 1}{2\varepsilon\eta\tau } \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right)
-\end{align}
-This establishes stability: the quantity $\dfrac{1}{\tau T}\sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}$ must then be bounded.\\ 
-\newline
+
+
+
+
+%\newline
 %%%%%%%
 %cycle MP proof
 %%%%%%%
 \underline{Proof of Lemma \ref{lemma_p}:} \\
-Recall that for immediate feedback MP, we analyzed the following bounds on expected queue behavior per model timestep:
+As above, we have:
 \begin{align} \label{immediate_to_bound} 
  |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
  & = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)   
@@ -205,3 +189,28 @@ Substituting \eqref{2xi2_bound2} into \eqref{combined1} yields the final bound e
 &= K  -2 \varepsilon \eta \vert X(t + p) \vert + B(p)
 \end{align}
 with $K$ and $B(p)$ given by \eqref{Kdef} and \eqref{Cpdef}, respectively. 
+
+
+
+Once we establish Lemma \ref{lemma_p}, we can show that for a time step $t$ within any number of cycles $T$, the following quantity is bounded:
+\begin{align} \nonumber 
+&\sum_{t = 1}^{\tau T} \expectation{\vert X(t + 1)\vert^2 - \vert X(t)\vert^2 \vert X(t)}\\ \nonumber
+&=\sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} \expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t + p)}\\ \nonumber
+&< \sum_{t=1}^{T-1} \sum_{p=0 }^{\tau - 1} (-2\varepsilon\eta \vert X(t + p )\vert + B(p) + K ) \\
+&< -2\varepsilon \eta \sum_{t=1}^{\tau T} \vert X(t )\vert  + (T - 1) \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \label{equivalencestabcycleMP}
+\end{align}
+Which, when taking the expectation, yields
+\begin{align} \nonumber 
+& \expectation{\vert X(\tau T + 1)\vert^2 - \vert X(1)\vert^2 } \\
+& <  -2\varepsilon\eta \sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}+ (T - 1) ( \sum_{p=0 }^{\tau - 1} B(p) + \tau K)
+\end{align}
+Or, rearranging we obtain
+\begin{align} \nonumber 
+\dfrac{1}{\tau T}& \sum_{t=1}^{\tau T}  \expectation{\vert X(t )\vert} < \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X(1)\vert^2 - \vert X(\tau T + 1)\vert^2  }\\ \nonumber 
+&\qquad \qquad \qquad \qquad \qquad + \dfrac{ T -1}{2\varepsilon\eta\tau T} \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right) \\
+&< \dfrac{1}{2\varepsilon\eta\tau T}\expectation{\vert X( 1)\vert^2}
++ \dfrac{ 1}{2\varepsilon\eta\tau } \left(\sum_{p=0 }^{\tau - 1} B(p) + \tau K\right)
+\end{align}
+This establishes stability: the quantity $\dfrac{1}{\tau T}\sum_{t=1}^{\tau T} \expectation{\vert X(t )\vert}$ must then be bounded.\\ 
+
+

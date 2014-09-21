@@ -16,7 +16,7 @@
 
 We reformulate the controller so as to fullfill those guarantees. 
 Then we show that a similar stability result as the one shown by Varaiya holds (under some \emph{slightly} weaker conditions).
-To fulfil the first condition, we allow the control to be a convex combination of the different possible control matrices.
+To fulfill the first condition, we allow the control to be a convex combination of the different possible control matrices.
 For the second condition we consider a control that is not updated every time steps.
 The final control that we choose is a combination of the two.
 
@@ -31,53 +31,8 @@ The final control that we choose is a combination of the two.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 
-\subsection*{Minimum cycle time}
-Consider that the length $T$ of the controller update time period (signal cycle) is not pre-defined. However, there is a known amount of \emph{lost time} $L$ per cycle during which no phases can be actuated to account for physical clearance of the intersection between actuated phases. Hence it must be the case that $T>L$.  We furthermore impose that each feasible phase has an associated minimum proportion constraint: phase $S$ must be actuated for at least $\lambda_S T$ seconds during any one cycle. We then want to determine the minimum control period or \emph{cycle length} for which a fixed demand flow can be served while the stated phase proportion constraints are satisfied. 
 
-Unlike the previous case where we constrained our analysis to flows which could be served in average over an arbitrary long-term time horizon, here our proof of stability depends on the assumption that the average demand is served \textit{within a single cycle}. As suggested in \cite{MaxPressureStochastic}, we then pose the selection of a cycle length as a convex optimization problem with constraints applied to enforce the desired minimum phase proportions $\kappa$:
-\begin{equation} \label{sum_lambda}
-\begin{aligned}
-& \underset{\lambda = (\lambda_{S})_{S}}{\text{minimize}}
-& & \sum_{S\in U} \lambda_{S} \\
-& \text{subject to}
-& &  \lambda_{S} \geq \kappa_S\\
-&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
-%&&& \sum_{S} \lambda_{S} < 1
-\end{aligned}
-\end{equation}
-where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. 
-%
-%This is an obvious extension of the the linear program for a single intersection proposed by Allsop \cite{Allsop} and an implicit version of the formulation of Wong and Yang \cite{Wong}
 
-Let us denote $\Lambda^{*}$ to be the optimum of  \eqref{sum_lambda}. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any length time step. If $\Lambda^* < 1$, then the flow is admissible for a time step of length 
-\begin{equation} T > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
-We can now use this lower bound to select an appropriate cycle length. 
-
-\subsection*{Cycle max pressure}
-
-Cycle max pressure enables the control to act at a slower time scale than the queue dynamics, as would be the case in a practical traffic application. Suppose that we are given the model dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}, but the controller $S^*(t)$ can only be updated every $\tau$ model time steps (or once per \emph{cycle}). The ``$\tau$-non updated'' control sequence is therefore composed of control matrices repeated for at least $\tau$ model time steps: for a fixed cycle size $\tau$ and integer $n$, 
-\begin{align} \nonumber
-S(n\tau&+1)  = S(n\tau +2) = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
-&=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  
- \label{CYCLE_CONTROLLER}
-\end{align}
-Physically, the controller that maximizes the pressure at time step $n\tau + 1$ is continuously applied until time step $(n + 1)\tau$.
-
-\subsection*{Relaxed Max Pressure Controller}
-
-Let $\tau \in \mathbb{N}$ be fixed, the number of time steps between two actuation of the controller
-$\forall n \in \mathbb{N}$, 
-
-\begin{align} \nonumber
-S(n\tau&+1)   = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
-&=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  \\
-& =  \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max}  \sum_{S \in \mathcal{U}}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
-\nonumber  & \text{subject to}\\
-\nonumber  &  \lambda_{S} \geq \kappa_s\\
-& \sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{T}  \label{distMP_LP}\\
-& = S^{r*} \\
-&= \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S
-\end{align}
 
 \subsection*{Phase distribution within a cycle}
 We next investigate how the max pressure controller must be altered to allow the minimum proportion constraints on each phase in the set of allowable phases $\mathcal U$.
@@ -117,6 +72,55 @@ matrix \begin{equation} S^{r*} = \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S
 
 
 
+
+\subsection*{Cycle max pressure}
+
+Cycle max pressure enables the control to act at a slower time scale than the queue dynamics, as would be the case in a practical traffic application. Suppose that we are given the model dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}, but the controller $S^*(t)$ can only be updated every $\tau$ model time steps (or once per \emph{cycle}). The ``$\tau$-non updated'' control sequence is therefore composed of control matrices repeated for at least $\tau$ model time steps: for a fixed cycle size $\tau$ and integer $n$, 
+\begin{align} \nonumber
+S(n\tau&+1)  = S(n\tau +2) = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
+&=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  
+ \label{CYCLE_CONTROLLER}
+\end{align}
+Physically, the controller that maximizes the pressure at time step $n\tau + 1$ is continuously applied until time step $(n + 1)\tau$.
+
+\subsection*{Relaxed Max Pressure Controller}
+
+Let $\tau \in \mathbb{N}$ be fixed, the number of time steps between two actuation of the controller
+$\forall n \in \mathbb{N}$, 
+
+\begin{align} \nonumber
+S(n\tau&+1)   = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
+&=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  \\
+& =  \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max}  \sum_{S \in \mathcal{U}}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
+\nonumber  & \text{subject to}\\
+\nonumber  &  \lambda_{S} \geq \kappa_s\\
+& \sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{T}  \label{distMP_LP}\\
+& = S^{r*} \\
+&= \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S
+\end{align}
+
+
+\subsection*{Minimum cycle time}
+Consider that the length $T$ of the controller update time period (signal cycle) is not pre-defined. However, there is a known amount of \emph{lost time} $L$ per cycle during which no phases can be actuated to account for physical clearance of the intersection between actuated phases. Hence it must be the case that $T>L$.  We furthermore impose that each feasible phase has an associated minimum proportion constraint: phase $S$ must be actuated for at least $\lambda_S T$ seconds during any one cycle. We then want to determine the minimum control period or \emph{cycle length} for which a fixed demand flow can be served while the stated phase proportion constraints are satisfied. 
+
+Unlike the previous case where we constrained our analysis to flows which could be served in average over an arbitrary long-term time horizon, here our proof of stability depends on the assumption that the average demand is served \textit{within a single cycle}. As suggested in \cite{MaxPressureStochastic}, we then pose the selection of a cycle length as a convex optimization problem with constraints applied to enforce the desired minimum phase proportions $\kappa$:
+\begin{equation} \label{sum_lambda}
+\begin{aligned}
+& \underset{\lambda = (\lambda_{S})_{S}}{\text{minimize}}
+& & \sum_{S\in U} \lambda_{S} \\
+& \text{subject to}
+& &  \lambda_{S} \geq \kappa_S\\
+&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
+%&&& \sum_{S} \lambda_{S} < 1
+\end{aligned}
+\end{equation}
+where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. 
+%
+%This is an obvious extension of the the linear program for a single intersection proposed by Allsop \cite{Allsop} and an implicit version of the formulation of Wong and Yang \cite{Wong}
+
+Let us denote $\Lambda^{*}$ to be the optimum of  \eqref{sum_lambda}. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any length time step. If $\Lambda^* < 1$, then the flow is admissible for a time step of length 
+\begin{equation} T > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
+We can now use this lower bound to select an appropriate cycle length. 
 
 
 \subsection*{$\tau$-admissible flows}
@@ -163,13 +167,8 @@ However, as we will show in the following sections, the bound on queue lengths w
 
 
 
-Here we extend the previous proof of stability of an immediate feedback max pressure controller to the case of our relaxed max pressure controller: 
-
-\begin{Thm}\label{stabRelaxMP}
-The relaxed max pressure controller, defined above, updated every $\tau$ iterations stabilizes the network whenever the demand is within a set of feasible demands $D^{\kappa}$.
-\end{Thm}
-
-\begin{proof}
+Here we extend the previous proof of stability of an immediate feedback max pressure controller to the case of our relaxed max pressure controller.
+We begin by defining two sets we gonna use later.
 
 Define $conv_{\kappa}$ as the set of convex combinations of control matrices with coefficients larger than $\kappa$:
 \begin{equation}
@@ -180,6 +179,17 @@ Also define a set of reduced admissible demands $D_{\kappa}$ which can in averag
 d \in D_{\kappa} \; & \text{iff} \; \exists \; S^r \in conv_{\kappa} \; \\ & \text{such that} \; f_{l}r(l,m) < c(l,m)S^r(l,m)
 \label{admissible_relaxed}
 \end{align} 
+
+\vspace{0.5cm}
+
+
+\begin{Thm}\label{stabRelaxMP}
+The relaxed max pressure controller, defined above, updated every $\tau$ iterations stabilizes the network whenever the demand is within a set of feasible demands $D^{\kappa}$.
+\end{Thm}
+
+\begin{proof}
+
+
 
 %
 %\subsubsection*{Immediate feedback Max Pressure: proof of Theorem 3}

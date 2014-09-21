@@ -106,7 +106,10 @@ with
  \alpha_2 (t) & =  \sum_{l \in \linkset,m} \Big[ c(l,m)- \\ \nonumber
 \expectation{ \big[C & (l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \Big] S(l,m)(t)w(l,m)(t)  
 \end{align}
-These $\alpha_{\{1,2\}}$ are derived by first including in \eqref{expected_short} the $0$-valued term $[c(l,m)S(l,m)(t)w(l,m)(t) - c(l,m)S(l,m)(t)w(l,m)(t)]$, and then assuming that $S(l,m)(t) \in \{0,1\}$ (hence it can be brought outside of the internal min function in $\alpha_2$ without changing the ultimate result). %The later assumption does not hold in our modified controllers. 
+
+
+%These $\alpha_{\{1,2\}}$ are derived by first including in \eqref{expected_short} the $0$-valued term $[c(l,m)S(l,m)(t)w(l,m)(t) - c(l,m)S(l,m)(t)w(l,m)(t)]$, and then assuming that $S(l,m)(t) \in \{0,1\}$ (hence it can be brought outside of the internal min function in $\alpha_2$ without changing the ultimate result). %The later assumption does not hold in our modified controllers. 
+
 \begin{Lem} \label{alpha2bound}
 For all $l$, $m$, $t$, 
 \begin{equation} 
@@ -135,7 +138,7 @@ Using these relations and the observations that $w(l,m)(t) \leq x(l,m)(t)$ and $
 
 
  \begin{Lem} \label{alpha1bound}
-If the relaxed max pressure control policy $u^*$ is applied and the demand $d$ is in the set of feasible demands $D^\kappa$, then there exists an $\varepsilon>0$, $\eta>0$ such that 
+If the relaxed max pressure control policy $u^*$ is applied at time step $t$ and the demand $d$ is in the set of feasible demands $D^\kappa$, then there exists an $\varepsilon>0$, $\eta>0$ such that 
 \begin{equation} 
 \alpha_1(t)  \leq -\varepsilon \eta \big| X(t)\big| 
 \end{equation}
@@ -201,7 +204,7 @@ For simplicity, we combine all constant additive terms to define a new constant 
 K = 2 \displaystyle\sum_{l,m} & c(l,m) \overline{C}(l,m) \\
 \nonumber & + N \displaystyle\sum_{l,m} \max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}^2
 \end{align}
-So
+So, when the control is updated at time $t$:
 \begin{equation}\label{stabBasic}
 \expectation{|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} < -2\varepsilon \eta \left| X(t ) \right| + K
 \end{equation}
@@ -213,7 +216,7 @@ So
 %\begin{equation}\label{constCalc}
 %K = 2\displaystyle\sum_{l,m} c(l,m) \overline{C}(l,m) + \displaystyle\sum_{l,m} \max[\overline{C}(l,m),\sum_{k}\overline{C}(k,l)]^2
 %\end{equation}
-This is sufficient to show stability as previously defined.
+
 
 
 
@@ -223,34 +226,34 @@ This is sufficient to show stability as previously defined.
 
 
 
-Consider the relaxed control matrix $S^{r*}$ specified by \eqref{distMP_LP}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
-\begin{align} \nonumber
-\sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
-&\leq \sum_{l,m}c(l,m)w(l,m)(X(t))S^{r*}(l,m) 
-\end{align}
-with equality only if $S^r = S^{r*}$. 
-Therefore $\forall S^r \neq S^{r*}$,
-\begin{align} \nonumber
- \sum_{l,m}&\big[f_{l}r(l,m) - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
-&<   \sum_{l,m}\big[f_{l}r(l,m) - c(l,m)S^r(l,m)\big]w(l,m)(X(t))
-\end{align}
-If the demand flow is admissible according to \eqref{admissible_relaxed}, then 
-$\exists \Sigma \in conv_{\kappa}$ such that 
-\begin{equation} \nonumber
-c(l,m)\Sigma(l,m) = \begin{cases}
-        f_{l}r(l,m) + \varepsilon & \text{ if } w(l,m)(X(t)) > 0 \\
-        0 & \text{ otherwise}
-    \end{cases}
-\end{equation}
-Hence following the same logic as in \eqref{alpha1_w}, 
-\begin{align} \nonumber
- \sum_{l,m}&\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
-&  < -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\
-&\qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
-\end{align}
-We assume that by our choice of $\sigma(l,m)$, $f_{l}r(l,m) > \varepsilon$ (omitting the cases where $r(l,m) = 0$). Therefore:
-\begin{align}\nonumber
-\sum_{l,m}\big[ f_{l}r(l,m) & - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
-&< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
-\end{align}
-
+%Consider the relaxed control matrix $S^{r*}$ specified by \eqref{distMP_LP}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
+%\begin{align} \nonumber
+%\sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
+%&\leq \sum_{l,m}c(l,m)w(l,m)(X(t))S^{r*}(l,m) 
+%\end{align}
+%with equality only if $S^r = S^{r*}$. 
+%Therefore $\forall S^r \neq S^{r*}$,
+%\begin{align} \nonumber
+% \sum_{l,m}&\big[f_{l}r(l,m) - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
+%&<   \sum_{l,m}\big[f_{l}r(l,m) - c(l,m)S^r(l,m)\big]w(l,m)(X(t))
+%\end{align}
+%If the demand flow is admissible according to \eqref{admissible_relaxed}, then 
+%$\exists \Sigma \in conv_{\kappa}$ such that 
+%\begin{equation} \nonumber
+%c(l,m)\Sigma(l,m) = \begin{cases}
+%        f_{l}r(l,m) + \varepsilon & \text{ if } w(l,m)(X(t)) > 0 \\
+%        0 & \text{ otherwise}
+%    \end{cases}
+%\end{equation}
+%Hence following the same logic as in \eqref{alpha1_w}, 
+%\begin{align} \nonumber
+% \sum_{l,m}&\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
+%&  < -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\
+%&\qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
+%\end{align}
+%We assume that by our choice of $\sigma(l,m)$, $f_{l}r(l,m) > \varepsilon$ (omitting the cases where $r(l,m) = 0$). Therefore:
+%\begin{align}\nonumber
+%\sum_{l,m}\big[ f_{l}r(l,m) & - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
+%&< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
+%\end{align}
+%
