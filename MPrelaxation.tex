@@ -1,5 +1,5 @@
-% !TEX root = ./MParticle.tex
-\section{Relaxation of the Max Pressure Controller. Stability of the new Controller} \label{sec:immediatefeedback}
+% !TEX root = ./MParticle_resubmit.tex
+\section{Cycle-based Max Pressure Controller} 
 
 
 
@@ -14,15 +14,24 @@
 %%%%%%%%%%%
 
 
-We reformulate the controller so as to fullfill those guarantees. 
-Then we show that a similar stability result as the one shown by Varaiya holds (under some \emph{slightly} weaker conditions).
-To fulfill the first condition, we allow the control to be a convex combination of the different possible control matrices.
-For the second condition we consider a control that is not updated every time steps.
-The final control that we choose is a combination of the two.
+Max pressure is justifiably presented in \cite{MaxPressureStochastic} as an attractive option for controlling vehicular traffic in urban road networks. Yet as previously discussed, this original formulation of the max pressure controller is not practical for application on a signalized traffic network for three reasons:
+\begin{enumerate}[a)]
+\item it does not account for capacity reductions due to excessive signal switching, 
+\item it cannot enforce coordination between subsequent intersections for purposes of maximizing flow continuity, and
+\item it does not provide guarantees that low-demand queues will be served within a finite time period. 
+\end{enumerate} 
+These limitations motivate our extension of the immediate feedback max pressure control algorithm. In the following section, we define a new \emph{cycle-based max pressure} controller which bounds the number of signal switches per fixed time period, provides capacity for standard signal coordination methods, and can easily guarantee a minimum service rate for all interaction phases. We then show that the application of this controller yields a similar stability guarantee to that shown by Varaiya for the standard immediate feedback controller (given slightly weaker conditions on demand flow). The structure of this proof is as follows: 
+\begin{enumerate}[i.]
+\item First, we introduce a formulation of the cycle-based max pressure algorithm and briefly describe how it inherently rectifies issues a), b), and c) above. 
+\item Next, we introduce the concept of a \emph{$\tau$-non updated} controller that can only be updated once every $\tau$ model time steps (or once per \emph{cycle}), and we show that queue stability holds with such a controller given slightly weaker conditions on demand flows than required for the stability of standard max pressure in \cite{MaxPressureStochastic}. 
+\item Then we show that this result does not change if the $\tau$-non updated controller is a relaxed controller as defined in (\ref{relaxed1}-\ref{relaxed2}). 
+\end{enumerate}
+The last three arguments build to prove that the cycle-based max pressure controller stabilizes a vertical queueing network. 
 
-
-
-
+%
+%To fulfill the first condition, we allow the control to be a convex combination of the different possible control matrices.
+%For the second condition we consider a control that is not updated every time steps.
+%The final control that we choose is a combination of the two.
 
 
 
@@ -92,11 +101,9 @@ $\forall n \in \mathbb{N}$,
 S(n\tau&+1)   = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
 &=  \arg\max\{\gamma(S)(X(n\tau +1 )) \vert S \in U\}  \\
 & =  \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max}  \sum_{S \in \mathcal{U}}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
-\nonumber  & \text{subject to}\\
-\nonumber  &  \lambda_{S} \geq \kappa_s\\
-& \sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{T}  \label{distMP_LP}\\
-& = S^{r*} \\
-&= \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S
+\nonumber  \text{subject to}\\
+\nonumber    \lambda_{S} & \geq \kappa_s\\
+ \sum_{S} \lambda_{S} &  = S^{r*} = \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S \leq 1 - \tfrac{L}{T}  \label{distMP_LP} 
 \end{align}
 
 

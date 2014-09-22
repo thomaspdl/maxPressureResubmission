@@ -1,4 +1,4 @@
-% !TEX root = ./MParticle.tex
+% !TEX root = ./MParticle_resubmit.tex
 \section{Model Framework} \label{sec:framework}
 
 \subsection*{Definitions}
@@ -15,13 +15,13 @@ We describe the dynamics of these queues as a discrete time dynamical model usin
 \item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
 \item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
 \end{itemize}
-Note that there is necessarily a linear relationship between the flow vector $f$ and the demand vector $d$: $f=dP$ where the matrix $P$ depends only on routing proportions. 
+Note that there is necessarily a linear relationship between the expected link flow vector $f$ and the boundary demand vector $d$: $f=dP$ where the matrix $P$ depends only on expected routing proportions within the network. 
 
 
 
 \subsection*{Controller}
 
-A road intersection is modeled as a node in our framework. Controllers (traffic signals) are placed at every node to limit the set of queues permitted to discharge at any given time. A set of movements that can be simultaneously actuated without flow conflicts is called a \emph{phase}.  Each permissible phase for a given intersection can be represented as a binary control matrix $S$ defined as follows: 
+A road intersection is modeled as a node in our framework. Controllers (traffic signals) are placed at every node to limit the set of queues permitted to discharge at any given time. A set of movements that can be simultaneously actuated without flow conflicts is called a \emph{phase}.  Each permissible phase for a given intersection can be represented as a binary control matrix $S$ that is defined as follows: 
 \begin{equation}
 S(l,m) = \begin{cases}
         1 & \text{if movement $(l,m)$ is activated }  \\
@@ -30,17 +30,15 @@ S(l,m) = \begin{cases}
 \end{equation}
 We denote $U_n$ the known finite set of permissible control matrices for node $n$. Note that in this article, we often drop the subscript $n$ for ease of notation. 
 
-While more than one phase cannot realistically be simultaneously actuated, a ``relaxed" controller can also be defined as a matrix representing the fraction of each time step allocated to each phase:
-\begin{equation}
+Practically, only one phase can be actuated at any point in time: at each model time step $t$, a single control matrix $S(t)$ encodes which set of queues approaching the intersection are permitted to discharge during that time step. However, in this work we consider a \emph{relaxed controller} which operates on a contiguous set of modeled time steps. This relaxed controller is defined as a matrix $S^r$ with each element $S^r(l,m)$ representing the fraction of the operational time steps that are allocated to the movement $\{l,m\}$:
+\begin{equation}\label{relaxed1}
 S^r(l,m) = \lambda_{l,m} \in [0,1]
 \end{equation}
 Such a relaxed controller can be seen as a convex combination of all possible control matrices,
-\begin{equation}
+\begin{equation}\label{relaxed2}
 S^r = \displaystyle\sum_{S\in U}\lambda_{S}S
 \end{equation}
-
-We suppose that at each model time step $t$, a controller selects a single control matrix $S(t)$ that encodes which set of queues approaching the intersection are permitted to discharge during that time step.
-In general, the determination of such a controller is based on the state of the network at a previous time step.
+In general, the selection of such a controller can be based on feedback representing the state of the network queues at a previous time step.
 
 \subsection*{Queue Dynamics}
 
@@ -61,15 +59,18 @@ and if $l\in \linkset\backslash\entrylinks$,
 
 
 
-\subsection*{Stability conditions}
+\subsection*{Demand Feasibility}
+We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \mathcal{L}_{e})}$ are \emph{feasible}\textemdash that is, the network is servicing a distribution of inflows for which it is possible to find a controller that allows \textit{in average} more departures than arrivals at each link. 
 
-We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \mathcal{L}_{e})}$ are \emph{feasible}\textemdash that is, the network is servicing a distribution of inflows for which it is possible to find a controller that allows \textit{in average} more departures than arrivals at each link. For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t),...\}$, we define the \emph{long-term control proportion} matrix $M_{\overline S}$ as follows: 
+For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t),...\}$, define the \emph{long-term control proportion} matrix $M_{\overline S}$ as follows: 
 \begin{equation}
 M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
 \end{equation}
-We define $co(U)$ as the convex hull of the set of permissible control matrices $U$. The following property can be shown: 
+Also, define $conv(U)$ as the convex hull of the set of permissible control matrices $U$. 
+
+The following properties are shown in \cite{MaxPressureStochastic}: 
 \begin{Prop}
-As shown in \cite{MaxPressureStochastic}, $M \in co(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
+$M \in conv(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
 \begin{equation}
 M(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}S(l,m)(t)
 \end{equation}
@@ -79,15 +80,19 @@ M(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}S(l,m)(t)
 %c(l,m)M_{\overline S'}(l,m) > f_{l}r(l,m)
 %\end{equation}
 \begin{Prop}
-As defined in \cite{MaxPressureStochastic}, a demand is feasible if and only if  $\exists \; M_{\overline S} \in co(U)$ and $ \varepsilon > 0$ such that
+A demand is \emph{feasible} if and only if  $\exists \; M_{\overline S} \in conv(U)$ and $ \varepsilon > 0$ such that
  \begin{equation}  \label{feasible_demand} 
  c(l,m)M_{\overline S}(l,m) > f_{l}r(l,m) + \varepsilon. 
  \end{equation}
 \end{Prop}
-Furthermore, we say that a network is \emph{stable} if the following quantity is bounded:
+Define $D^0$ to be the set of all average demand vectors $\{d_l\}$ that satisfy \eqref{feasible_demand} and are therefore feasible.
+
+\subsection*{Network Stability}
+A network is \emph{stable} if the following quantity is bounded:
 \begin{equation} \label{stability_condition}
  \dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert_{1}}
  \end{equation}
-where $\vert X\vert_{1} = \sum_{l,m} \vert x(l,m)\vert$.
-If the demand on a network is feasible, then it is possible to find a controller that stabilizes this network as shown by Varaiya \cite{MaxPressureStochastic}.
+where $\vert X\vert_{1} = \sum_{l,m} \vert x(l,m)\vert$ and the network state evolves according to dynamics under state dynamics (\ref{entrydynamics}-\ref{internaldynamics}).
+
+%If the demand on a network is feasible according to \eqref{feasible_demand}, then it is possible to find a controller that stabilizes this network, as shown by Varaiya \cite{MaxPressureStochastic}.
 

@@ -1,34 +1,30 @@
-% !TEX root = ./MParticle.tex
-\section{Standard Max Pressure Controller: Immediate Feedback} \label{sec:immediatefeedback}
+% !TEX root = ./MParticle_resubmit.tex
+\section{Standard Max Pressure Controller} \label{sec:immediatefeedback}
+%This section summarizes results from \cite{MaxPressureStochastic} and \cite{MaxPressureOriginal} that we later extend.
+%
+%\subsection*{Principle}
 
-This section summarizes results from \cite{MaxPressureStochastic} and \cite{MaxPressureOriginal} used later in this article.
-
-\subsection*{Principle}
-
-We consider a weight assigned to each queue $(l,m)$ as a function of all network queue lengths $X$:
+Consider a weight assigned to each queue $(l,m)$ as a function of all network queue lengths $X$:
 \begin{equation} \label{linkweight}
 w(l,m)(X(t))= x(l,m)(t) - \sum_{p \in Out(m)} r(m,p)x(m,p)(t)
 \end{equation}
-where $Out(m)$ is the set of all links receiving flow from link $m$. The original \emph{immediate feedback} max pressure controller actuates the phase $S^* \in U$ which alleviates the most \emph{pressure} at the intersection. The pressure $\gamma(S)$ that is potentially alleviated by a control action $S$ is defined as follows: 
+where $Out(m)$ is the set of all links receiving flow from link $m$. 
+%At time step $t+1$, the standard max pressure controller actuates the phase $S^* \in U$ which alleviates the most \emph{pressure} at the intersection based on feedback obtained at the immediately previous time step $t$. 
+The \emph{pressure} $\gamma(S)$ that is potentially alleviated by a control action $S$ at time step $t$ is defined as follows: 
 \begin{align}
 \gamma(S)(X(t)) &= \sum_{l,m}c(l,m)w(l,m)(X(t))S(l,m)(t) \\
 &= \sum_{l,m: S(l,m)(t) = 1}c(l,m)w(l,m)(X(t))
 \end{align}
-Explicitly, $u^{*}(X)$ therefore simply choses the phase $S^*\in U$ that maximizes $\gamma(S)(X(t))$ at each time step:
+At each time step $t$, the standard max pressure controller $u^{*}(X(t))$ explicitly choses the phase $S^*\in U$ that maximizes $\gamma(S)(X(t))$:
 \begin{equation} \label{original_MP}
 %\boxed{ 
 S^*(t)  = u^{*}(X(t)) = \arg\max\{\gamma(S)(X(t)) \vert S \in U\} 
 %}
 \end{equation}
 
-
-
-\subsection*{First Stability Result}
-
-Varaiya \cite{MaxPressureStochastic} shows that the following stability result holds for the immediate feedback max pressure controller:
+Varaiya \cite{MaxPressureStochastic} shows the following stability result for the standard max pressure controller on a vertical queueing network:
 \begin{Thm}\label{StabMP}
-The max pressure control $u^{*}$ is stabilizing whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands, called $D^0$.
-There is no stabilizing control when $d$ is not within the set of feasible demands $D^{0}$.
+The max pressure control $u^{*}$ is stabilizing whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands $D^0$. There is no stabilizing control when $d\not \in D^0$.
 \end{Thm}
 
 %To prove this theorem, \cite{MaxPressureStochastic} shows that the quantity described in \eqref{stability_condition} is bounded when the controller is applied to the system dynamics \eqref{entrydynamics}-\eqref{internaldynamics}. It is however sufficient to show that there exists an $\varepsilon > 0$ such that

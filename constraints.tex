@@ -1,19 +1,19 @@
-% !TEX root = ./MParticle.tex
+% !TEX root = ./MParticle_resubmit.tex
 \section{Practical Constraints on the Controller} \label{sec:constraints}
-
-Varaiya \cite{} assumes that the controller can be updated every time step. 
-In real traffic systems, this is not possible. As a matter of fact, for hardware/technical reasons, one must keep the same control every $\tau$ time steps.
-This can be seen as the fact that the dynamics are updated quicker than the control.
-
-Also, Varaiya suppose that only one control matrix is chosen during the optimisation procedure, i.e. only one of the possible non conflicting phases is chosen.
-This is not realistic in practice either, since each set of phases must be allocated a minimal (non nul) time.
-In that case, instead of choosing the controller over a finite  set, a convex combination of control matrices is chosen. 
-The coefficient $\lambda_{S}$ chosen for each phase $S$ represents the fraction (between 0 and 1) of the physical time allocated.
-To ensure that each phase is guaranteed a minimum time, we want to constraint the coefficients of the convex combination to be all larger than $\kappa$.
-(It is pretty straightforward to notice that $\kappa$ must satisfy the following: 
-
-$$
-\kappa | \text{set of non conflicting phases } | < 1
-$$
-
-We therefore reformulate the controller so that instead of a single phase being chosen for actuation at every model step, all feasible phases are actuated in parallel during the time step at a proportionally reduced rate. The control output will no longer be a binary matrix, but rather will be a \emph{relaxed} control matrix $S^r (t)$ which is a convex combination of all elements in the set of feasible control phases $U$. Each element $S^r (t)(i,j) \in [0,1]$ will represent fraction of the flow capacity at time step $t$ that is allocated to movement $(i,j)$. 
+TODO: re-write this section
+%Varaiya \cite{} assumes that the controller can be updated every time step. 
+%In real traffic systems, this is not possible. As a matter of fact, for hardware/technical reasons, one must keep the same control every $\tau$ time steps.
+%This can be seen as the fact that the dynamics are updated quicker than the control.
+%
+%Also, Varaiya suppose that only one control matrix is chosen during the optimisation procedure, i.e. only one of the possible non conflicting phases is chosen.
+%This is not realistic in practice either, since each set of phases must be allocated a minimal (non nul) time.
+%In that case, instead of choosing the controller over a finite  set, a convex combination of control matrices is chosen. 
+%The coefficient $\lambda_{S}$ chosen for each phase $S$ represents the fraction (between 0 and 1) of the physical time allocated.
+%To ensure that each phase is guaranteed a minimum time, we want to constraint the coefficients of the convex combination to be all larger than $\kappa$.
+%(It is pretty straightforward to notice that $\kappa$ must satisfy the following: 
+%
+%$$
+%\kappa | \text{set of non conflicting phases } | < 1
+%$$
+%
+%We therefore reformulate the controller so that instead of a single phase being chosen for actuation at every model step, all feasible phases are actuated in parallel during the time step at a proportionally reduced rate. The control output will no longer be a binary matrix, but rather will be a \emph{relaxed} control matrix $S^r (t)$ which is a convex combination of all elements in the set of feasible control phases $U$. Each element $S^r (t)(i,j) \in [0,1]$ will represent fraction of the flow capacity at time step $t$ that is allocated to movement $(i,j)$. 
