@@ -15,7 +15,11 @@ We describe the dynamics of these queues as a discrete time dynamical model usin
 \item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
 \item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
 \end{itemize}
-Note that there is necessarily a linear relationship between the expected link flow vector $f$ and the boundary demand vector $d$: $f=dP$ where the matrix $P$ depends only on expected routing proportions within the network. 
+Note that there is necessarily a linear relationship between the expected link flow vector $f$ and the boundary demand vector $d$: 
+\begin{equation} \label{fd_relation}
+f=dP
+\end{equation}
+where the matrix $P$ depends only on expected routing proportions within the network. {\color{red} A proof of this is given in \cite{MaxPressureStochastic}. ?? }
 
 
 
@@ -42,7 +46,7 @@ In general, the selection of such a controller can be based on feedback represen
 
 \subsection*{Queue Dynamics}
 
-The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $t+1$ is a function of only the network state at time $t$ and external demand vector $d$,
+The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $(t+1)$ is a function of only the network state at time $t$ and external demand vector $d$,
 \begin{equation}
 X(t+1) = F(X(t),d)
 \end{equation}
@@ -66,9 +70,7 @@ For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t)
 \begin{equation}
 M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
 \end{equation}
-Also, define $conv(U)$ as the convex hull of the set of permissible control matrices $U$. 
-
-The following properties are shown in \cite{MaxPressureStochastic}: 
+Also, define $conv(U)$ as the convex hull of the set of permissible control matrices $U$. The following properties are then shown in \cite{MaxPressureStochastic}: 
 \begin{Prop}
 $M \in conv(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
 \begin{equation}
@@ -80,12 +82,14 @@ M(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}S(l,m)(t)
 %c(l,m)M_{\overline S'}(l,m) > f_{l}r(l,m)
 %\end{equation}
 \begin{Prop}
-A demand is \emph{feasible} if and only if  $\exists \; M_{\overline S} \in conv(U)$ and $ \varepsilon > 0$ such that
+A demand $d$ is \emph{feasible} if and only if  $\exists \; M_{\overline S} \in conv(U)$ and $ \varepsilon > 0$ such that
  \begin{equation}  \label{feasible_demand} 
  c(l,m)M_{\overline S}(l,m) > f_{l}r(l,m) + \varepsilon. 
  \end{equation}
+ where $f = dP$ as in \eqref{fd_relation}. 
 \end{Prop}
-Define $D^0$ to be the set of all average demand vectors $\{d_l\}$ that satisfy \eqref{feasible_demand} and are therefore feasible.
+
+Define $D^0$ to be the set of all average demand vectors $d=\{d_l\}$ that satisfy \eqref{feasible_demand} and are therefore feasible.
 
 \subsection*{Network Stability}
 A network is \emph{stable} if the following quantity is bounded:

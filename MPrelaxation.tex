@@ -14,19 +14,20 @@
 %%%%%%%%%%%
 
 
-Max pressure is justifiably presented in \cite{MaxPressureStochastic} as an attractive option for controlling vehicular traffic in urban road networks. Yet as previously discussed, this original formulation of the max pressure controller is not practical for application on a signalized traffic network for three reasons:
+The attractive qualities of max pressure for controlling vehicular traffic in urban road networks are presented in \cite{MaxPressureStochastic}. Yet as previously discussed, this original formulation of the controller is not practical for application on a signalized traffic network for three reasons:
 \begin{enumerate}[a)]
-\item it does not account for capacity reductions due to excessive signal switching, 
+\item it does not account for capacity reductions (lost time) due to excessive signal switching, 
 \item it cannot enforce coordination between subsequent intersections for purposes of maximizing flow continuity, and
 \item it does not provide guarantees that low-demand queues will be served within a finite time period. 
 \end{enumerate} 
-These limitations motivate our extension of the immediate feedback max pressure control algorithm. In the following section, we define a new \emph{cycle-based max pressure} controller which bounds the number of signal switches per fixed time period, provides capacity for standard signal coordination methods, and can easily guarantee a minimum service rate for all interaction phases. We then show that the application of this controller yields a similar stability guarantee to that shown by Varaiya for the standard immediate feedback controller (given slightly weaker conditions on demand flow). The structure of this proof is as follows: 
+These limitations motivate our extension of the standard immediate feedback max pressure control algorithm. In the following section, we define a new \emph{cycle-based} max pressure controller which bounds the number of signal switches per fixed time period, provides capacity for standard signal coordination methods, and can easily guarantee a minimum service rate for all intersection phases. We then show that the application of this controller yields a similar stability guarantee to that shown by Varaiya for the standard controller given slightly weaker conditions on demand flow. The structure of this proof is as follows: 
 \begin{enumerate}[i.]
-\item First, we introduce a formulation of the cycle-based max pressure algorithm and briefly describe how it inherently rectifies issues a), b), and c) above. 
-\item Next, we introduce the concept of a \emph{$\tau$-non updated} controller that can only be updated once every $\tau$ model time steps (or once per \emph{cycle}), and we show that queue stability holds with such a controller given slightly weaker conditions on demand flows than required for the stability of standard max pressure in \cite{MaxPressureStochastic}. 
-\item Then we show that this result does not change if the $\tau$-non updated controller is a relaxed controller as defined in (\ref{relaxed1}-\ref{relaxed2}). 
+\item First, we formalize a calculation of the \emph{lost time} incurred by signal switching actions. 
+\item Then we introduce a formulation of the cycle-based max pressure algorithm and briefly describe how it inherently rectifies issues a), b), and c) above. 
+\item Next, we introduce the concept of a \emph{$\tau$-non updated} controller that can only be updated once every $\tau$ model time steps (or once per \emph{cycle}), and we show that queue stability holds with such a controller given slightly stricter conditions on demand flows. 
+\item We finally show that this result does not change if the $\tau$-non updated controller is a relaxed controller as defined in \eqref{relaxed1}-\eqref{relaxed2}. 
 \end{enumerate}
-The last three arguments build to prove that the cycle-based max pressure controller stabilizes a vertical queueing network. 
+The last three arguments combine to prove that the cycle-based max pressure controller stabilizes a vertical queueing network. 
 
 %
 %To fulfill the first condition, we allow the control to be a convex combination of the different possible control matrices.
@@ -39,50 +40,64 @@ The last three arguments build to prove that the cycle-based max pressure contro
 %distributed max pressure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
  
+\subsection*{Lost time due to switching}
+For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. 
+
+In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{MaxPressureStochastic}. 
+
+In this work, we explicitly fix the number of signal switches that can occur in a fixed number of model time steps using the familiar concept of a \emph{signal cycle}. As typical with modern traffic signals, the \emph{cycle-based} max pressure controller rotates through all available signal movements within a fixed time period. We define \emph{cycle time} $T$ as a fixed number of model time steps and require that each controller phase $S$ must be green for some proportion $\lambda_S > \kappa_S$ of the $T$ steps, where the \emph{minimum green splits} $\kappa_S \in (0,1) \; \forall \; S \in U $ are parameters selected by a network manager.  
+
+The selection of a cycle time $T$ intuitively affects intersection capacity. Our proof of network stability in the following sections relies on the fact that road links are \emph{undersaturated}: that is, the expected demand is served (on average) within a signal cycle. To avoid link saturation, we therefore pose the following convex optimization problem to determine minimum feasible actuation time $\Lambda^*$ (as suggested in \cite{MaxPressureStochastic}):
+\begin{equation} \label{sum_lambda}
+\begin{aligned}
+\Lambda ^{*} = & \min_{\lambda = \{\lambda_S\}}
+& & \sum_{S\in U} \lambda_{S} \\
+& \text{subject to}
+& &  \lambda_{S} \geq \kappa_S\\
+&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
+%&&& \sum_{S} \lambda_{S} < 1
+\end{aligned}
+\end{equation}
+where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any length time step. If $\Lambda^* < 1$, then we can define a cycle length for which flow is admissible without link saturation. However, this cycle length $T$ must be significantly greater than $\Lambda^*$ to account for clearance times. If we define $L = \text{ceil}\big(\frac{R}{\Delta t} \cdot |U|\big)$ to be total \emph{lost time steps} per cycle, a feasible cycle length $T$ must satisfy the following condition: 
+\begin{equation} T > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
 
 
+%This is an obvious extension of the the linear program for a single intersection proposed by Allsop \cite{Allsop} and an implicit version of the formulation of Wong and Yang \cite{Wong}
 
 
-\subsection*{Phase distribution within a cycle}
-We next investigate how the max pressure controller must be altered to allow the minimum proportion constraints on each phase in the set of allowable phases $\mathcal U$.
+\subsection*{Cycle-based controller formulation}
 
-Let $T$ be the cycle length satisfying \eqref{minTime} and $\kappa_S$ be the minimum proportion of the cycle which must be allocated to each $S\in U$. %By definition, our controller must therefore satisfy the following condition:
-%\begin{equation}
-%T = (\sum_{S \in \mathcal U } \lambda_{S})T+ L
-%\end{equation}
-The allocated max pressure controller selects a set of $\lambda_S$ that maximizes alleviated pressure under the following constraints:
-\begin{itemize}
-\item $\lambda_{S} \geq \kappa_S$ 
-\item $f_{l}r_{l,m} < \sum_{S}\lambda_{S} c(l,m)S(l,m)$
-\item $ \sum_{S} \lambda_{S} = 1 - \frac{L}{T}$
-\end{itemize}
-%We therefore formulate the following convex optimization problem: 
-%\begin{equation*}
-%\begin{aligned}
-%& \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{\text{maximize}}
-%& & \displaystyle\displaystyle\sum_{l,m} w(l,m)(t)c(l,m)(\displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}S(l,m))  \\
-%& \text{subject to}
-%& &  \lambda_{S} \geq \kappa_S \\
-%&&& \displaystyle\sum_{S} \lambda_{S} \leq 1 - \dfrac{L}{T}
-%\end{aligned}
-%\end{equation*}
-The desired controller is therefore determined by the solution to the following linear program: 
+%\begin{itemize}
+%\item 
+%%each phase $S\in  U$ is allocated at least some pre-defined minimum time $\kappa_S$: 
+%$\lambda_{S} \geq \kappa_S$
+%\item 
+%%the flow is feasible: 
+%$f_{l}r_{l,m} < \sum_{S}\lambda_{S} c(l,m)S(l,m)$
+%\item 
+%%all of the cycle time is allocated: 
+%$\sum_{S} \lambda_{S} = 1 - \frac{L}{T}$
+%\end{itemize}
+
+The cycle-based max pressure controller is a relaxed control matrix that is constructed as follows:
+\begin{equation} \label{uc*}
+u^{c*} = \sum_{S \in U}\lambda_{S}^{*}S
+\end{equation} 
+where 
 \begin{align} \nonumber
-\{ \lambda^*_S \} = \; & \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max} & & \sum_{S \in \mathcal{U}}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
+\{ \lambda^*_S \} = \; & \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max} & & \sum_{S \in U}\lambda_{S}\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
 \nonumber & \text{subject to}
 \nonumber & &  \lambda_{S} \geq \kappa_s\\
 &&&\sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{T}  \label{distMP_LP}
 \end{align}
+Immediately before time step $t=nT$, the controller $u^{c*}$ uses feedback measurements $x(t)$ to select a relaxed control matrix $S^{r*}$ with components $\lambda_S^*$ that satisfy \eqref{distMP_LP}. This relaxed controller is then applied for the subsequent $T$ time steps $\{t, t+1, \ldots, t+T-1\}$ before the controller is updated. 
+
+Note that this controller is modeled such that all phases in an intersection are simultaneously actuated at some proportion of their maximum flow capacity. This is not possible in practice, as many phases will have to make conflicting use of the same intersection resources. Hence individual phases $S$ will have to be actuated in series, with each having a duration corresponding to a number of ``time units'' that are equal to cycle proportions $\{\lambda_S T\cdot  \Delta t\}$. Feedback measurements will then be a measure of ``average'' cycle queue length acquired over a set of measurements spanning the previous cycle. 
+
+This highlights a practical benefit of the cycle-based max pressure controller: because it can be implemented such that phases occur in a predictable order, a signal running cycle-based max pressure can be synchronized with neighboring controllers to enforce a ``green-wave progression'' designed to minimizing individual vehicle stoppage and delay for a prioritized movement. 
 
 
-
-The solution to \eqref{distMP_LP} selects coefficients $\{ \lambda_{S}^{*} \} $ which form a corresponding relaxed control
-matrix \begin{equation} S^{r*} = \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S\end{equation}
-
-
-
-
-\subsection*{Cycle max pressure}
+\subsection*{$\tau$-non updated controller}
 
 Cycle max pressure enables the control to act at a slower time scale than the queue dynamics, as would be the case in a practical traffic application. Suppose that we are given the model dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}, but the controller $S^*(t)$ can only be updated every $\tau$ model time steps (or once per \emph{cycle}). The ``$\tau$-non updated'' control sequence is therefore composed of control matrices repeated for at least $\tau$ model time steps: for a fixed cycle size $\tau$ and integer $n$, 
 \begin{align} \nonumber
@@ -107,27 +122,7 @@ S(n\tau&+1)   = \ldots = S((n+1)\tau ) = S^*(n\tau +1) \\
 \end{align}
 
 
-\subsection*{Minimum cycle time}
-Consider that the length $T$ of the controller update time period (signal cycle) is not pre-defined. However, there is a known amount of \emph{lost time} $L$ per cycle during which no phases can be actuated to account for physical clearance of the intersection between actuated phases. Hence it must be the case that $T>L$.  We furthermore impose that each feasible phase has an associated minimum proportion constraint: phase $S$ must be actuated for at least $\lambda_S T$ seconds during any one cycle. We then want to determine the minimum control period or \emph{cycle length} for which a fixed demand flow can be served while the stated phase proportion constraints are satisfied. 
 
-Unlike the previous case where we constrained our analysis to flows which could be served in average over an arbitrary long-term time horizon, here our proof of stability depends on the assumption that the average demand is served \textit{within a single cycle}. As suggested in \cite{MaxPressureStochastic}, we then pose the selection of a cycle length as a convex optimization problem with constraints applied to enforce the desired minimum phase proportions $\kappa$:
-\begin{equation} \label{sum_lambda}
-\begin{aligned}
-& \underset{\lambda = (\lambda_{S})_{S}}{\text{minimize}}
-& & \sum_{S\in U} \lambda_{S} \\
-& \text{subject to}
-& &  \lambda_{S} \geq \kappa_S\\
-&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
-%&&& \sum_{S} \lambda_{S} < 1
-\end{aligned}
-\end{equation}
-where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. 
-%
-%This is an obvious extension of the the linear program for a single intersection proposed by Allsop \cite{Allsop} and an implicit version of the formulation of Wong and Yang \cite{Wong}
-
-Let us denote $\Lambda^{*}$ to be the optimum of  \eqref{sum_lambda}. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any length time step. If $\Lambda^* < 1$, then the flow is admissible for a time step of length 
-\begin{equation} T > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
-We can now use this lower bound to select an appropriate cycle length. 
 
 
 \subsection*{$\tau$-admissible flows}
