@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  23 SEP 2014 12:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  24 SEP 2014 10:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -315,11 +315,7 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 )
-(./MParticle_resubmit.aux
-
-LaTeX Warning: Label `distMP_LP' multiply defined.
-
-)
+(./MParticle_resubmit.aux)
 \openout1 = `MParticle_resubmit.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 405.
@@ -334,7 +330,8 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 405.
 LaTeX Font Info:    ... okay on input line 405.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 405.
 LaTeX Font Info:    ... okay on input line 405.
- (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
+
+(/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count113
 \scratchdimen=\dimen149
@@ -477,26 +474,38 @@ ne 26.
 [1{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-])
-(./model.tex
+]
+
+LaTeX Warning: Citation `MaxPressureStochastic' on page 2 undefined on input li
+ne 28.
+
+) (./model.tex
 
 LaTeX Warning: Citation `MaxPressureStochastic' on page 2 undefined on input li
 ne 22.
 
 [2]
-Underfull \hbox (badness 3977) in paragraph at lines 69--70
-[]\OT1/ptm/m/n/10 For a spe-cific se-quence of con-trol ma-tri-ces $[] \OT1/cmr
-/m/n/10 =
+
+LaTeX Warning: Citation `MaxPressureStochastic' on page 3 undefined on input li
+ne 74.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--77
+[]\OT1/ptm/m/n/10 A ma-trix $\OML/cmm/m/it/10 M$ \OT1/ptm/m/n/10 is in $\OML/cm
+m/m/it/10 conv\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 U\OT1/cmr/m/n/10 )$ \OT1/ptm/m/
+n/10 if
  []
 
 
-LaTeX Warning: Citation `MaxPressureStochastic' on page 3 undefined on input li
-ne 73.
+Underfull \hbox (badness 10000) in paragraph at lines 75--77
+\OT1/ptm/m/n/10 and only if $\OMS/cmsy/m/n/10 9$ \OT1/ptm/m/n/10 a se-quence of
+ con-trol ma-tri-ces
+ []
 
 ) (./immediate_feedback.tex
 
 LaTeX Warning: Citation `MaxPressureStochastic' on page 3 undefined on input li
-ne 25.
+ne 23.
 
 ) (./MPrelaxation.tex
 
@@ -506,100 +515,57 @@ ne 17.
 [3]
 
 LaTeX Warning: Citation `MaxPressureStochastic' on page 4 undefined on input li
-ne 46.
+ne 45.
 
 
 LaTeX Warning: Citation `MaxPressureStochastic' on page 4 undefined on input li
 ne 50.
 
+
+LaTeX Warning: Citation `MaxPressureStochastic' on page 4 undefined on input li
+ne 98.
+
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 133--134
-[]$\OML/cmm/m/it/10 U[]$ \OT1/ptm/m/n/10 is the set of con-trol se-quences
+Underfull \hbox (badness 7649) in paragraph at lines 126--127
+[]$\OMS/cmsy/m/n/10 U[]$ \OT1/ptm/m/n/10 is the set of $\OML/cmm/m/it/10 ^^\$\O
+T1/ptm/m/n/10 -updated con-trol se-quences
  []
 
+** ATTENTION: \proof is deprecated (line 183). Use \IEEEproof instead.
+[5]
 
-Underfull \hbox (badness 10000) in paragraph at lines 134--135
-[]$\OML/cmm/m/it/10 U[]$ \OT1/ptm/m/n/10 is the set of con-trol se-quences
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 134--135
-\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (1)\OML/cmm/m/it/10 ; S\OT1
-/cmr/m/n/10 (1)\OML/cmm/m/it/10 ; [] ; S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^\ \
-OT1/cmr/m/n/10 + 1)\OML/cmm/m/it/10 ; S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^\ \O
-T1/cmr/m/n/10 + 1)\OML/cmm/m/it/10 ; [] ; S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 n^
-^\ \OT1/cmr/m/n/10 +
- []
-
-** ATTENTION: \proof is deprecated (line 191). Use \IEEEproof instead.
-(./appendix_distributedproof.tex [5]
-Overfull \hbox (7.64125pt too wide) in paragraph at lines 39--39
-[] 
- []
+LaTeX Warning: Citation `MaxPressureStochastic' on page 6 undefined on input li
+ne 220.
 
 
-Overfull \hbox (11.23476pt too wide) in paragraph at lines 63--63
-[] 
- []
+LaTeX Warning: Reference `MaxPressureStochastic' on page 6 undefined on input l
+ine 268.
+
+
+LaTeX Warning: Citation `MaxPressureStochastic' on page 6 undefined on input li
+ne 312.
+
+
+LaTeX Warning: Reference `admissible_relaxed' on page 6 undefined on input line
+ 335.
+
+
+LaTeX Warning: Reference `alpha1_w' on page 6 undefined on input line 343.
+
+
+LaTeX Warning: Reference `alphabound' on page 6 undefined on input line 356.
 
 
 LaTeX Warning: Reference `stability_sufficient' on page 6 undefined on input li
-ne 64.
-
-
-Overfull \hbox (4.34067pt too wide) in paragraph at lines 95--95
-[] 
- []
+ne 421.
 
 [6]
-Overfull \hbox (11.57669pt too wide) in paragraph at lines 101--101
+Overfull \hbox (7.09822pt too wide) in paragraph at lines 470--470
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--132
-\OT1/ptm/m/n/10 Furthermore, we know that the term
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 127--132
-[]$ \OT1/ptm/m/n/10 is
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 127--132
-\OT1/ptm/m/n/10 Us-ing these re-la-tions and the ob-ser-va-tions that
- []
-
-
-Overfull \hbox (19.21695pt too wide) in paragraph at lines 136--136
-[] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 155--156
-
- []
-
-
-LaTeX Warning: Reference `alpha1_w' on page 7 undefined on input line 176.
-
-[7]
-
-LaTeX Warning: Reference `alphabound' on page 8 undefined on input line 196.
-
-) (./appendix_cycleproof.tex
-
-LaTeX Warning: Reference `stability_sufficient' on page 8 undefined on input li
-ne 5.
-
-
-Overfull \hbox (7.09822pt too wide) in paragraph at lines 62--62
-[] 
- []
-
-[8]
-Overfull \hbox (11.0824pt too wide) detected at line 90
+Overfull \hbox (11.0824pt too wide) detected at line 498
 \OT1/cmr/m/n/10 2 [][\OML/cmm/m/it/10 f[]r\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; 
 m\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 c\OT1/cmr/m/n/10 (\OML
 /cmm/m/it/10 l; m\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m
@@ -610,8 +576,12 @@ sy/m/n/10 ^^@\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 "^^Q\OMS/cmsy/m/n/10 j\OML/cmm/m
 /it/10 X\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 j
  []
 
+[7]
 
-Overfull \hbox (8.28154pt too wide) detected at line 173
+LaTeX Warning: Reference `deltabound2' on page 8 undefined on input line 567.
+
+
+Overfull \hbox (8.28154pt too wide) detected at line 582
 \OMS/cmsy/m/n/10 j [] []\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 f[]r\OT1/cmr/m/n/10 (
 \OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 c\
 OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l; m\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 S\OT1/cm
@@ -622,27 +592,19 @@ t/10 l; m\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 c\OT1/cmr/m/n/10 (\OML/cmm/m/it/1
  []
 
 
-Overfull \hbox (5.85675pt too wide) in paragraph at lines 178--178
+Overfull \hbox (5.85675pt too wide) in paragraph at lines 587--587
 [] 
  []
 
-
-Underfull \vbox (badness 1072) has occurred while \output is active []
-
- [9]
-Underfull \hbox (badness 10000) in paragraph at lines 213--215
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 622--624
 
  []
 
-)
 
-LaTeX Warning: Reference `stability_sufficient' on page 10 undefined on input l
-ine 221.
+LaTeX Warning: Reference `IF_BOUNDS' on page 9 undefined on input line 674.
 
-
-LaTeX Warning: Reference `IF_BOUNDS' on page 10 undefined on input line 254.
-
-) (./numerical.tex <./i15network.png, id=47, 712.6625pt x 324.21124pt>
+) (./numerical.tex <./i15network.png, id=50, 712.6625pt x 324.21124pt>
 File: ./i15network.png Graphic file (type png)
 
 <use ./i15network.png>
@@ -659,7 +621,7 @@ nverted-to.pdf ./VehicleCountsPlot.eps>
 (epstopdf)             \includegraphics on input line 22.
 Package epstopdf Info: Output file is already uptodate.
 
-<./VehicleCountsPlot-eps-converted-to.pdf, id=49, 665.48625pt x 331.2375pt>
+<./VehicleCountsPlot-eps-converted-to.pdf, id=52, 665.48625pt x 331.2375pt>
 File: ./VehicleCountsPlot-eps-converted-to.pdf Graphic file (type pdf)
 
 <use ./VehicleCountsPlot-eps-converted-to.pdf>
@@ -677,14 +639,13 @@ verted-to.pdf ./VehicleDelayPlot.eps>
 (epstopdf)             \includegraphics on input line 29.
 Package epstopdf Info: Output file is already uptodate.
 
-<./VehicleDelayPlot-eps-converted-to.pdf, id=50, 665.48625pt x 331.2375pt>
+<./VehicleDelayPlot-eps-converted-to.pdf, id=53, 665.48625pt x 331.2375pt>
 File: ./VehicleDelayPlot-eps-converted-to.pdf Graphic file (type pdf)
 
 <use ./VehicleDelayPlot-eps-converted-to.pdf>
 Package pdftex.def Info: ./VehicleDelayPlot-eps-converted-to.pdf used on input 
 line 29.
 (pdftex.def)             Requested size: 253.04987pt x 125.95242pt.
- [10 <./i15network.png>]
 Package epstopdf Info: Source file: <./VehicleStopsPlot.eps>
 (epstopdf)                    date: 2014-09-22 12:39:02
 (epstopdf)                    size: 19905 bytes
@@ -696,53 +657,58 @@ verted-to.pdf ./VehicleStopsPlot.eps>
 (epstopdf)             \includegraphics on input line 38.
 Package epstopdf Info: Output file is already uptodate.
 
-<./VehicleStopsPlot-eps-converted-to.pdf, id=55, 665.48625pt x 355.3275pt>
+<./VehicleStopsPlot-eps-converted-to.pdf, id=54, 665.48625pt x 355.3275pt>
 File: ./VehicleStopsPlot-eps-converted-to.pdf Graphic file (type pdf)
 
 <use ./VehicleStopsPlot-eps-converted-to.pdf>
 Package pdftex.def Info: ./VehicleStopsPlot-eps-converted-to.pdf used on input 
 line 38.
 (pdftex.def)             Requested size: 253.04987pt x 135.1126pt.
-)
+ [9 <./i15network.png> <./VehicleCountsPlot-eps-converted-to.pdf> <./VehicleDel
+ayPlot-eps-converted-to.pdf>])
 No file MParticle_resubmit.bbl.
-[11 <./VehicleCountsPlot-eps-converted-to.pdf> <./VehicleDelayPlot-eps-converte
-d-to.pdf> <./VehicleStopsPlot-eps-converted-to.pdf>] (./MParticle_resubmit.aux)
+[10
+
+ <./VehicleStopsPlot-eps-converted-to.pdf>] (./MParticle_resubmit.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
- 4792 strings out of 493117
- 71944 string characters out of 6135433
- 157032 words of memory out of 5000000
- 8144 multiletter control sequences out of 15000+600000
- 39065 words of font info for 74 fonts, out of 8000000 for 9000
+ 4803 strings out of 493117
+ 71969 string characters out of 6135433
+ 156924 words of memory out of 5000000
+ 8154 multiletter control sequences out of 15000+600000
+ 42674 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,14n,38p,1668b,224s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,14n,38p,1668b,251s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
-xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
-live/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texli
-ve/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive
-/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
-014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2014
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2014/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2014/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2014/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2014/tex
-mf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2014/
-texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist
-/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
-pe1/urw/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/ti
-mes/utmri8a.pfb>
-Output written on MParticle_resubmit.pdf (11 pages, 322592 bytes).
+xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local
+/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/
+texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/te
+xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texl
+ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
+e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/
+2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/20
+14/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2014/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2014/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2014/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2014/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2014/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2014/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2014/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2014/texmf-dist/fonts/t
+ype1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2014/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/u
+rw/times/utmbi8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/
+utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on MParticle_resubmit.pdf (10 pages, 375807 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
- 89 compressed objects within 1 object stream
+ 149 PDF objects out of 1000 (max. 8388607)
+ 105 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

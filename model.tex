@@ -15,7 +15,7 @@ We describe the dynamics of these queues as a discrete time dynamical model usin
 \item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
 \item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
 \end{itemize}
-Note that there is necessarily a linear relationship between the expected link flow vector $f$ and the boundary demand vector $d$: 
+Note that there is necessarily a linear relationship between the expected link flow $f$ and the boundary demand $d$: 
 \begin{equation} \label{fd_relation}
 f=dP
 \end{equation}
@@ -66,22 +66,24 @@ and if $l\in \linkset\backslash\entrylinks$,
 \subsection*{Demand Feasibility}
 We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \mathcal{L}_{e})}$ are \emph{feasible}\textemdash that is, the network is servicing a distribution of inflows for which it is possible to find a controller that allows \textit{in average} more departures than arrivals at each link. 
 
-For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t),...\}$, define the \emph{long-term control proportion} matrix $M_{\overline S}$ as follows: 
-\begin{equation}
-M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
-\end{equation}
-Also, define $conv(U)$ as the convex hull of the set of permissible control matrices $U$. The following properties are then shown in \cite{MaxPressureStochastic}: 
-\begin{Prop}
-$M \in conv(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
-\begin{equation}
+%For a specific sequence of control matrices $\overline{S} = \{S(1),S(2),...,S(t),...\}$, define the \emph{long-term control proportion} matrix $M_{\overline S}$ as follows: 
+%\begin{equation}
+%M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
+%\end{equation}
+%Also, d
+Define $conv(U)$ to be the convex hull of the set of permissible control matrices $U$. The following properties are then shown in \cite{MaxPressureStochastic}: 
+\begin{Prop} A matrix 
+$M$ is in $conv(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
+\begin{equation}\label{longterm_proportion}
 M(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}S(l,m)(t)
 \end{equation}
 \end{Prop}
+The element $M(l,m)$ in \eqref{longterm_proportion} can be interpreted as the long-term average proportion of intersection capacity given to movement $(l,m)$. Hence define $M_{\overline{S}}$ to be the long-term control proportion matrix constructed as in \eqref{longterm_proportion} using a specific control sequence $\overline{S} = \{S(1),S(2),...,S(t),...\}$. 
 %Mathematically, a demand is feasible if there exists a control sequence $\overline S'$ such that average service exceeds demand: for every movement $(l,m)$, 
 %\begin{equation} \label{feasible_demand}
 %c(l,m)M_{\overline S'}(l,m) > f_{l}r(l,m)
 %\end{equation}
-\begin{Prop}
+\begin{Prop} \label{feasible_property}
 A demand $d$ is \emph{feasible} if and only if  $\exists \; M_{\overline S} \in conv(U)$ and $ \varepsilon > 0$ such that
  \begin{equation}  \label{feasible_demand} 
  c(l,m)M_{\overline S}(l,m) > f_{l}r(l,m) + \varepsilon. 

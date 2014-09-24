@@ -1,4 +1,4 @@
-% !TEX root = ./MParticle.tex
+% !TEX root = ./MParticle_resubmit.tex
 \label{cycleproof}
 %In this appendix we show Theorem \ref{stabCycleMP}:\\
 %\underline{Proof of Theorem \ref{stabCycleMP}:} \\
@@ -20,14 +20,6 @@ B(p) &= p\left(2\varepsilon \eta  \sum_{l,m} + 2  (\sum_{l,m}[f_{l}r(l,m) + c(l,
 & \qquad \qquad \cdot \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\} \label{Cpdef}
 \end{align}
 \end{Lem}
-
-
-
-
-%\newline
-%%%%%%%
-%cycle MP proof
-%%%%%%%
 \underline{Proof of Lemma \ref{lemma_p}:} \\
 As above, we have:
 \begin{align} \label{immediate_to_bound} 
@@ -155,7 +147,8 @@ For that purpose we study the term
 &  \quad - \sum_{s \in Out(m)}[ x(m,s)(t + n) - x(m,s)(t + n - 1) ]r(m,s)  \Big\} \\ 
 &= \sum_{n=1}^{p}  w(l,m)( \delta(t + n - 1)) 
 \end{align}
-By \eqref{deltabound2} and the fact that $w(\cdot)$ is linear,  
+{\color{red}
+By \eqref{deltabound2} and the fact that $w(\cdot)$ is linear,  }
 \begin{align} \nonumber
 \vert w(l,m)(\delta&(t + n -1)) \vert \\  \label{wdelta}
 &< \sum_{u,v} \max\Big\{  \overline{C}(u,v), \sum_{k}\overline{C}(k,u), \overline{d}(u,v)\Big\}

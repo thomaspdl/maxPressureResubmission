@@ -1,4 +1,4 @@
-% !TEX root = ./MParticle.tex
+% !TEX root = ./MParticle_resubmit.tex
 \label{distributedproof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,103 +13,98 @@ conditioned on the past queue state:
 \nonumber &= 2X(t)^{T}\delta(t) + \vert \delta(t)  \vert^2 \\
 \nonumber &= 2\alpha(t) + \beta(t) 
 \end{align}
-with 
 \begin{equation} \label{alpha_beta_defs}
-\alpha(t)  = X(t)^{T}\delta(t)  \text{   \; and \;  }\beta(t) = \vert \delta (t) \vert^{2}
+\text{with \quad} \alpha(t)  = X(t)^{T}\delta(t)  \text{   \; and \;  }\beta(t) = \vert \delta (t) \vert^{2}
 \end{equation}
 We continue by addressing bounds on $\beta$ and $\alpha$ separately. 
-
 \subsection*{Bound on $\beta(t) = \vert \delta (t)\vert^{2}$}
-Define $\overline{C}$ as the maximum realized saturation flow and $\overline{d}$ as the maximum possible value of the demand vector. 
-If $l \in \entrylinks$ and $m \in Out(l)$,
-\begin{align} \nonumber
-\big| \delta(l,m)(t)  \big| &= \bigg| -[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)]  \\ \nonumber
-&\qquad \qquad + D(l,m)(t+1) \bigg| \\
-& \leq \max\left\{  \overline{C}(l,m) , \overline d (l,m) \right\} \label{deltabound1}
-\end{align}
-where $D(l,m)(t)  = D(l) (t) R(l,m)(t)$ with $D(l)(t)$ defined as the realized demand on link $l$ at time $t$. 
-This is because we know that both $C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)$ and $D(l,m)(t+1)$ are non-negative, so the absolute value of their difference must be less than either of the two quantities individually. 
-
-Similarly, if $l \in \linkset\backslash\entrylinks$ and $m \in Out(l)$:
-\begin{align} \nonumber  
-\big | \delta(l,&m) (t)  \big |  = \\ \label{deltabound}
- & \bigg\vert-\big[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)\big]  \\  \nonumber
- & + \sum_{k}\big[C(k,l)(t+1)S(k,l)(t) \wedge x(k,l)(t)\big] R(l,m)(t+1)\bigg\vert  \\
-& \leq \max\left\{  \overline{C}(l,m) , \sum_{k} \overline{C}(k,l) \right\} \label{deltabound2}
-\end{align}
-
+%Define $\overline{C}$ as the maximum realized saturation flow and $\overline{d}$ as the maximum possible value of the demand vector. 
+%If $l \in \entrylinks$ and $m \in Out(l)$,
+%\begin{align} \nonumber
+%\big| \delta(l,m)(t)  \big| &= \bigg| -[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)]  \\ \nonumber
+%&\qquad \qquad + D(l,m)(t+1) \bigg| \\
+%& \leq \max\left\{  \overline{C}(l,m) , \overline d (l,m) \right\} \label{deltabound1}
+%\end{align}
+%where $D(l,m)(t)  = D(l) (t) R(l,m)(t)$ with $D(l)(t)$ defined as the realized demand on link $l$ at time $t$. 
+%This is because we know that both $C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)$ and $D(l,m)(t+1)$ are non-negative, so the absolute value of their difference must be less than either of the two quantities individually. 
+%
+%Similarly, if $l \in \linkset\backslash\entrylinks$ and $m \in Out(l)$:
+%\begin{align} \nonumber  
+%\big | \delta(l,&m) (t)  \big |  = \\ \label{deltabound}
+% & \bigg\vert-\big[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)\big]  \\  \nonumber
+% & + \sum_{k}\big[C(k,l)(t+1)S(k,l)(t) \wedge x(k,l)(t)\big] R(l,m)(t+1)\bigg\vert  \\
+%& \leq \max\left\{  \overline{C}(l,m) , \sum_{k} \overline{C}(k,l) \right\} \label{deltabound2}
+%\end{align}
 If we define $B$ as the maximum of all of the quantities $\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}$ and $N$ as the number of queues in the network, we can derive a bound for $\beta$ which depends on only $B$ and $N$: 
 \begin{equation}\label{betabound}
 \beta(t)  = \big| \delta(t) \big|^2 \leq NB^2 
 \end{equation}
-
-Note that because these bounds hold for any $S(l,m)(t) \in [0,1]$, the bound on $\beta$ presented here can easily be extended to 
-any convex combination of control matrices; hence it is still valid in our modified controllers, as shown later in this article.
-%Such an extension is not as trivial with the $\alpha$ term. 
+The proof of this bound is exactly the same as in \cite{MaxPressureStochastic}, and will therefore not be repeated here. However, note that because these bounds hold for any $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our relaxed controllers {\color{red}(as will be shown later in this article)}.
 
 \subsection*{Bound on $\alpha (t) = X(t)^{T}\delta(t) $}
-The term $\alpha$ in \eqref{alpha_beta_defs} is explicitly defined in terms of queue state $X(t)$ as follows: 
-
-\begin{align} \nonumber 
- \alpha (t)  &=  X(t)^{T}\left[X(t+1) - X(t)\right] \\ \nonumber
- &=  \sum_{l \in \linkset \backslash \entrylinks ,m}\sum_{k}\left[ C(k,l)(t+1)S(k,l)(t)\wedge x(k,l)(t)\right]\\ \nonumber
-&\qquad \qquad  \quad \cdot R(l,m)(t+1)x(l,m)(t) \\ \nonumber
-&  \qquad \qquad -  \sum_{l \in \linkset,m}\left[ C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\right] \\ \nonumber
-&\qquad \qquad-\sum_{l \in \entrylinks ,m} d(l,m)(t+1)x(l,m)(t)\\ \nonumber
-&= \sum_{l \in \linkset,m}\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\ \nonumber 
-& \qquad \qquad \cdot \Big(-x(l,m)(t)+  \sum_{p}R(m,p)(t+1)x(m,p)(t)\Big) \\  
- & \qquad \qquad + \sum_{l \in \entrylinks,m} d(l,m)(t+1)x(l,m)(t)  
- \label{alpha_explicit}
-\end{align}
-Note that only the expectation of these terms appear in equation \eqref{stability_sufficient}, so we are interested in $\mathbb{E}\{\alpha(t) | X(t)\}$. We therefore make the following observation: because $R(m,p)(t+1)$ is independent of $C(l,m)(t+1)$ and $X(t)$, 
-\begin{align*}
-\nonumber \expectation{&\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\
-\nonumber & \qquad \quad  \;   \cdot R(m,p)(t+1)x(m,p)(t) \big| X(t)}  \\
-\nonumber & = \expectation{\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]  \big| X(t)} \\
-\nonumber & \qquad \quad  \; \cdot r(m,p)(t+1)x(m,p)(t)
-\end{align*}
-
-\vspace{0.5cm}
-
-Also, the expectation of demand $d(l,m)$ is equal to the measured demand $d_{l}$ on link $l$, times the relevant expected split ratio $r(l,m)$. 
-Hence the desired expectation of \eqref{alpha_explicit} can be expressed as
-\begin{align} 
-\nonumber \mathbb{E} & \{\alpha (t) | X(t)\}= \\
-\nonumber & \sum_{l \in \linkset,m} \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]\big| X(t)}\\
-\nonumber & \qquad \quad  \;   \cdot \Big(-x(l,m)(t) + \sum_{p}r(m,p)(t+1)x(m,p)(t)\Big) \\
- \nonumber &\qquad + \sum_{l \in \entrylinks,m} d_l r(l,m) x(l,m)(t)  \\
- \nonumber =& \sum_{l \in \entrylinks,m} d_l r(l,m) x(l,m)(t) \\
-\nonumber &- \sum_{l \in \linkset,m} \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)} \\  
-\label{Ea} &\qquad \qquad \cdot w(l,m)(t)
-\end{align}
-where $w(l,m)(t) = w(l,m)(X(t))$ is the weight of a link as defined in \eqref{linkweight}. 
-We also can include the following relation: 
-\begin{align*}
-\sum_{l \in \linkset,m} f_l &r(l,m) w(l,m)(t) \\ 
-& = \sum_{l \in \linkset,m} f_l r(l,m) \left[ x(l,m) - \sum_p r(m,p)x(m,p)(t) \right] \\
-& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t) \\
-&\qquad \qquad - \sum_m  \left[ \sum_{l\in\linkset} f_l r(l,m) \sum_p r(m,p)x(m,p)(t) \right] \\
-& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t)\\
-&\qquad \qquad  - \sum_{m\in \linkset \backslash \entrylinks, p}   f_m r(m,p)x(m,p)(t) \\ 
-& =  \sum_{l \in \entrylinks,m} d_l r(l,m)x(l,m)(t)
-\end{align*}
-So \eqref{Ea} is further simplified to: 
+%The term $\alpha$ in \eqref{alpha_beta_defs} is explicitly defined in terms of queue state $X(t)$ as follows: 
+%\begin{small}
+%\begin{align} \nonumber 
+% \alpha (t)  &=  X(t)^{T}\left[X(t+1) - X(t)\right] \\ \nonumber
+% &=  \sum_{l \in \linkset \backslash \entrylinks ,m}\sum_{k}\left[ C(k,l)(t+1)S(k,l)(t)\wedge x(k,l)(t)\right]\\ \nonumber
+%&\qquad \qquad  \qquad \qquad  \qquad  \cdot R(l,m)(t+1)x(l,m)(t) \\ \nonumber
+%&  \qquad \qquad -  \sum_{l \in \linkset,m}\left[ C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\right] \\ \nonumber
+%&\qquad \qquad-\sum_{l \in \entrylinks ,m} d(l,m)(t+1)x(l,m)(t)\\ \nonumber
+%&= \sum_{l \in \linkset,m}\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\ \nonumber 
+%& \qquad \qquad \cdot \Big(-x(l,m)(t)+  \sum_{p}R(m,p)(t+1)x(m,p)(t)\Big) \\  
+% & \qquad \qquad + \sum_{l \in \entrylinks,m} d(l,m)(t+1)x(l,m)(t)  
+% \label{alpha_explicit}
+%\end{align}
+%\end{small}
+%{\color{red}Note that only the expectation of these terms appear in equation \eqref{stability_sufficient}, so we are interested in $\mathbb{E}\{\alpha(t) | X(t)\}$. } We therefore make the following observation: because $R(m,p)(t+1)$ is independent of $C(l,m)(t+1)$ and $X(t)$, 
+%\begin{align*}
+%\nonumber \expectation{&\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\
+%\nonumber & \qquad \quad  \;   \cdot R(m,p)(t+1)x(m,p)(t) \big| X(t)}  \\
+%\nonumber & = \expectation{\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]  \big| X(t)} \\
+%\nonumber & \qquad \quad  \; \cdot r(m,p)(t+1)x(m,p)(t)
+%\end{align*}
+%Also, the expectation of demand $d(l,m)$ is equal to the measured demand $d_{l}$ on link $l$, times the relevant expected split ratio $r(l,m)$. 
+%Hence the desired expectation of \eqref{alpha_explicit} can be expressed as
+%%\begin{small}
+%\begin{align*} 
+%\nonumber \mathbb{E} & \{\alpha (t) | X(t)\}= \sum_{l \in \entrylinks,m} d_l r(l,m) x(l,m)(t)  \\
+%\nonumber & + \sum_{l \in \linkset,m} \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]\big| X(t)}\\
+%\nonumber & \qquad \qquad    \cdot \Big(-x(l,m)(t) + \sum_{p}r(m,p)(t+1)x(m,p)(t)\Big) 
+% \end{align*}
+% \begin{align}
+% \label{Ea} = \sum_{l \in \entrylinks,m} &d_l r(l,m) x(l,m)(t)  - \sum_{l \in \linkset,m} w(l,m)(t) \; \cdot  \\
+%\nonumber & \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)}
+%\end{align}
+%%\end{small} 
+%where $w(l,m)(t) = w(l,m)(X(t))$ is the weight of a link as defined in \eqref{linkweight}. 
+%We also can include the following relation: 
+%\begin{align*}
+%\sum_{l \in \linkset,m} f_l &r(l,m) w(l,m)(t) \\ 
+%& = \sum_{l \in \linkset,m} f_l r(l,m) \left[ x(l,m) - \sum_p r(m,p)x(m,p)(t) \right] \\
+%& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t) \\
+%&\qquad \quad \; - \sum_m  \left[ \sum_{l\in\linkset} f_l r(l,m) \sum_p r(m,p)x(m,p)(t) \right] \\
+%& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t)\\
+%&\qquad \qquad  - \sum_{m\in \linkset \backslash \entrylinks, p}   f_m r(m,p)x(m,p)(t) \\ 
+%& =  \sum_{l \in \entrylinks,m} d_l r(l,m)x(l,m)(t)
+%\end{align*}
+Again following \eqref{MaxPressureStochastic}, we define the following sub-terms:
+\begin{small}
 \begin{align} \label{expected_short}
- & \mathbb{E}\{\alpha (t) | X(t)\} = \sum_{l \in \linkset,m} \bigg[ f_l r(l,m)  \\
- \nonumber  & - \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)}  \bigg] w(l,m)(t)  \\  
+ & \mathbb{E}\{\alpha (t) | X(t)\} = \sum_{l \in \linkset,m} w(l,m)(t) \; \cdot   \\
+ \nonumber  & \bigg[ f_l r(l,m) - \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)}  \bigg]   \\  
  & \qquad \qquad = \alpha_1 (t) + \alpha_2 (t) \nonumber
 \end{align}
+\end{small}
 with 
+\begin{small}
 \begin{align} \label{a1_def}
 \alpha_1 (t) &=  \sum_{l \in \linkset,m} \left[ f_l r(l,m) - c(l,m)S(l,m)(t) \right] w(l,m)(t)   \\
-\nonumber \text{ and }&  \\ 
- \alpha_2 (t) & =  \sum_{l \in \linkset,m} \Big[ c(l,m)- \\ \nonumber
-\expectation{ \big[C & (l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \Big] S(l,m)(t)w(l,m)(t)  
+\nonumber \text{ and }&  \\  \nonumber
+ \alpha_2 (t) & =  \sum_{l \in \linkset,m}S(l,m)(t)w(l,m)(t)  \; \cdot   \\ 
+&\Big[ c(l,m)- \expectation{ \big[C  (l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \Big]  
 \end{align}
-
-
+\end{small}
 %These $\alpha_{\{1,2\}}$ are derived by first including in \eqref{expected_short} the $0$-valued term $[c(l,m)S(l,m)(t)w(l,m)(t) - c(l,m)S(l,m)(t)w(l,m)(t)]$, and then assuming that $S(l,m)(t) \in \{0,1\}$ (hence it can be brought outside of the internal min function in $\alpha_2$ without changing the ultimate result). %The later assumption does not hold in our modified controllers. 
-
 \begin{Lem} \label{alpha2bound}
 For all $l$, $m$, $t$, 
 \begin{equation} 
@@ -127,11 +122,13 @@ By Jensen's inequality,
 \end{align*}
  Furthermore, we know that the term 
 $ \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] $
-is non-negative, and only equal to $0$ when $x(l,m)(t)>\overline C (l,m)$. 
-Using these relations and the observations that $w(l,m)(t) \leq x(l,m)(t)$ and $S(l,m)(t)\in \{0,1\}$, the following must hold 
+is non- negative, and only equal to $0$ when $x(l,m)(t)>\overline C (l,m)$. 
+Using these relations and the observations that $w(l,m)(t) \leq x(l,m)(t)$ and $S(l,m)(t)\in [0,1]$, the following must hold 
 \begin{align*}
-\alpha_2 (t) & = \sum_{l \in \linkset,m} \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] \\ &\qquad \qquad \qquad \cdot S(l,m)(t)w(l,m)(t) \\
-& \leq \sum_{l \in \linkset,m} \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] \\ &\qquad \qquad \qquad \cdot S(l,m)(t)x(l,m)(t)   \\
+\alpha_2 (t) & =  \sum_{l \in \linkset,m}  S(l,m)(t)w(l,m)(t) \; \cdot  \\
+ & \qquad  \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] \\
+& \leq \sum_{l \in \linkset,m} S(l,m)(t)x(l,m)(t) \; \cdot \\ 
+& \qquad \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] \\
 & \leq \sum_{l \in \linkset,m} c(l,m) \overline{C}(l,m)
  \end{align*}
 
@@ -143,17 +140,7 @@ If the relaxed max pressure control policy $u^*$ is applied at time step $t$ and
 \alpha_1(t)  \leq -\varepsilon \eta \big| X(t)\big| 
 \end{equation}
 \end{Lem}
-
-
-
-
-
-
-
-
-
 \underline{Proof of Lemma \ref{alpha1bound}:} \\
-
 Consider the relaxed control matrix $S^{r*}$ specified by \eqref{distMP_LP}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
 \begin{align} \nonumber
 \sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
@@ -173,7 +160,7 @@ c(l,m)\Sigma(l,m) = \begin{cases}
         0 & \text{ otherwise}
     \end{cases}
 \end{equation}
-Hence following the same logic as in \eqref{alpha1_w}, 
+{\color{red} Hence following the same logic as in \eqref{alpha1_w}, }
 \begin{align} \nonumber
  \sum_{l,m}&\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
 &  < -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\
@@ -185,15 +172,8 @@ We assume that by our choice of $\sigma(l,m)$, $f_{l}r(l,m) > \varepsilon$ (omit
 &< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
 \end{align}
 
-
-
-
-
-
-
 \subsection*{Explicit bound on queues, immediate feedback MP}
-
-Combining \eqref{alphabound} and \eqref{betabound}, we obtain
+{\color{red} Combining \eqref{alphabound} and \eqref{betabound}, we obtain}
 \begin{align}
 \expectation{&|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} = \expectation{2\alpha(t) + \beta(t)} \nonumber \\
 &<  -2\varepsilon \eta \left| X(t ) \right| + 2 \sum_{l \in \linkset,m} [c(l,m)\overline{C} (l,m) ]+ NB^{2}
