@@ -1,7 +1,7 @@
-% !TEX root = ./MParticle.tex
+% !TEX root = ./MParticle_resubmit.tex
 \section{Numerical Implementation}
-A cycle-allocated max pressure controller was implemented on a network of 11 signalized intersections modeled in AIMSUN, a mico-simulation platform commonly used by practitioners. The present simulation was generated as part of the I-15 Integrated Corridor Management project, led by SANDAG in San Diego, CA. 
-The controller was set to run with a cycle length of 90 seconds and minimum time constraints of 10 seconds for each of the 3-4 available standard signal control stages.  
+A cycle-based max pressure controller was implemented on a network of 11 signalized intersections modeled in Aimsun, a micro-simulation platform commonly used by practitioners. The present simulation was generated as part of the I-15 Integrated Corridor Management project undertaken by the San Diego Association of Governments in San Diego, CA. 
+The cycle-based controller was set to run with a cycle length of 90 seconds and minimum time constraints of 10 seconds for each of the 3-4 available standard signal control stages.  
 \begin{figure}[h!]
 \vspace{-.2em}
 \centering
@@ -9,7 +9,8 @@ The controller was set to run with a cycle length of 90 seconds and minimum time
 \caption{The chosen network was calibrated to represent realistic demands and physical parameters observed on a stretch of Black Mountain Road near the I-15 freeway in San Diego, California.}
 \end{figure}
 
-The rest of this section provides a comparison of the performance of the max pressure algorithm with two other algorithms described below. While it makes sense to compare the numerical performance of these algorithms, it should be noted that the max pressure algorithm is the only algorithm, to the best of our knowledge, which provides theoretical guarantees: while the other algorithms seem to eprform well in simulation, they come with no proof or guarantees, as they are heuristics commonly used in the practioners field.
+The remainder of this section provides a comparison of the performance of the max pressure algorithm with two other control algorithms described below. While it makes sense to compare the numerical performance of these algorithms, it should be noted that while the other algorithms seem to perform well in simulation, they come with no proof or theoretical guarantees on operation.
+ 
 Various performance metrics were compared between model runs using the max pressure controller and two alternative controllers: a fixed-time control plan that divides each signal cycle equally between all available phases, and a ``fully-actuated'' control system such as that which is currently operational on the real road network represented by the model. The fully actuated-controller is essentially a flexible fixed-time plan in which green times can be shortened or extended in real time to promote continuity of flows in response to instantaneous link demand measurements. 
 %\begin{figure}[h!]
 %\centering

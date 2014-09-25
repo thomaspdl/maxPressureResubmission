@@ -15,11 +15,11 @@ We describe the dynamics of these queues as a discrete time dynamical model usin
 \item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
 \item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
 \end{itemize}
-Note that there is necessarily a linear relationship between the expected link flow $f$ and the boundary demand $d$: 
+Note that there is intuitively a linear relationship between the expected link flow $f$ and the boundary demand $d$: 
 \begin{equation} \label{fd_relation}
 f=dP
 \end{equation}
-where the matrix $P$ depends only on expected routing proportions within the network. {\color{red} A proof of this is given in \cite{MaxPressureStochastic}. ?? }
+where the (possibly non-unique) matrix $P$ depends on expected routing proportions within the network.
 
 
 
@@ -98,7 +98,7 @@ A network is \emph{stable} if the following quantity is bounded:
 \begin{equation} \label{stability_condition}
  \dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert_{1}}
  \end{equation}
-where $\vert X\vert_{1} = \sum_{l,m} \vert x(l,m)\vert$ and the network state evolves according to dynamics under state dynamics (\ref{entrydynamics}-\ref{internaldynamics}).
+where $\vert X\vert_{1} = \sum_{l,m} \vert x(l,m)\vert$ and the network state evolves according to dynamics under state dynamics \eqref{entrydynamics}-\eqref{internaldynamics}.
 
 %If the demand on a network is feasible according to \eqref{feasible_demand}, then it is possible to find a controller that stabilizes this network, as shown by Varaiya \cite{MaxPressureStochastic}.
 
