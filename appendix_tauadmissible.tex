@@ -1,0 +1,30 @@
+% !TEX root = ./MParticle_resubmit.tex
+\label{tauadmissible}
+%We first prove that this set of $\tau$-admissible flows (demands that can be accommodated using $\tau$-non updated sequences) is in fact the same set of flows that is admissible under typical updated control sequences, defined in equation \eqref{feasible_demand}. 
+\begin{Lem}
+All flows which satisfy Property \ref{feasible_property} given a controller $u$ updated at every model time step will also satisfy Property \ref{feasible_property} with a $\tau$-updated controller for some $\tau$. 
+\end{Lem}
+\begin{IEEEproof}
+Given the set admissible phases $U$, define:
+\begin{itemize}
+\item $\mathcal U$ is the set of control sequences with distinct elements $\{S(1), S(2) \ldots S(t) \ldots |  S(\cdot) \in U\} $,
+\item $\mathcal U_{\tau}$ is the set of $\tau$-updated control sequences $\{S(1), S(1), \ldots ,  S(\tau + 1),S(\tau + 1), \ldots , S(n\tau + 1), \\  S(n\tau + 1), \ldots |  S(\cdot) \in U\} $, 
+\end{itemize}
+Also define the following sets of \emph{long-term control proportion matrices}, which are similar to the formulation in \eqref{longterm_proportion}:
+\vspace{-.5em}
+\begin{small}
+\begin{align*} M_{\mathcal U} = \Big\{\lim \inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}  S&(t)  \Big| \{S(1), S(2), \ldots, S(t), \ldots \}\in \mathcal U \Big\} \end{align*}
+\vspace{-1em}
+\begin{align*} M_{\mathcal U_\tau} = \Big\{\lim&\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) \; \cdot \\ 
+& \Big|\{S(1), S(1), \ldots,  S(\tau+1),S(\tau+1), \ldots\}\in \mathcal U_{\tau} \Big\} \end{align*}
+\end{small}
+By Property \ref{feasible_property}, a demand $d$ is only feasible if there exists a control sequence $\overline {S}$ such that the corresponding long-term control proportion matrix $M_{\overline {S}}$ satisfies \eqref{feasible_demand}. Here we show $M_{\mathcal U} = M_{\mathcal{U_\tau}}$, and therefore any flows that are admissible given an unrestricted controller in $\mathcal U$ can also be accommodated using a $\tau$-updated controller in $\mathcal{U}_\tau$. 
+
+Obviously, $M_{\mathcal U_\tau}  \subset M_{\mathcal U}$. To show equality, we must also demonstrate that $M_{\mathcal U}  \subset M_{\mathcal {U}_\tau} $. Suppose there exists a control sequence $\hat{S} = \{ S(1), S(2), \ldots \} \in \mathcal{U}$. 
+By definition, \begin{small}
+\begin{align*}
+M_{\hat{S}} &= \lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) = \lim\inf_{T} \dfrac{1}{\tau T}\sum_{t=1}^{\tau T}  \tilde{S}(t) \; \\ 
+& \qquad \text{ where } \tilde{S} = \{S(1), S(1), \ldots, S(t), S(t), \ldots \} \\
+&= \lim\inf_{T} \dfrac{1}{ T}\sum_{t=1}^{T}  \tilde{S}(t) \in M_{U_\tau}  \quad \implies M_{\mathcal U}  \subset M_{\mathcal {U}_\tau}
+\end{align*}\end{small}
+\end{IEEEproof}
