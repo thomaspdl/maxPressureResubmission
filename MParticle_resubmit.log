@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  24 SEP 2014 17:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  24 SEP 2014 17:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -534,9 +534,6 @@ rticle_resubmit.bbl) [10
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  4806 strings out of 493117
@@ -569,7 +566,7 @@ ts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/u
 rw/times/utmbi8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/
 utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on MParticle_resubmit.pdf (10 pages, 384678 bytes).
+Output written on MParticle_resubmit.pdf (10 pages, 384960 bytes).
 PDF statistics:
  149 PDF objects out of 1000 (max. 8388607)
  105 compressed objects within 2 object streams
