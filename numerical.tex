@@ -9,7 +9,7 @@ The cycle-based controller was set to run with a cycle length of 90 seconds and 
 \caption{The chosen network was calibrated to represent realistic demands and physical parameters observed on a stretch of Black Mountain Road near the I-15 freeway in San Diego, California.}
 \end{figure}
 
-The remainder of this section provides a comparison of the performance of the max pressure algorithm with two other control algorithms described below. While it makes sense to compare the numerical performance of these algorithms, it should be noted that while the other algorithms seem to perform well in simulation, they come with no proof or theoretical guarantees on operation.
+The remainder of this section provides a comparison of the performance of the cycle-based max pressure algorithm with two other control algorithms described below. While it makes sense to compare the numerical performance of these algorithms, it should be noted that while the other algorithms seem to perform well in simulation, they come with no proof or theoretical guarantees on operation.
  
 Various performance metrics were compared between model runs using the max pressure controller and two alternative controllers: a fixed-time control plan that divides each signal cycle equally between all available phases, and a ``fully-actuated'' control system such as that which is currently operational on the real road network represented by the model. The fully actuated-controller is essentially a flexible fixed-time plan in which green times can be shortened or extended in real time to promote continuity of flows in response to instantaneous link demand measurements. 
 %\begin{figure}[h!]
@@ -22,7 +22,7 @@ The comparison of network vehicle counts in Figure \ref{fig_counts} suggests tha
 \centering
 \includegraphics[width=\columnwidth]{./VehicleCountsPlot.eps}
 \vspace{-2em}
-\caption{During congestion, cycle-allocated max pressure demonstrated service rates that are higher than the uniformly allocated fixed-time controller and consistent with a fully-actuated control system.  \label{fig_counts}}
+\caption{During congestion, cycle-based max pressure demonstrated service rates that are higher than the uniformly allocated fixed-time controller and consistent with a fully-actuated control system.  \label{fig_counts}}
 \end{figure}
 \begin{figure}[h!]
 \vspace{-.5em}
@@ -33,7 +33,7 @@ The comparison of network vehicle counts in Figure \ref{fig_counts} suggests tha
 \vspace{-1em}
 \end{figure}
 
-Differences between the fully-actuated and max pressure controllers were observed in measurements of delays and queue lengths: while the fully-actuated system appeared to produce less delay and shorter queues than max pressure during periods of relatively low network demand, max pressure was equally as effective or even more effective at reducing delays and queue lengths given larger demands. Figure \ref{fig_delay} shows how delays were reduced and had less variance over time when the max pressure controller was applied than with the fully-actuated controller. 
+Differences between the fully-actuated and cycle-based max pressure controllers were observed in measurements of delays and queue lengths: while the fully-actuated system appeared to produce less delay and shorter queues than max pressure during periods of relatively low network demand, max pressure was equally as effective or even more effective at reducing delays and queue lengths given larger demands. Figure \ref{fig_delay} shows how delays were reduced and had less variance over time when the max pressure controller was applied than with the fully-actuated controller. 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\columnwidth]{./VehicleStopsPlot.eps}
@@ -41,5 +41,5 @@ Differences between the fully-actuated and max pressure controllers were observe
 \caption{While max pressure caused more vehicle stop events, stoppage times were similar to those observed using the standard fully-actuated controller.\label{fig_stops}}
 \end{figure}
 
-Max pressure consistently induced more stops during a vehicle's journey across the network, which is expected given the design objectives of the fully-actuated system. As illustrated in Figure \ref{fig_stops}, total stoppage times were higher with max pressure given low demand, but improved over the existing controller during peak demand. 
+Cycle-based max pressure consistently induced more stops during a vehicle's journey across the network, which is expected given the design objectives of the fully-actuated system. As illustrated in Figure \ref{fig_stops}, total stoppage times were higher with max pressure given low demand, but improved over the existing controller during peak demand. 
 

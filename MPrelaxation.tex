@@ -225,7 +225,8 @@ B = \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \r
 \end{equation}
 and $N$ is the number of queues in the network. 
 \end{Lem}
-The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{MaxPressureStochastic}, and will therefore not be repeated here. However, note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our relaxed controllers {\color{red}(as will be shown later in this article, WHERE IS THIS SHOWN?)}.
+The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{MaxPressureStochastic}, and will therefore not be repeated here. However, note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our relaxed controllers.
+% {\color{red}(as will be shown later in this article, WHERE IS THIS SHOWN?)}.
 
 \subsection*{Bound on $\alpha (t) = X(t)^{T}\delta(t) $}
 %The term $\alpha$ in \eqref{alpha_beta_defs} is explicitly defined in terms of queue state $X(t)$ as follows: 
@@ -375,7 +376,7 @@ For ease of notation, now combine \eqref{betabound}, \eqref{a2eqn} and \eqref{a1
 \expectation{&|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} = \expectation{2\alpha(t) + \beta(t)} \nonumber \\
 &<  -2\varepsilon \eta \left| X(t ) \right| + 2 \sum_{l \in \linkset,m} [c(l,m)\overline{C} (l,m) ]+ NB^{2}
 \end{align}
-where $N$ is the number of links in the network and $B=\max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}$. 
+where $N$ and $B$ as in \eqref{betabound}. 
 
 %{\color{red} IS THIS NECESSARY?? 
 %For further simplicity, we combine all constant additive terms to define a new constant $K$:
@@ -442,7 +443,7 @@ where $N$ is the number of links in the network and $B=\max\left\{ \overline{C}(
 %&< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
 %\end{align}
 %
-Next we establish a bound on the queue state differences that can be observed within a single period between controller updates (a signal cycle). 
+Next we establish a bound on the queue state differences that can be observed within a single period between controller updates (i.e., a signal cycle). 
 \begin{Lem} \label{lemma_p} 
 %For a given cycle (i.e. when the controller is not updated) consisting of time steps $\{t, t+1, \ldots,  t+\tau\}$,  $\forall p \in [0, \tau - 1 ]$, 
 Assuming a cycle-based max pressure controller with an update period of length $\tau$ beginning at time $t$, the following bound on state perturbation holds for all \emph{steps since update} $p \in [0, \tau - 1]$:
@@ -485,7 +486,7 @@ As in Lemmas \ref{betalemma}-\ref{alpha1bound} above, begin by dividing the argu
  |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
  & = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)   
 \end{align}
-where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the controller applied at time step $t + p$, as defined in Section \ref{sec:immediatefeedback}:
+where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the controller applied at time step $t + p$:
 \begin{small}
 \begin{align}
 \beta (t+p)  &= \vert X(t + p + 1) - X(t + p) \vert^{2} \label{pbeta} \\
@@ -724,7 +725,7 @@ establishes that the cycle-based max pressure controller $u^{c*}(X(t))$ defined 
 
 \subsection*{Increased bound on queue length}
 As previously mentioned, the resulting bound on the length queues will be higher in the case of a cycle-based max pressure than in the standard frequent update setting. 
-Comparing \eqref{IF_BOUNDS} and \eqref{CYCLE_BOUNDS}, note that the constants are increased by a factor of
+{\color{red} Comparing \eqref{IF_BOUNDS} (WHERE IS THIS EQUATION?) and \eqref{CYCLE_BOUNDS}, note that the constants are increased by a factor of} 
 \begin{equation}
 \dfrac{1}{\varepsilon \tau} \sum_{p=1}^{\tau - 1} h(p) = \dfrac{1}{\varepsilon \tau}  \dfrac{\tau(\tau - 1)}{2}\cdot(\text{constant}) = \dfrac{\tau - 1}{2\varepsilon} \cdot(\text{constant})
 \end{equation}
