@@ -1,48 +1,6 @@
 % !TEX root = ./MParticle_resubmit.tex
 \section{A Cycle-based Max Pressure Controller} 
-
-
-
-
-%%%%%%%%%
-%relaxation of the controller
-%%%%%%%%%
- 
-
-%%%%%%%%%%%
-%Physically, one could consider one model time step to represent an entire light cycle, during which each signal phase will be sequentially actuated for some proportional amount of the period. (Although this would suggest a serial division of the time period between independent phases rather than the parallel implementation that is represented here mathematically.) 
-%%%%%%%%%%%
-
-
-The attractive qualities of max pressure for controlling vehicular traffic in urban road networks are presented in \cite{MaxPressureStochastic}. Yet as previously discussed, this original formulation of the controller is not practical for application on a signalized traffic network for three reasons:
-\begin{enumerate}[a)]
-\item it does not account for capacity reductions (lost time) due to excessive signal switching, 
-\item it cannot enforce coordination between subsequent intersections for purposes of maximizing flow continuity, and
-\item it does not provide guarantees that low-demand queues will be served within a finite time period. 
-\end{enumerate} 
-These limitations motivate our extension of the standard immediate feedback max pressure control algorithm. In the following section, we define a new \emph{cycle-based} max pressure controller which bounds the number of signal switches per fixed time period, provides capacity for standard signal coordination methods, and can easily guarantee a minimum service rate for all intersection phases. We then show that the application of this controller yields a similar stability guarantee to that shown by Varaiya for the standard controller given slightly weaker conditions on demand flow. The structure of this proof is as follows: 
-\begin{enumerate}[i.]
-\item First, we formalize a calculation of the \emph{lost time} incurred by signal switching actions. 
-\item Then we introduce a formulation of the cycle-based max pressure algorithm and briefly describe how it inherently rectifies issues a), b), and c) above. 
-\item Next, we introduce the concept of a \emph{$\tau$-updated} controller that can only be updated once every $\tau$ model time steps (or once per \emph{cycle}), and we show that this does not impact the feasibility of demands.  
-\item We finally show that queue stability holds with a cycle-based max pressure controller consisting of \emph{$\tau$-updated sequences of relaxed control matrices with minimum proportion constraints}. However, network stability requires \emph{slightly stricter conditions on demand flows} than assumed for stability using the original max pressure formulation.
-\end{enumerate}
-
-%
-%To fulfill the first condition, we allow the control to be a convex combination of the different possible control matrices.
-%For the second condition we consider a control that is not updated every time steps.
-%The final control that we choose is a combination of the two.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%distributed max pressure
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
-\subsection*{Lost time due to switching}
-For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. 
-
-In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{MaxPressureStochastic}. 
+For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{MaxPressureStochastic}. 
 
 In this work, we explicitly fix the number of signal switches that can occur in a fixed number of model time steps using the familiar concept of a \emph{signal cycle}. As typical with modern traffic signals, the \emph{cycle-based} max pressure controller rotates through all available signal movements within a fixed time period. We define \emph{cycle time} $\tau$ as a fixed number of model time steps and require that each controller phase $S$ must be green for some proportion $\lambda_S \geq \kappa_S$ of the $\tau$ steps, where the \emph{minimum green splits} $\kappa_S \in (0,1) \; \forall \; S \in U $ are parameters selected by a network manager to enforce equity in movement actuation.  
 
@@ -54,16 +12,11 @@ we pose the following convex optimization problem (extended from that in \cite{M
 & & \sum_{S\in U} \lambda_{S} \\
 & \text{subject to}
 & &  \lambda_{S} \geq \kappa_S \; \forall \; S\in U\\
-&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)\\
-%&&& \sum_{S} \lambda_{S} < 1
+&&& f_{l}r(l,m) < \sum_{S}\lambda_{S} c(l,m)S(l,m)
 \end{aligned}
 \end{equation}
 where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. If $\Lambda^* > 1$, the demand is not feasible under the set of control constraints $\{\kappa_S\}$ for any cycle length. If $\Lambda^* < 1$, then we can define a cycle length for which flow is admissible without link saturation. However, this cycle length $\tau$ must be significantly greater than $\Lambda^*$ to account for clearance times. If we define $L = \text{ceil}\big(\frac{R}{\Delta t} \cdot |U|\big)$ to be total \emph{lost time steps} per cycle, a feasible cycle length $\tau$ must satisfy the following condition: 
-\begin{equation} \tau > \frac{L}{1-\Lambda^*} \label{minTime} \end{equation} 
-
-
-\subsection*{Cycle-based controller formulation}
-
+\begin{equation} \label{taumin} \tau > \frac{L}{1-\Lambda^*} \end{equation} 
 %\begin{itemize}
 %\item 
 %%each phase $S\in  U$ is allocated at least some pre-defined minimum time $\kappa_S$: 
@@ -75,33 +28,30 @@ where $\kappa_S \in [0,1] \; \forall S\in U$, and $\sum_S \kappa_S <1$. If $\Lam
 %%all of the cycle time is allocated: 
 %$\sum_{S} \lambda_{S} = 1 - \frac{L}{\tau}$
 %\end{itemize}
-
-The cycle-based max pressure controller is a relaxed control matrix that is constructed as follows:
-\begin{equation} \label{uc*} 
-S^{r*}(t) = u^{c*} (X(t)) = \sum_{S \in U}\lambda_{S}^{*}S \text{, \quad where}
-\end{equation}  
-\begin{equation}  \label{distMP_LP}
+Given an appropriate cycle time $\tau$ which satisfies \eqref{taumin}, the cycle-based max pressure controller is a relaxed control matrix that is constructed as follows:
+\begin{gather} \label{uc*} 
+S^{r*}(t) = u^{c*} (X(t)) = \sum_{S \in U}\lambda_{S}^{*}S \text{, \quad where} \\
+  \label{distMP_LP}
 \{ \lambda^*_S \} = \;  \underset{\lambda_{1},...,\lambda_{\vert U\vert}}{ \arg \max} \sum_{S \in U}\lambda_{S}\gamma(S)(X(t))
-\end{equation}
+\end{gather}
 \begin{align*}
 %\Big(\sum_{l,m} w(l,m)(t)c(l,m) S(l,m)\Big)  \\
-\text{subject to} &\quad  \lambda_{S} \geq \kappa_s\\
-&\quad \sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{\tau} 
+\text{subject to} &\quad  \lambda_{S} \geq \kappa_s, \quad \sum_{S} \lambda_{S} \leq 1 - \tfrac{L}{\tau} 
 \end{align*}
 At time step $t=n\tau$ for integer $n$, the controller $u^{c*}$ uses feedback measurements $x(t)$ to select a relaxed control matrix $S^{r*}$ with components $\lambda_S^*$ that satisfy \eqref{distMP_LP}. This relaxed controller is then applied for the subsequent $\tau$ time steps $\{t, t+1, \ldots, t+\tau-1\}$ before the controller is updated. 
 
 Note that this controller is modeled such that all phases in an intersection are simultaneously actuated at some proportion of their maximum flow capacity. This is not possible in practice, as many phases will have to make conflicting use of the same intersection resources. Hence individual phases $S$ will have to be actuated in series, with each having a duration corresponding to a number of ``time units'' that are equal to cycle proportions $(\lambda_S \tau\cdot  \Delta t)$. Feedback measurements will then be a measure of ``average'' cycle queue length acquired over a set of measurements spanning the previous cycle.  
 
-Because cycle-based max pressure can be implemented such that phases occur in a predictable order, a controller running cycle-based max pressure can be synchronized with neighboring controllers to enforce a ``green-wave progression'' designed to minimize individual vehicle stoppage and delay for a prioritized movement. This is standard practice in existing traffic signal control design. 
+Because cycle-based max pressure can be implemented such that phases occur in a predictable order, a controller running cycle-based max pressure can be synchronized with neighboring controllers to enforce a ``green-wave progression'' as is standard practice in existing traffic signal control design. 
 
 \section{Stability of Cycle-Based Max Pressure}
-Cycle-based max pressure is fundamentally different from the standard max pressure formulation of Variaya \cite{MaxPressureStochastic} in two ways: first, it only updates the controller once every signal cycle (or $\tau$ model time steps); second, it applies a relaxed phase actuation (which is some convex combination of standard phase actuations). The following two sections will separately address how each of these modifications individually affects the stability of the resulting controlled networks. 
+Cycle-based max pressure is fundamentally different from the standard max pressure formulation of Variaya \cite{MaxPressureStochastic} in two ways: first, it only updates the controller once every signal cycle (or $\tau$ model time steps); second, it applies a relaxed phase actuation (which is some convex combination of standard phase actuations). This section will address how each of these modifications individually affects the stability of the resulting controlled networks. 
 
 \subsection*{Properties of a $\tau$-updated controller}
-Suppose that we are given the model dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics} and apply the standard max pressure controller \eqref{original_MP}. However, we further impose that the control actuation $S^*(t)$ can only be updated every $\tau$ model time steps. A resulting \emph{$\tau$-updated control sequence} is composed of a single (one-phase) control matrix repeated for $\tau$ time steps of the model dynamics. Hence for any integer $n$, the controller that maximizes the pressure at time step $n\tau + 1$ is continuously applied until time step $(n + 1)\tau$:
+Suppose that we impose that the control actuation $S^*(t)$ can only be updated every $\tau$ model time steps. A resulting \emph{$\tau$-updated control sequence} is composed of a single  control matrix repeated for $\tau$ time steps of the model dynamics:
 \begin{align}  \label{CYCLE_CONTROLLER}
-S(n\tau+1)  &= S(n\tau +2) = \ldots = S((n+1)\tau ) \\ \nonumber
-&= S^*(n\tau +1) =  \arg\max_{S\in U} \{\gamma(S)(X(n\tau +1 ))\}  
+S(n\tau+1)  &= S(n\tau +2) = \ldots = S((n+1)\tau ) %\\ \nonumber
+%&= S^*(n\tau +1) =  \arg\max_{S\in U} \{\gamma(S)(X(n\tau +1 ))\}  
 \end{align}
 %
 %\subsection*{Relaxed Max Pressure Controller}
@@ -117,50 +67,16 @@ S(n\tau+1)  &= S(n\tau +2) = \ldots = S((n+1)\tau ) \\ \nonumber
 %\nonumber    \lambda_{S} & \geq \kappa_s\\
 % \sum_{S} \lambda_{S} &  = S^{r*} = \displaystyle\sum_{S \in \mathcal{U}}\lambda_{S}^{*}S \leq 1 - \tfrac{L}{\tau}  \label{distMP_LP_2} 
 %\end{align}
-
-We first prove that the set of demands that can be accommodated using $\tau$-updated control sequences is the same set of feasible flows as in \eqref{feasible_demand}. 
-%We first prove that this set of $\tau$-admissible flows (demands that can be accommodated using $\tau$-non updated sequences) is in fact the same set of flows that is admissible under typical updated control sequences, defined in equation \eqref{feasible_demand}. 
-Given the set admissible phases $U$, define the following sets:
-\begin{itemize}
-\item $\mathcal U$ is the set of control sequences with distinct elements $\{S(1), S(2) \ldots S(t) \ldots |  S(\cdot) \in U\} $,
-\item $\mathcal U_{\tau}$ is the set of $\tau$-updated control sequences $\{S(1), S(1), \ldots ,  S(\tau + 1),S(\tau + 1), \ldots , S(n\tau + 1), \\  S(n\tau + 1), \ldots |  S(\cdot) \in U\} $, 
-\end{itemize}
-Also define the following sets of \emph{long-term control proportion matrices}, which are similar to the formulation in \eqref{longterm_proportion}:
-\vspace{-.5em}
-\begin{small}
-\begin{align*} M_{\mathcal U} = \Big\{\lim \inf_{T}\dfrac{1}{T}\sum_{t=1}^{T}  S&(t)  \Big| \{S(1), S(2), \ldots, S(t), \ldots \}\in \mathcal U \Big\} \end{align*}
-\vspace{-1em}
-\begin{align*} M_{\mathcal U_\tau} = \Big\{\lim&\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) \\ & \Big| \{S(1), S(1), \ldots,  S(\tau+1),S(\tau+1), \ldots\}\in \mathcal U_{\tau} \Big\} \end{align*}
-\end{small}
-\vspace{-1em}
-
-By Property \ref{feasible_property}, a demand $d$ is only feasible if there exists a control sequence $\overline {S}$ such that the corresponding long-term control proportion matrix $M_{\overline {S}}$ satisfies \eqref{feasible_demand}. Here we show $M_{\mathcal U} = M_{\mathcal{U_\tau}}$, and therefore any flows that are admissible given an unrestricted controller in $\mathcal U$ can also be accommodated using a $\tau$-updated controller in $\mathcal{U}_\tau$. 
-
-Obviously, $M_{\mathcal U_\tau}  \subset M_{\mathcal U}$. To show equality, we can also demonstrate that $M_{\mathcal U}  \subset M_{\mathcal {U}_\tau} $. Suppose there exists a control sequence $\hat{S} = \{ S(1), S(2), \ldots \} \in \mathcal{U}$. 
-By definition, 
-\vspace{-1em}
-\begin{align*}
-M_{\hat{S}} &= \lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t)\\&= \lim\inf_{T} \dfrac{1}{\tau T}\sum_{t=1}^{\tau T}  \tilde{S}(t) \; \\ 
-& \qquad \text{ where } \tilde{S} = \{S(1), S(1), \ldots, S(t), S(t), \ldots \} \\
-&= \lim\inf_{T} \dfrac{1}{ T}\sum_{t=1}^{T}  \tilde{S}(t) \\
-& \in M_{U_\tau}  \qquad \implies M_{\mathcal U}  \subset M_{\mathcal {U}_\tau}
-\end{align*}
-
-This result implies that a $\tau$-updated control sequence can accommodate the same set of flows as a control sequence updated at every time step. The equivalence becomes intuitive when one considers that our definition of feasible flows considers only the long-term (more precisely, infinite-term) average of both demand and service rates, and any infinite control sequence with limited admissible phases can be re-arranged to form a $\tau$-updated sequence for some $\tau$. 
+In Appendix \ref{tauadmissible}, we prove that the set of demands that can be accommodated using $\tau$-updated control sequences is the same set of feasible flows as in \eqref{feasible_demand}. This equivalence becomes intuitive when one considers that our definition of feasible flows considers only the long-term (more precisely, infinite-term) average of both demand and service rates, and any infinite control sequence with limited admissible phases can be re-arranged to form a $\tau$-updated sequence for some $\tau$. 
 % note that a $\tau$ control matrix in $\tilde S$ is simply the average of the corresponding $\tau$ matrices in $\overline S$, such that $M_{\tilde S} = M_{\overline S}$. Hence,
 %\begin{align}
 %f_{l} r(l,m) < c(l,m)M_{\overline{S} }(l,m) \implies \\ f_{l} r(l,m) < c(l,m)M_{\tilde{S} }(l,m). \nonumber
 %\end{align}
-
 As we will show in the following sections, the only additional impact of occasional updating will be an increased bound on queue lengths relative to the standard max pressure setting.
 %, which immediately seems counterintuitive. However, note that our current model framework assumes infinite link buffer capacities. With the $\tau$-non updated controller, instantaneous link queues will be higher but the same \emph{long-term average} service rates can be achieved -- and thus by our definition, this flow can be equally accommodated by either controller type. 
 %We have shown that the same flows are ``admissible'' when control sequences updated only every $\tau$ time steps as when they are updated every time step. 
 %During a single time step, the average flow arriving at queue $(l,m)$ is $f_{l}r(l,m)$ and the maximum number of vehicles capable of leaving is $c(l,m) M(l,m)$. Similarly, the average flow arriving between time steps $t$ and $t+\tau$ is $\tau f_{l} r(l,m) $, and the number of vehicles capable of leaving is $\tau c(l,m) M(l,m)$. So if a flow is admissible using an updated control sequence $\overline S$%with average service $M_{\overline S}$
 %, it can be similarly accommodated with a non-updated sequence $\tilde S$, where each consecutive set of
-
-
-
-
 \subsection*{Stability of cycle-based max pressure}
 Here we examine the stability of the cycle-based max pressure controller using $\tau$-updated sequences of relaxed controllers with fixed minimum phase proportion constraints, as formulated in \eqref{uc*}-\eqref{distMP_LP}.
 
@@ -172,7 +88,7 @@ Also define a set of \emph{undersaturated} admissible demands $D_{\kappa}$ with 
 \begin{equation}\label{admissible_relaxed}
  f_{l}r(l,m) < c(l,m)S^r(l,m) 
  \end{equation} 
-As in \eqref{sum_lambda}, this condition ensures that a demand $d\in D_{\kappa}$ can in average be served \emph{within a single cycle} by a relaxed control matrix that maintains a specified minimum time allocation for each phase. 
+This condition (also seen in \eqref{sum_lambda}) ensures that a demand $d\in D_{\kappa}$ can in average be served \emph{within a single cycle} by a relaxed control matrix that maintains a specified minimum time allocation for each phase. 
 %\begin{align} \nonumber
 %d \in D_{\kappa} \; & \text{iff} \; \exists \; S^r \in conv_{\kappa} \; \\ & \text{such that} \; f_{l}r(l,m) < c(l,m)S^r(l,m)
 %\label{admissible_relaxed}
@@ -182,111 +98,38 @@ The cycle-based max pressure controller defined in \eqref{uc*}-\eqref{distMP_LP}
 %using $\tau$-updated sequences of relaxed controllers 
 stabilizes a network whenever the demand is within a set of feasible undersaturated demands $D^{\kappa}$.
 \end{Thm}
-
-The remainder of this section proves Theorem \ref{stabRelaxMP}. Begin by considering the expectation of the following function of queue state with perturbation 
-\begin{equation} \label{delta_def}
-\delta(t) = X(t+1) - X(t)
-\end{equation}  
-conditioned on the past queue state:
+The remainder of this section proves Theorem \ref{stabRelaxMP} by finding a bound on \eqref{stability_condition} given a cycle-based max pressure controller. Begin by considering the expectation of the following function of queue state perturbation conditioned on the past queue state:
 \begin{align}
-\vert X(t+1) \vert^2  - \vert X(t)\vert^2 &= \vert X(t) + \delta (t) \vert^2 - \vert X(t)\vert^2 \\
-\nonumber &= 2X(t)^{T}\delta(t) + \vert \delta(t)  \vert^2 \\
-\nonumber &= 2\alpha(t) + \beta(t) 
+\vert X(t+1) \vert^2 & - \vert X(t)\vert^2 = \vert X(t) + \delta (t) \vert^2 - \vert X(t)\vert^2 \\
+\nonumber &= 2X(t)^{T}\delta(t) + \vert \delta(t)  \vert^2 = 2\alpha(t) + \beta(t) 
 \end{align}
-\begin{equation} \label{alpha_beta_defs}
-\text{with \quad} \alpha(t)  = X(t)^{T}\delta(t)  \text{   \; and \;  }\beta(t) = \vert \delta (t) \vert^{2}
-\end{equation}
-We continue by addressing bounds on $\beta$ and $\alpha$ separately. 
-\subsection*{Bound on $\beta(t) = \vert \delta (t)\vert^{2}$}
-%Define $\overline{C}$ as the maximum realized saturation flow and $\overline{d}$ as the maximum possible value of the demand vector. 
-%If $l \in \entrylinks$ and $m \in Out(l)$,
-%\begin{align} \nonumber
-%\big| \delta(l,m)(t)  \big| &= \bigg| -[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)]  \\ \nonumber
-%&\qquad \qquad + D(l,m)(t+1) \bigg| \\
-%& \leq \max\left\{  \overline{C}(l,m) , \overline d (l,m) \right\} \label{deltabound1}
-%\end{align}
-%where $D(l,m)(t)  = D(l) (t) R(l,m)(t)$ with $D(l)(t)$ defined as the realized demand on link $l$ at time $t$. 
-%This is because we know that both $C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)$ and $D(l,m)(t+1)$ are non-negative, so the absolute value of their difference must be less than either of the two quantities individually. 
-%
-%Similarly, if $l \in \linkset\backslash\entrylinks$ and $m \in Out(l)$:
-%\begin{align} \nonumber  
-%\big | \delta(l,&m) (t)  \big |  = \\ \label{deltabound}
-% & \bigg\vert-\big[C(l,m)(t+1)S(l,m)(t) \wedge x(l,m)(t)\big]  \\  \nonumber
-% & + \sum_{k}\big[C(k,l)(t+1)S(k,l)(t) \wedge x(k,l)(t)\big] R(l,m)(t+1)\bigg\vert  \\
-%& \leq \max\left\{  \overline{C}(l,m) , \sum_{k} \overline{C}(k,l) \right\} \label{deltabound2}
-%\end{align}
+\begin{gather}  \label{delta_def} 
+\text{with \quad } \delta(t) = X(t+1) - X(t), \\ \;
+\alpha(t)  = X(t)^{T}\delta(t),\; \text{ and } \;\beta(t) = \vert \delta (t) \vert^{2}\label{alpha_beta_defs}
+\end{gather}
+We continue by addressing bounds on $\beta$ and $\alpha$ separately. First we consider $\beta(t) = \vert \delta (t)\vert^{2}$.
+
+%\subsection*{Bound on $\beta(t) = \vert \delta (t)\vert^{2}$}
 \begin{Lem} \label{betalemma}
-\begin{equation}\label{betabound}
-\beta(t)  = \big| \delta(t) \big|^2 \leq NB^2 
-\end{equation}
-where 
-\begin{equation}
-B = \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}
-\end{equation}
-and $N$ is the number of queues in the network. 
+\begin{gather}\label{betabound}
+\beta(t)  = \big| \delta(t) \big|^2 \leq NB^2 \\
+\text{where } \qquad \qquad B = \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline{d}(l,m) \right\}
+\end{gather}
+and $N$ is the number of queues in the network, $\overline{C} (l,m)$ is the maximum value of the random service rate $C(l,m)(t)$, and $ \overline{d}(l,m)$ is the maximum value of random demand $d(l,m)$.
 \end{Lem}
-The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{MaxPressureStochastic}, and will therefore not be repeated here. However, note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our relaxed controllers.
+The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{MaxPressureStochastic}, and will therefore not be repeated here. Note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our extension.
 % {\color{red}(as will be shown later in this article, WHERE IS THIS SHOWN?)}.
 
-\subsection*{Bound on $\alpha (t) = X(t)^{T}\delta(t) $}
-%The term $\alpha$ in \eqref{alpha_beta_defs} is explicitly defined in terms of queue state $X(t)$ as follows: 
-%\begin{small}
-%\begin{align} \nonumber 
-% \alpha (t)  &=  X(t)^{T}\left[X(t+1) - X(t)\right] \\ \nonumber
-% &=  \sum_{l \in \linkset \backslash \entrylinks ,m}\sum_{k}\left[ C(k,l)(t+1)S(k,l)(t)\wedge x(k,l)(t)\right]\\ \nonumber
-%&\qquad \qquad  \qquad \qquad  \qquad  \cdot R(l,m)(t+1)x(l,m)(t) \\ \nonumber
-%&  \qquad \qquad -  \sum_{l \in \linkset,m}\left[ C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\right] \\ \nonumber
-%&\qquad \qquad-\sum_{l \in \entrylinks ,m} d(l,m)(t+1)x(l,m)(t)\\ \nonumber
-%&= \sum_{l \in \linkset,m}\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\ \nonumber 
-%& \qquad \qquad \cdot \Big(-x(l,m)(t)+  \sum_{p}R(m,p)(t+1)x(m,p)(t)\Big) \\  
-% & \qquad \qquad + \sum_{l \in \entrylinks,m} d(l,m)(t+1)x(l,m)(t)  
-% \label{alpha_explicit}
-%\end{align}
-%\end{small}
-%{\color{red}Note that only the expectation of these terms appear in equation \eqref{stability_sufficient}, so we are interested in $\mathbb{E}\{\alpha(t) | X(t)\}$. } We therefore make the following observation: because $R(m,p)(t+1)$ is independent of $C(l,m)(t+1)$ and $X(t)$, 
-%\begin{align*}
-%\nonumber \expectation{&\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \\
-%\nonumber & \qquad \quad  \;   \cdot R(m,p)(t+1)x(m,p)(t) \big| X(t)}  \\
-%\nonumber & = \expectation{\big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]  \big| X(t)} \\
-%\nonumber & \qquad \quad  \; \cdot r(m,p)(t+1)x(m,p)(t)
-%\end{align*}
-%Also, the expectation of demand $d(l,m)$ is equal to the measured demand $d_{l}$ on link $l$, times the relevant expected split ratio $r(l,m)$. 
-%Hence the desired expectation of \eqref{alpha_explicit} can be expressed as
-%%\begin{small}
-%\begin{align*} 
-%\nonumber \mathbb{E} & \{\alpha (t) | X(t)\}= \sum_{l \in \entrylinks,m} d_l r(l,m) x(l,m)(t)  \\
-%\nonumber & + \sum_{l \in \linkset,m} \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big]\big| X(t)}\\
-%\nonumber & \qquad \qquad    \cdot \Big(-x(l,m)(t) + \sum_{p}r(m,p)(t+1)x(m,p)(t)\Big) 
-% \end{align*}
-% \begin{align}
-% \label{Ea} = \sum_{l \in \entrylinks,m} &d_l r(l,m) x(l,m)(t)  - \sum_{l \in \linkset,m} w(l,m)(t) \; \cdot  \\
-%\nonumber & \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)}
-%\end{align}
-%%\end{small} 
-%where $w(l,m)(t) = w(l,m)(X(t))$ is the weight of a link as defined in \eqref{linkweight}. 
-%We also can include the following relation: 
-%\begin{align*}
-%\sum_{l \in \linkset,m} f_l &r(l,m) w(l,m)(t) \\ 
-%& = \sum_{l \in \linkset,m} f_l r(l,m) \left[ x(l,m) - \sum_p r(m,p)x(m,p)(t) \right] \\
-%& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t) \\
-%&\qquad \quad \; - \sum_m  \left[ \sum_{l\in\linkset} f_l r(l,m) \sum_p r(m,p)x(m,p)(t) \right] \\
-%& = \sum_{l \in \linkset,m} f_l r(l,m)x(l,m)(t)\\
-%&\qquad \qquad  - \sum_{m\in \linkset \backslash \entrylinks, p}   f_m r(m,p)x(m,p)(t) \\ 
-%& =  \sum_{l \in \entrylinks,m} d_l r(l,m)x(l,m)(t)
-%\end{align*}
-Again following \cite{MaxPressureStochastic}, we define additional sub-terms:
+%\subsection*{Bound on $\alpha (t) = X(t)^{T}\delta(t) $}
+Now we examine a bound on $\alpha (t) = X(t)^{T}\delta(t) $. Again following \cite{MaxPressureStochastic}, we define additional sub-terms:
 \begin{small}
 \begin{align} \label{expected_short}
  & \mathbb{E}\{\alpha (t) | X(t)\} = \sum_{l \in \linkset,m} w(l,m)(t) \; \cdot   \\
  \nonumber  & \bigg[ f_l r(l,m) - \expectation{ \big[C(l,m)(t+1)S(l,m)(t)\wedge x(l,m)(t)\big] \big| X(t)}  \bigg]   \\  
- & \qquad \qquad = \alpha_1 (t) + \alpha_2 (t) \nonumber
+ & \qquad \qquad = \alpha_1 (t) + \alpha_2 (t) \text{, \quad with} \nonumber
 \end{align}
-\end{small}
-with 
-\begin{small}
 \begin{align} \label{a1_def}
-\alpha_1 (t) &=  \sum_{l \in \linkset,m} \left[ f_l r(l,m) - c(l,m)S(l,m)(t) \right] w(l,m)(t)   \\
-\nonumber \text{ and }&  \\  \nonumber
+\alpha_1 (t) &=  \sum_{l \in \linkset,m} \left[ f_l r(l,m) - c(l,m)S(l,m)(t) \right] w(l,m)(t) \\
  \alpha_2 (t) & =  \sum_{l \in \linkset,m}S(l,m)(t)w(l,m)(t)  \; \cdot   \\ 
 &\Big[ c(l,m)- \expectation{ \big[C  (l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \Big]  
 \end{align}
@@ -297,7 +140,6 @@ For all $l$, $m$, $t$,
 \begin{equation} \label{a2eqn}
 \alpha_2 (t) \leq \sum_{l \in \linkset,m} c(l,m)\overline{C} (l,m)
 \end{equation}
-where $\overline{C} (l,m)$ is the maximum value of the random service rate $C(l,m)(t)$. 
 \end{Lem}
 %\underline{Proof of Lemma \ref{alpha2bound}:} \\
 %By Jensen's inequality, 
@@ -320,15 +162,14 @@ where $\overline{C} (l,m)$ is the maximum value of the random service rate $C(l,
 % \end{align*}
 The proof of Lemma \ref{alpha2bound} again directly follows that presented in \cite{MaxPressureStochastic}; an extension from a binary controller $S\in \{0,1\}$ to a relaxed controller $S^r\in [0,1]$ is trivial. 
 
-In fact, the extension made in the construction of a cycle-based max pressure controller only affect the $\alpha_1 (t)$ term. To demonstrate a bound on $\alpha_1(t)$ given application of a cycle-based max pressure controller $u^{c*}$, we first examine the stability of a standard max pressure controller using relaxed controllers with minimum phase proportion constraints and a stricter limitation on network demands. We will then demonstrate that a $\tau$-updated cycle-based max pressure controller also stabilizes the network, but results in a larger bound on queue lengths. 
+In fact, the extension made in the construction of a cycle-based max pressure controller only affect the $\alpha_1 (t)$ term. To demonstrate a bound on $\alpha_1(t)$ given application of a cycle-based max pressure controller $u^{c*}$, we first examine the stability of a standard max pressure controller using relaxed controllers with minimum phase proportion constraints and a stricter limitation on network demands. We will then show that a $\tau$-updated cycle-based max pressure controller also stabilizes a network, but results in a larger bound on queue lengths. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% %%%%%%%%%%%%%     BEGIN REAL PROOF HERE    %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % 1) relaxed. 
-First, define an intermediate ``relaxed max pressure'' policy in which relaxed controllers are applied at the standard max pressure update rate (once per time step of the model dynamics). 
-This situation was suggested in \cite{MaxPressureStochastic} to simulate enforcing minimum phase proportions in a cycle formulation of max pressure. However, it is not practical to model ``cycle'' updates at the model time step rate necessary to accurately capture queueing and discharging behaviors on a realistic traffic network -- hence the introduction of our $\tau$-updated formulation. Nonetheless, we use this intermediate formulation to demonstrate that queue stability is maintained upon use of a relaxed controller. 
+Define an intermediate ``relaxed max pressure'' policy in which relaxed controllers are applied at the standard max pressure update rate (once per time step of the model dynamics). 
+This situation was suggested in \cite{MaxPressureStochastic} to simulate enforcing minimum phase proportions in a cycle formulation of max pressure. Yet it still unrealistically models ``cycle'' updates at the same rate as the model of queueing and discharging behaviors on a realistic traffic network (hence the introduction of the $\tau$-updated formulation in this work). Nonetheless, we use this intermediate formulation to demonstrate that queue stability is still achieved upon use of a relaxed controller. 
 
  \begin{Lem} \label{alpha1bound}
 If a ``relaxed'' max pressure control policy $S^{r*}$ is updated and applied at each time step $t$ and the demand $d$ is in the set of feasible undersaturated demands $D^\kappa$, then there exists an $\varepsilon>0$, $\eta>0$ such that 
@@ -336,15 +177,14 @@ If a ``relaxed'' max pressure control policy $S^{r*}$ is updated and applied at 
 \alpha_1(t)  \leq -\varepsilon \eta \big| X(t)\big| 
 \end{equation}
 \end{Lem}
-%\underline{Proof of Lemma \ref{alpha1bound}:} \\
-\begin{proof}
-Consider the relaxed max pressure control matrix $S^{r*}$ defined in \eqref{uc*}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
+\begin{IEEEproof}
+Consider the relaxed max pressure control matrix $S^{r*}$ defined in \eqref{uc*}. By construction, $ \forall \; S^r \in conv_{\kappa}$
 \begin{align} \nonumber
 \sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
 &\leq \sum_{l,m}c(l,m)w(l,m)(X(t))S^{r*}(l,m) 
 \end{align}
 with equality only if $S^r = S^{r*}$. 
-Therefore $\forall \; (S^r  \in conv_{\kappa}) \neq S^{r*}$,
+Thus $\forall \; (S^r  \in conv_{\kappa}) \neq S^{r*}$,
 \begin{align} \nonumber
  \sum_{l,m}&\big[f_{l}r(l,m) - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
 &<   \sum_{l,m}\big[f_{l}r(l,m) - c(l,m)S^r(l,m)\big]w(l,m)(X(t))
@@ -365,85 +205,17 @@ Therefore,
 &\qquad \qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
 \end{align}
 We assume that by our choice of $\hat{S}$, $f_{l}r(l,m) > \varepsilon$. Hence
-\begin{equation} 
-\alpha_1(t) < -\varepsilon \sum_{l,m}w(l,m)(t)
-\end{equation}
-Given the linearity of \eqref{linkweight} and the known properties of $r(l,m)(t)$, it can be show that $\sum_{l,m}w(l,m)(t) \geq \eta |X(t)|$ for some small $\eta >0$. This completes the derivation of \eqref{a1eqn}.
-\end{proof}
-
+%\begin{equation} 
+$\alpha_1(t) < -\varepsilon \sum_{l,m}w(l,m)(t)$. 
+%\end{equation}
+Given the linearity of \eqref{linkweight} and the known properties of $r(l,m)(t)$, it can be show that $\sum_{l,m}w(l,m)(t) \geq \eta |X(t)|$ for some $\eta >0$. This completes the derivation of \eqref{a1eqn}.
+\end{IEEEproof}
 For ease of notation, now combine \eqref{betabound}, \eqref{a2eqn} and \eqref{a1eqn} to obtain the following expression for the bound on the perturbation of queue state given demand which satisfies \eqref{admissible_relaxed} and the application of ``relaxed max pressure'' controller:
 \begin{align}
 \expectation{&|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} = \expectation{2\alpha(t) + \beta(t)} \nonumber \\
 &<  -2\varepsilon \eta \left| X(t ) \right| + 2 \sum_{l \in \linkset,m} [c(l,m)\overline{C} (l,m) ]+ NB^{2}
 \end{align}
-where $N$ and $B$ as in \eqref{betabound}. 
-
-%{\color{red} IS THIS NECESSARY?? 
-%For further simplicity, we combine all constant additive terms to define a new constant $K$:
-%\begin{align}\label{constCalc}
-%K = 2 \displaystyle\sum_{l,m} & c(l,m) \overline{C}(l,m) \\
-%\nonumber & + N \displaystyle\sum_{l,m} \max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}^2
-%\end{align}
-%So, when the control is updated at time $t$:
-%\begin{equation}\label{stabBasic}
-%\expectation{|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} < -2\varepsilon \eta \left| X(t ) \right| + K
-%\end{equation}
-%
-%}
-
-
-
-
-%Therefore we have an inequality of the form
-%\begin{equation}\label{stabBasic}
-%\expectation{|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} < -\varepsilon \eta \left| X(t ) \right| + K
-%\end{equation}
-%where 
-%\begin{equation}\label{constCalc}
-%K = 2\displaystyle\sum_{l,m} c(l,m) \overline{C}(l,m) + \displaystyle\sum_{l,m} \max[\overline{C}(l,m),\sum_{k}\overline{C}(k,l)]^2
-%\end{equation}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-%Consider the relaxed control matrix $S^{r*}$ specified by \eqref{distMP_LP}. By construction, it must be true that $ \forall S^r \in conv_{\kappa}$, 
-%\begin{align} \nonumber
-%\sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
-%&\leq \sum_{l,m}c(l,m)w(l,m)(X(t))S^{r*}(l,m) 
-%\end{align}
-%with equality only if $S^r = S^{r*}$. 
-%Therefore $\forall S^r \neq S^{r*}$,
-%\begin{align} \nonumber
-% \sum_{l,m}&\big[f_{l}r(l,m) - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
-%&<   \sum_{l,m}\big[f_{l}r(l,m) - c(l,m)S^r(l,m)\big]w(l,m)(X(t))
-%\end{align}
-%If the demand flow is admissible according to \eqref{admissible_relaxed}, then 
-%$\exists \Sigma \in conv_{\kappa}$ such that 
-%\begin{equation} \nonumber
-%c(l,m)\Sigma(l,m) = \begin{cases}
-%        f_{l}r(l,m) + \varepsilon & \text{ if } w(l,m)(X(t)) > 0 \\
-%        0 & \text{ otherwise}
-%    \end{cases}
-%\end{equation}
-%Hence following the same logic as in \eqref{alpha1_w}, 
-%\begin{align} \nonumber
-% \sum_{l,m}&\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
-%&  < -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\
-%&\qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
-%\end{align}
-%We assume that by our choice of $\sigma(l,m)$, $f_{l}r(l,m) > \varepsilon$ (omitting the cases where $r(l,m) = 0$). Therefore:
-%\begin{align}\nonumber
-%\sum_{l,m}\big[ f_{l}r(l,m) & - c(l,m)S^{r*}(l,m)(t)\big]w(l,m)(X(t)) \\
-%&< -\varepsilon \displaystyle\sum_{l,m} x(l,m)(t)
-%\end{align}
-%
-Next we establish a bound on the queue state differences that can be observed within a single period between controller updates (i.e., a signal cycle). 
+where $N$ and $B$ are as in \eqref{betabound}. Next we establish a bound on queue state growth in a single time step between controller updates. 
 \begin{Lem} \label{lemma_p} 
 %For a given cycle (i.e. when the controller is not updated) consisting of time steps $\{t, t+1, \ldots,  t+\tau\}$,  $\forall p \in [0, \tau - 1 ]$, 
 Assuming a cycle-based max pressure controller with an update period of length $\tau$ beginning at time $t$, the following bound on state perturbation holds for all \emph{steps since update} $p \in [0, \tau - 1]$:
@@ -453,14 +225,10 @@ Assuming a cycle-based max pressure controller with an update period of length $
 & = 2 \sum_{l,m} c(l,m)\overline{C}(l,m) + N B^2 -2\varepsilon \eta \vert X(t + p )\vert  \\
 & \qquad \quad+ 2pNB\Big(\varepsilon\eta +  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Big)  \label{boundCycleMP} \\
 & =  Y + h(p) - 2\varepsilon \eta \vert X(t + p )\vert \nonumber
-\end{align}
-\end{small}
-for constant 
-\begin{equation}Y = 2 \sum_{l,m} c(l,m)\overline{C}(l,m) + N B^2 \end{equation} 
-and function 
-\begin{equation} 
+\end{align}\end{small}\begin{gather}
+\text{ for \qquad} Y = 2 \sum_{l,m} c(l,m)\overline{C}(l,m) + N B^2  \text{ \; and} \\
 h(p) =  2 pNB\Big(\varepsilon\eta +  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Big)  
-\end{equation}
+\end{gather}
 %%%where
 %\begin{align}  \label{Kdef}
 %K = 2 \sum_{l,m}&c(l,m)\overline{C}(l,m) \\ \nonumber 
@@ -479,13 +247,12 @@ h(p) =  2 pNB\Big(\varepsilon\eta +  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Bi
 %%%%THERE ARE EXTRA + SIGNS IN THIS EQUATION
 %%%} 
 \end{Lem}
-%\underline{Proof of Lemma \ref{lemma_p}:} \\
-\begin{proof}
-As in Lemmas \ref{betalemma}-\ref{alpha1bound} above, begin by dividing the argument of \eqref{pexpect} into three parts:
-\begin{align} \label{immediate_to_bound} 
- |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
- & = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)   
-\end{align}
+\begin{IEEEproof}
+As in Lemmas \ref{betalemma}-\ref{alpha1bound} above, begin by dividing the argument of \eqref{pexpect} into three parts: $|X(t+ p + 1)|^{2} - |X(t + p)|^{2}  = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)$, 
+%\begin{align} \label{immediate_to_bound} 
+% |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
+% & = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)   
+%\end{align}
 where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the controller applied at time step $t + p$:
 \begin{small}
 \begin{align}
@@ -497,7 +264,7 @@ where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the c
  \end{align}
  \end{small}Bounds on the expectations of  $\beta(\cdot)$ and $\alpha_2(\cdot)$ were previously established for any binary or relaxed control matrix in \eqref{betabound} and \eqref{a2eqn}, respectively. Thus we already know that:
 \begin{align}\nonumber
-\expectation{\vert X&(t + p + 1) \vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p - 1)} \\  \label{cbmpcombined1}
+\expectation{&\vert X(t + p + 1) \vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p - 1)} \\  \label{cbmpcombined1}
 &< 2 \sum_{l,m} c(l,m)\overline{C}(l,m) + N B^2 + \expectation{2\alpha_1(t+p) }
 \end{align}
 %\begin{align}
@@ -505,9 +272,7 @@ where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the c
 %\label{a2bound_original} \alpha_2 (\cdot)&<  \sum_{l \in \linkset,m} c(l,m)\overline{C} (l,m) \\ 
 %\label{bbound_original} \beta (\cdot)  &<  N \displaystyle\sum_{l,m} \max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}^2
 %\end{align}
-The remainder of the bound proposed in \eqref{boundCycleMP} originates from the $2 \alpha_1 (t+p)$ term, which is directly dependent on the explicit form of the controller $S$.
-
-Rewrite the expression for $2\cdot \alpha_1$ in \eqref{pa1} as follows:
+The remainder of the bound proposed in \eqref{boundCycleMP} originates from the $2 \alpha_1 (t+p)$ term, which is directly dependent on the explicit form of the controller $S$. Rewrite the expression for $2\cdot \alpha_1$ in \eqref{pa1} as follows:
 %\begin{align}
 %\nonumber
 %&\expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p)} \\
@@ -522,40 +287,31 @@ Rewrite the expression for $2\cdot \alpha_1$ in \eqref{pa1} as follows:
 %\expectation{\alpha_{1}(t + p)\vert X(t)} < -\varepsilon \vert X(t) \vert  + C(p)
 %\end{equation}
 %$2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]w(l,m)(X(t + p) )$:
+\begin{small}
 \begin{align} \nonumber 
 &2\sum_{l,m} w(l,m)(X(t + p)) [f_{l}  r(l,m) -  c(l,m)S(l,m)(t) ]     \\ \nonumber
 &=  2\sum_{l,m} w(l,m)(X(t )) [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]  \\ \nonumber
 & \qquad  \qquad + 2\sum_{l,m} \Big\{w(l,m) \Big( X(t + p) - X(t) \Big)\; \cdot  \\ 
-& \qquad \qquad \qquad \qquad \quad [f_{l}r(l,m) - c(l,m)S(l,m)(t) ] \Big\} \\  \nonumber
-&=  \xi_{1} (t,p,S)+  \xi_{2} (t,p,S)
-\label{2terms}
+& \qquad \qquad \qquad \qquad \quad [f_{l}r(l,m) - c(l,m)S(l,m)(t) ] \Big\} \\  
+&=  \xi_{1} (t,p,S)+  \xi_{2} (t,p,S) \text{\quad for} \nonumber
+%\label{2terms}
 \end{align}
-for
-\begin{small}
-\begin{equation*} 
-\xi_{1} (t,S) = 2\sum_{l,m} w(l,m)(X(t)) [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]  
-\end{equation*}
-\end{small} and
-\begin{small}
-\begin{align*}
-\xi_{2} (t,p,S) &= 2\sum_{l,m} \Big\{w(l,m) \Big( X(t + p) - X(t) \Big) \cdot  \\  \nonumber
+\begin{align*} 
+\xi_{1} (t,S) = &2\sum_{l,m} w(l,m)(X(t)) [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]  \\
+\xi_{2} (t,p,S) &= 2\sum_{l,m} \Big\{w(l,m) \Big( X(t + p) - X(t) \Big) \cdot  \\ 
 & \qquad \qquad \qquad \qquad [f_{l}r(l,m) - c(l,m)S(l,m)(t) ] \Big\} 
 \end{align*}
-\end{small}\underline{Bound on $\xi_{1}$} \\
-By Lemma \ref{alpha1bound} we know that 
+\end{small}By Lemma \ref{alpha1bound} we know that 
 $
 \xi_1(t,S) < -2\varepsilon \eta \vert X(t) \vert
-$. Because
-\begin{align*}
-\vert X(t) \vert &= \vert X(t + p) - (X(t + p) - X(t)) \vert \\
-&> \Big| | X(t + p) \vert - \vert  X(t + p) - X(t)   |  \Big| \\
-&>  \vert X(t + p) \vert - \vert  X(t + p) - X(t)   \vert  
-\end{align*}
+$. Because $
+\vert X(t) \vert = \vert X(t + p) - (X(t + p) - X(t)) \vert
+%&> \Big| | X(t + p) \vert - \vert  X(t + p) - X(t)   |  \Big| \\
+>  \vert X(t + p) \vert - \vert  X(t + p) - X(t)   \vert$, 
 we find that
 \begin{align} \nonumber
-\xi_1 (t,p,S) &< -2\varepsilon \eta \big( \vert X(t + p) \vert -  \vert  X(t + p) - X(t)   \vert \big)\\ \nonumber
-&< -2\varepsilon \eta   \vert X(t + p) \vert \\  \nonumber
-&\qquad + 2\varepsilon \eta\sum_{i=1}^{p} \vert  X(t + i) - X(t + i - 1)   \vert  \\ 
+\xi_1 &(t,p,S) < -2\varepsilon \eta \big( \vert X(t + p) \vert -  \vert  X(t + p) - X(t)   \vert \big)\\ \nonumber
+&< -2\varepsilon \eta   \vert X(t + p) \vert  + 2\varepsilon \eta\sum_{i=1}^{p} \vert  X(t + i) - X(t + i - 1)   \vert  \\ 
 &= -2\varepsilon \eta   \vert X(t + p) \vert + 2\varepsilon \eta\sum_{i=1}^{p} \vert \delta(t + i -1) \vert 
 \label{sump}
 \end{align}
@@ -580,7 +336,7 @@ So by \eqref{sump} and \eqref{betabound},
 %&\qquad \qquad \qquad +\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ](w(l,m)(t + p ) - w(l,m)(t)) 
 %\label{2terms}
 %\end{align}
-\underline{Bound on $\xi_{2}$} \\
+%%%%\underline{Bound on $\xi_{2}$} \\
 %We now have to bound the term
 %\begin{align}\nonumber
 %\xi_2(t,p,S) &= 2\sum_{l,m} [f_{l}r(l,m) - c(l,m)S(l,m)(t) ]\\
@@ -620,6 +376,7 @@ By \eqref{betabound} and the fact that $w(\cdot)$ is linear,
 \vert w(l,m)(\delta(t + n -1)) \vert <NB
 \end{equation}
 Plugging \eqref{wdelta} back into the definition of $\xi_2$, we obtain
+\begin{small}
 \begin{align} \nonumber 
 \xi_2&(t,p,S) = 2\bigg( \sum_{l,m}\big([f_{l}r(l,m) - c(l,m)S(l,m)] \; \cdot \\  \nonumber
 &\qquad \qquad \qquad  \sum_{n=1}^{p}  w(l,m)( \delta(t + n - 1))\bigg)  \\ \nonumber
@@ -627,38 +384,25 @@ Plugging \eqref{wdelta} back into the definition of $\xi_2$, we obtain
 &\qquad \qquad \sum_{u,v} \max\Big\{  \overline{C}(u,v), \sum_{k}\overline{C}(k,u), \overline{d}(u,v)\Big\} \\
 & = 2NB \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \label{2xi2_bound1}
 \end{align}
-Also note that 
-\begin{equation}
+\end{small}Also note that 
+\begin{equation*}
 \Big| \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \Big| < p \sum_{l,m}[f_{l}r(l,m) + c(l,m)]
-\end{equation}
+\end{equation*}
 so \eqref{2xi2_bound1} becomes
 \begin{equation} \label{xi2_bound}
 \xi_2(t,p,S) < 2 NB p \cdot \left( \sum_{l,m}[f_{l}r(l,m) + c(l,m)]\right)
 %\\ \nonumber &\cdot\left( \sum_{l,m} \max\Big\{  \overline{C}(l,m), \sum_{k}\overline{C}(k,l), \overline{d}(l,m)\Big\} \right)
 \end{equation}
-
-Substituting \eqref{xi1_bound} and \eqref{xi2_bound} into \eqref{cbmpcombined1} yields the final bound expressed in
- \eqref{boundCycleMP}.
-%{\color{red} ALREADY USED VARIABLE $B$ , CALL IT SOMETHING ELSE!!!
-%\begin{align} \nonumber
-%\expectation{&\vert X(t + p +  1)\vert^2 - \vert  X(t + p)\vert^2 \vert X(t),\ldots,X(t + p)}  \\ \nonumber
-%&<  K  -2 \varepsilon \eta \vert X(t + p) \vert \\ \nonumber
-%&\qquad + 2\varepsilon \eta p \sum_{l,m} \max\left\{ \overline{C}(l,m),\sum_{k}\overline{C}(k,l),\overline d(l,m) \right\}  \\ \nonumber
-%&  \qquad  + 2 p \left(\sum_{l,m}[f_{l}r(l,m) + c(l,m)]\right) \\ \nonumber
-%& \qquad \qquad \cdot \left( \sum_{l,m} \max\Big\{  \overline{C}(l,m), \sum_{k}\overline{C}(k,l), \overline{d}(l,m)\Big\} \right) \\
-%&= K  -2 \varepsilon \eta \vert X(t + p) \vert + B(p)
-%\end{align}
-%with $K$ and $B(p)$ given by \eqref{Kdef} and \eqref{Cpdef}, respectively. 
-%}
-\end{proof}
-Upon proof of Lemma \ref{lemma_p}, we can show that for a time step $t$ within any number $K$ of $\tau$-updated cycles, the following quantity is bounded:
+Substituting \eqref{xi1_bound} and \eqref{xi2_bound} into \eqref{cbmpcombined1} yields \eqref{boundCycleMP}.
+\end{IEEEproof}
+Given Lemma \ref{lemma_p}, we show that for a time $t$ within any number $K$ of $\tau$-updated cycles, the following quantity is bounded:
 \begin{align} \nonumber 
 &\sum_{t = 1}^{K \tau} \expectation{\vert X(t + 1)\vert^2 - \vert X(t)\vert^2 \vert X(t)}\\ \nonumber
 &=\sum_{t=1}^{K-1} \sum_{p=0 }^{\tau - 1} \expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t + p)}\\ \nonumber
 &< \sum_{t=1}^{K-1} \sum_{p=0 }^{\tau - 1} (Y+ h(p) -2\varepsilon\eta \vert X(t + p )\vert ) \\
 &< -2\varepsilon \eta \sum_{t=1}^{K \tau} \vert X(t )\vert  + (K - 1) \left(\tau Y+\sum_{p=0 }^{\tau - 1} h(p) \right) \label{equivalencestabcycleMP}
 \end{align}
-Which, when taking the expectation, yields
+which, when taking the expectation, yields
 \begin{align} \nonumber 
 & \expectation{\vert X(K \tau + 1)\vert^2 - \vert X(1)\vert^2 } \\
 & <  -2\varepsilon\eta \sum_{t=1}^{K \tau} \expectation{\vert X(t )\vert}+ (K - 1) ( \tau Y+\sum_{p=0 }^{\tau - 1} h(p) )
@@ -672,64 +416,18 @@ Rearranging gives
 \end{align}
 \end{small}
 By \eqref{stability_condition}, the bound 
-\begin{align} \label{CYCLE_BOUNDS}
-\dfrac{1}{K \tau} \sum_{t=1}^{K \tau}  &\expectation{\vert X(t )\vert} < \\ \nonumber
-& \frac{1}{2\varepsilon\eta\ K\tau }\expectation{\vert X( 1)\vert^2} + \frac{ 1}{2\varepsilon\eta \tau} \left(\sum_{p=0 }^{\tau - 1} h(p) + \tau Y\right) 
-\end{align}
-establishes that the cycle-based max pressure controller $u^{c*}(X(t))$ defined in \eqref{uc*} will stabilize a vertical queueing network with dynamics $X(t)$  as in \eqref{entrydynamics}-\eqref{internaldynamics}. 
-
-%This establishes stability: the quantity $\dfrac{1}{\tau \tau}\sum_{t=1}^{\tau \tau} \expectation{\vert X(t )\vert}$ must then be bounded.\\ 
-%\begin{align} \label{CYCLE_BOUNDS}
-%\dfrac{1}{\tau \tau} \displaystyle\sum_{t=1}^{\tau \tau} \expectation{\vert X(t)}< \dfrac{1}{2\varepsilon\eta\tau \tau}& \expectation{\vert X(1) \vert^{2}} \\ \nonumber
-%& + \dfrac{1}{2\varepsilon\eta\tau}\displaystyle\sum_{p=0}^{\tau - 1} (B(p) + \tau K)
-%\end{align}
-%where $\varepsilon$, $\eta$ and $K$ are constants which depend on network topology and demand.
-
-%\end{proof}
-
-
-%
-%
-%\subsection*{Stability of allocated max pressure}
-%
-%We now show that the allocated max pressure controller $S^{r*}$ is stable in the sense of \eqref{stability_sufficient} under conditions slightly modified from those assumed in the stability proofs of immediate feedback and cycle max pressure.
-%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%cycle allocated MP
-%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%\subsection*{Definition}
-%
-%We now combine the cycle max pressure and allocated max pressure: once every $\tau$ model time steps, a relaxed controller $S^r$ is chosen and then applied at each of the subsequent $\tau$ time steps. In other words, a single relaxed controller $S^r(t)$ is applied for the set of time steps $\{t+1, t+2, \ldots, t+\tau -1 \}$. Then, at time $t+\tau$, a new relaxed controller $S^r (\tau)$ is calculated to be applied at $\{t+\tau+1, \ldots, t+2\tau -1 \}$. 
-%
-%\subsection*{Stability of cycle-allocated max pressure}
-%\begin{Thm}\label{StabCycleDistributedMP}
-%The sequence of cycle-allocated max pressure controller stabilizes the network
-% whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands
-%$ D_{\kappa}$ defined above.
-%%Under this condition, the quantity:
-%%\begin{equation}
-%%\dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert}
-%%\end{equation}
-%%is bounded for any time horizon $T$.
-%\end{Thm}
-%
-%\vspace{0.5cm}
-%
-%The stability of the cycle-allocated max pressure control follows from a logical combination of the stability proofs of cycle and allocated variations. Explicitly, the result for cycle max pressure in Appendix \ref{cycleproof} still holds in the case of a relaxed controller when one assumes that demand flow satisfies the modified cycle-by-cycle admissibility condition introduced for allocated max pressure in Section \ref{sec:distributed}. 
-
-
-
-\subsection*{Increased bound on queue length}
-As previously mentioned, the resulting bound on the length queues will be higher in the case of a cycle-based max pressure than in the standard frequent update setting. 
-{\color{red} Comparing \eqref{IF_BOUNDS} (WHERE IS THIS EQUATION?) and \eqref{CYCLE_BOUNDS}, note that the constants are increased by a factor of} 
-\begin{equation}
-\dfrac{1}{\varepsilon \tau} \sum_{p=1}^{\tau - 1} h(p) = \dfrac{1}{\varepsilon \tau}  \dfrac{\tau(\tau - 1)}{2}\cdot(\text{constant}) = \dfrac{\tau - 1}{2\varepsilon} \cdot(\text{constant})
-\end{equation}
-The relative cost to queue bounds is therefore linear in cycle length $\tau$. 
+\begin{small}
+\begin{equation*} \label{CYCLE_BOUNDS} 
+%\dfrac{1}{K \tau} \sum_{t=1}^{K \tau}  &\expectation{\vert X(t )\vert} < \\ \nonumber
+%& \frac{1}{2\varepsilon\eta\ K\tau }\expectation{\vert X( 1)\vert^2} + \frac{ 1}{2\varepsilon\eta \tau} \left(\sum_{p=0 }^{\tau - 1} h(p) + \tau Y\right) 
+\dfrac{1}{K \tau} \sum_{t=1}^{K \tau}  \expectation{\vert X(t )\vert} <  \frac{1}{2\varepsilon\eta \tau }\bigg[ \tfrac{1}{K} \expectation{\vert X( 1)\vert^2} +  \sum_{p=0 }^{\tau - 1} h(p) + \tau Y  \bigg]
+\end{equation*}
+\end{small}establishes that the cycle-based max pressure controller $u^{c*}(X(t))$ defined in \eqref{uc*} will stabilize a vertical queueing network with dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}. However, the bound on expected queue lengths will be higher in the case of a cycle-based max pressure than in the standard frequent update setting. This relative increase can be shown to be linear in cycle length $\tau$. 
+% {\color{red} Note that \eqref{CYCLE_BOUNDS} is larger than \eqref{IF_BOUNDS} by a factor of} 
+%\begin{equation}
+%\dfrac{1}{\varepsilon \tau} \sum_{p=1}^{\tau - 1} h(p) = \dfrac{\tau - 1}{2\varepsilon} \cdot\textit{[constant]}
+%\end{equation}
+%Hence the relative increase to queue bounds is linear in $\tau$. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%

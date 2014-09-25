@@ -1,30 +1,23 @@
 % !TEX root = ./MParticle_resubmit.tex
 \section{Model Framework} \label{sec:framework}
-
-\subsection*{Definitions}
-
-We consider a network of arterial roads with infinite storage capacity, modeled topologically as a graph with road links being edges and intersections being vertices. An individual link $l\in\linkset$  can be either at the entry of the network ($l \in \entrylinks$) or in the interior of the network ($l \in\linkset\backslash \entrylinks $). The inflow on entry links is a defined entirely by a random demand $d_{l}$, while the input flows of all other links depend on queues on upstream links and the relevant set of physical flow constraints are defined within the network. We require that each link has an exit path, that is, a continuous set of subsequent links on which vehicles can travel from the link to eventually exit the network.  Each link in the network model can have multiple \emph{queues} corresponding to individual \emph{movements}:  all vehicles in a given queue on any link are intending to advance onto the same subsequent link (though not necessarily the same subsequent queue). 
-
-We describe the dynamics of these queues as a discrete time dynamical model using the following notation: 
+We consider a network of arterial roads with infinite storage capacity, modeled topologically as a graph with road links being edges and intersections being vertices. An individual link $l\in\linkset$  can be either at the entry of the network ($l \in \entrylinks$) or in the interior of the network ($l \in\linkset\backslash \entrylinks $). The inflow on entry links is a defined entirely by a random demand $d_{l}$, while the input flows of all other links depend on queues on upstream links and the relevant set of physical flow constraints are defined within the network. We require that each link has an exit path, that is, a continuous set of subsequent links on which vehicles can travel from the link to eventually exit the network.  Each link in the network model can have multiple \emph{queues} corresponding to individual \emph{movements}:  all vehicles in a given queue on any link are intending to advance onto the same subsequent link (though not necessarily the same subsequent queue). We describe the dynamics of these queues as a discrete time dynamical model using the following notation: 
 \begin{itemize}
+ \itemsep 1pt \parskip 0pt
 \item A \emph{movement} $(l,m)$ distinguishes an intention to travel from link $l$ to link $m$,
 (in that case, say that $m \in Out(l)$ where $Out(l)$ is the set of links immediately downstream $l$);
 \item A \emph{queue} $x(l,m)(t)$ is the number of vehicles on link $l$ waiting to enter link $m$ at timestep $t$, and $X(t)$ is the set (vector or matrix) of all the queue lengths on the network at timestep $t$;
 \item A \emph{saturation flow} $c(l,m)$ is the expected number of vehicles that can travel from link $l$ to link $m$ per time step given maximum demand for the queue $x(l,m)$, and $C(l,m)(t)$ is the \emph{realized saturation flow} at time $t$; 
 \item The \emph{turn ratio} $r(l,m)$ is the expected proportion of vehicles that are leaving $l$ which are intending to enter $m$, and $R(l,m)(t)$ is the \emph{realized turn ratio} at time $t$;
 \item The \emph{demand vector} $d$ of dimension $|\entrylinks|$ specifies demands at network entry links;
-\item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow within link $l$. 
+\item The \emph{flow vector} $f$ of dimension $|\linkset|$ denotes flows on all links of the network such that $f_{l}$ is the flow in link $l$. 
 \end{itemize}
 Note that there is intuitively a linear relationship between the expected link flow $f$ and the boundary demand $d$: 
 \begin{equation} \label{fd_relation}
 f=dP
 \end{equation}
 where the (possibly non-unique) matrix $P$ depends on expected routing proportions within the network.
-
-
-
+\vspace{-.5em}
 \subsection*{Controller}
-
 A road intersection is modeled as a node in our framework. Controllers (traffic signals) are placed at every node to limit the set of queues permitted to discharge at any given time. A set of movements that can be simultaneously actuated without flow conflicts is called a \emph{phase}.  Each permissible phase for a given intersection can be represented as a binary control matrix $S$ that is defined as follows: 
 \begin{equation}
 S(l,m) = \begin{cases}
@@ -38,15 +31,13 @@ Practically, only one phase can be actuated at any point in time: at each model 
 \begin{equation}\label{relaxed1}
 S^r(l,m) = \lambda_{l,m} \in [0,1]
 \end{equation}
-Such a relaxed controller can be seen as a convex combination of all possible control matrices,
-\begin{equation}\label{relaxed2}
-S^r = \displaystyle\sum_{S\in U}\lambda_{S}S
-\end{equation}
+Such a relaxed controller can be seen as a convex combination of all possible control matrices, $
+S^r = \sum_{S\in U}\lambda_{S}S$. 
 In general, the selection of such a controller can be based on feedback representing the state of the network queues at a previous time step.
 
+\vspace{-.5em}
 \subsection*{Queue Dynamics}
-
-The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $(t+1)$ is a function of only the network state at time $t$ and external demand vector $d$,
+The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $(t+1)$ is a function of only the network state at time $t$ and external demand $d$,
 \begin{equation}
 X(t+1) = F(X(t),d)
 \end{equation}
@@ -61,8 +52,7 @@ and if $l\in \linkset\backslash\entrylinks$,
 &\qquad  \qquad- [C(l,m)(t+1)S(l,m)(t+1) \wedge x(l,m)(t)] 
 \end{align} 
 
-
-
+\vspace{-.5em}
 \subsection*{Demand Feasibility}
 We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \mathcal{L}_{e})}$ are \emph{feasible}\textemdash that is, the network is servicing a distribution of inflows for which it is possible to find a controller that allows \textit{in average} more departures than arrivals at each link. 
 
@@ -90,10 +80,8 @@ A demand $d$ is \emph{feasible} if and only if  $\exists \; M_{\overline S} \in 
  \end{equation}
  where $f = dP$ as in \eqref{fd_relation}. 
 \end{Prop}
-
 Define $D^0$ to be the set of all average demand vectors $d=\{d_l\}$ that satisfy \eqref{feasible_demand} and are therefore feasible.
 
-\subsection*{Network Stability}
 A network is \emph{stable} if the following quantity is bounded:
 \begin{equation} \label{stability_condition}
  \dfrac{1}{T}\sum_{t=1}^{T}\expectation{\vert X(t) \vert_{1}}

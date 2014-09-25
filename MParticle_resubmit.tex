@@ -63,15 +63,11 @@
 % should be used if it is desired that the figures are to be displayed in
 % draft mode.
 %
-\documentclass[journal]{IEEEtran}
+\documentclass[conference]{IEEEtran}
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
-
-
-
-
 
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
@@ -95,11 +91,6 @@
 % When switching from latex to pdflatex and vice-versa, the compiler may
 % have to be run twice to clear warning/error messages.
 
-
-
-
-
-
 % *** CITATION PACKAGES ***
 %
 %\usepackage{cite}
@@ -117,11 +108,6 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
 % The documentation is contained in the cite.sty file itself.
-
-
-
-
-
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -143,8 +129,7 @@
   % every instance of \includegraphics
   % \DeclareGraphicsExtensions{.eps}
 \fi
-
-
+\usepackage{xcolor}
 
 % *** MATH PACKAGES ***
 %
@@ -166,10 +151,6 @@
 % version and documentation can be obtained at:
 % http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
 
-
-
-
-
 % *** SPECIALIZED LIST PACKAGES ***
 %
 %\usepackage{algorithmic}
@@ -189,8 +170,7 @@
 % algorithmicx.sty package by Szasz Janos:
 % http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
 
-
-
+\usepackage{enumerate}
 
 % *** ALIGNMENT PACKAGES ***
 %
@@ -205,7 +185,6 @@
 % latest version and documentation can be obtained at:
 % http://www.ctan.org/tex-archive/macros/latex/required/tools/
 
-
 \usepackage{mdwmath}
 \usepackage{mdwtab}
 % Also highly recommended is Mark Wooding's extremely powerful MDW tools,
@@ -214,21 +193,15 @@
 % LaTeX systems. The lastest version and documentation is available at:
 % http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
 
-
 % IEEEtran contains the IEEEeqnarray family of commands that can be used to
 % generate multiline equations as well as matrices, tables, etc., of high
 % quality.
-
 
 \usepackage{eqparbox}
 % Also of notable interest is Scott Pakin's eqparbox package for creating
 % (automatically sized) equal width boxes - aka "natural width parboxes".
 % Available at:
 % http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
-
-
-
-
 
 % *** SUBFIGURE PACKAGES ***
 \usepackage[tight,footnotesize]{subfigure}
@@ -240,9 +213,6 @@
 % be obtained at:
 % http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
 % subfigure.sty has been superceeded by subfig.sty.
-
-
-
 
 \usepackage[font=footnotesize, caption=false]{subfig}
 % subfig.sty, also written by Steven Douglas Cochran, is the modern
@@ -275,8 +245,6 @@
 % single column figure to be placed prior to an earlier double column
 % figure. The latest version and documentation can be found at:
 % http://www.ctan.org/tex-archive/macros/latex/base/
-
-
 
 %\usepackage{stfloats}
 % stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
@@ -341,9 +309,6 @@
 % page by themselves.
 
 
-
-
-
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %
 \usepackage{url}
@@ -353,9 +318,6 @@
 % http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
 % Read the url.sty source comments for usage information. Basically,
 % \url{my_url_here}.
-
-
-
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -371,8 +333,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%SPECIFIC TO MParticle.tex (user-defined commands) %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\usepackage{enumerate}
 
 
 \newcommand{\expectation}[1]{\mathbb{E}\Big\{ #1 \Big\}}	
@@ -391,6 +351,13 @@
 \newtheorem{Lem}[Thm]{\textbf{Lemma}}
 
 
+
+\renewcommand{\IEEElabelindentfactori}{.5}
+%\renewcommand{\iedlistdecl}{\settowidth{\labelsep}{H}}
+\setlength{\IEEEilabelindent}{0pt}
+\setlength{\IEEEiednormlabelsep}{3pt}
+\setlength{\itemsep}{.5pt}
+%\setlabelwidth{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -398,22 +365,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Hack pour boxalert
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[latin9]{inputenc}
+%\usepackage[latin9]{inputenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{xcolor}
+
 \begin{document}
 
-\title{Stability of Modified Max Pressure Controller with Application to Signalized Traffic Networks}
+\title{Stability of Modified Max Pressure Controller with Application to Signalized Traffic Networks
+\vspace{-.2em}}
 % can use linebreaks \\ within to get better formatting as desired
 \author{Thomas~Pumir,~%~\IEEEmembership{Student Member,~IEEE,}
         Leah~Anderson,~%~\IEEEmembership{Student Member,~IEEE,}
         Dimitrios~Triantafyllos,~
-        and~Alexandre~M.~Bayen%,~\IEEEmembership{Member,~IEEE}% <-this % stops a space
-\thanks{T.~Pumir and A.~Bayen are with the Department
-of Electrical Engineering and Computer Science, University of California, Berkeley,
-CA; L.~Anderson is with the Department of Civil and Environmental Engineering, University of California, Berkeley. Corresponding e-mail: thomas.pumir@berkeley.edu}% <-this % stops a space
-\thanks{This work was sponsored by the California Department of Transportation under the Connected Corridors program at PATH, UC Berkeley.  }% <-this % stops a space
+        and~Alexandre~M.~Bayen
+        \vspace{-.5em}%,~\IEEEmembership{Member,~IEEE}% <-this % stops a space
+%\thanks{T.~Pumir and A.~Bayen are with the Dept.
+%of Electrical Engineering and Computer Science and L.~Anderson is with the Dept. of Civil and Environmental Engineering at the University of California, Berkeley, CA; Corresponding e-mail: thomas.pumir@berkeley.edu}% <-this % stops a space
+%\thanks{This work was sponsored by the California Department of Transportation under the Connected Corridors program at PATH, UC Berkeley.  }% <-this % stops a space
 }
 
 % note the % following the last \IEEEmembership and also \thanks - 
@@ -457,14 +425,13 @@ CA; L.~Anderson is with the Department of Civil and Environmental Engineering, U
 % use for special paper notices
 %\IEEEspecialpapernotice{(Invited Paper)}
 
-
-
 \maketitle
-
-\abovedisplayskip=6pt plus 3pt minus 4pt
-\abovedisplayshortskip=6pt plus 3pt
-\belowdisplayskip=6pt plus 3pt minus 4pt
-\belowdisplayshortskip=6pt plus 3pt minus 4pt
+\setlength{\belowdisplayskip}{4pt} \setlength{\belowdisplayshortskip}{1pt}
+\setlength{\abovedisplayskip}{4pt} \setlength{\abovedisplayshortskip}{1pt}
+%\abovedisplayskip=6pt plus 3pt minus 4pt
+%\abovedisplayshortskip=6pt plus 3pt
+%\belowdisplayskip=6pt plus 3pt minus 4pt
+%\belowdisplayshortskip=6pt plus 3pt minus 4pt
 \begin{abstract}
 \input{abstract}
 \end{abstract}
@@ -474,17 +441,10 @@ CA; L.~Anderson is with the Department of Civil and Environmental Engineering, U
 % then you can use LaTeX's standard command \boldmath at the very start
 % of the abstract to achieve this. Many IEEE journals frown on math
 % in the abstract anyway.
-
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
 max pressure, vertical queueing network, network stability, adaptive signal control, arterial modeling
 \end{IEEEkeywords}
-
-
-
-
-
-
 % For peer review papers, you can put extra information on the cover
 % page as needed:
 % \ifCLASSOPTIONpeerreview
@@ -494,8 +454,6 @@ max pressure, vertical queueing network, network stability, adaptive signal cont
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
-
-
 \input{introduction}
 \input{model}
 \input{immediate_feedback}
@@ -504,51 +462,32 @@ max pressure, vertical queueing network, network stability, adaptive signal cont
 \input{numerical}
 
 \section{Conclusion}
-In this work we have defined an extension of the max pressure controller required in order to be applied to a real network of signalized traffic intersections. Given only the constraint that the network demands are (in average) serviceable, we have proven that updating a max pressure controller which allocates a fixed minimum proportion of service to each permissible phase at a slower rate than that which governs traffic flow will not destroy the stabilizing properties of the controller. 
+In this work we have defined an extension of the max pressure controller required for application on a real network of signalized traffic intersections. Given only the constraint that the network demands are serviceable in average, we have proven that updating a max pressure controller which allocates a fixed minimum proportion of service to each permissible phase at a slower rate than that which governs traffic flow will not destroy the stabilizing properties of the controller. 
 
-While there are additional modifications to the control model that must be addressed before max pressure can be considered a feasible algorithm for real-time operation of traffic signal controllers, our implementation in the reference micro-simulation platform demonstrates how it could comply with the hardware and communications constraints commonly encountered in existing roadway infrastructure. These numerical simulations furthermore reveal that an implementation of cycle-allocated max pressure competes with the existing standard feedback controller in many performance metrics, especially during periods of high congestion. This comes on top of theoretical proofs it provides, unlike algoriithms used in practice. It also appears to provide less variance in delays than the existing alternative. 
-
-
-
-
+While there are additional modifications to the control model that must be addressed before max pressure can be considered a feasible algorithm for real-time operation of traffic signal controllers, our implementation in the referenced micro-simulation platform demonstrates how it could comply with the hardware and communications constraints commonly encountered in existing roadway infrastructure. These numerical simulations furthermore reveal that an implementation of cycle-based max pressure competes with the existing standard feedback controller in many performance metrics, especially during periods of high congestion. It also appears to provide less variance in delays than the existing alternative.  Furthermore, max pressure provides theoretical guarantees on network-wide performance that are lacking in other existing signal control algorithms. 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
 %\appendix  % for no appendix heading
 % do not use \section anymore after \appendix, only \section*
 % is possibly needed
-
 % use appendices with more than one appendix
 % then use \section to start each appendix
 % you must declare a \section before using any
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %
-
-
-%\appendices
-%\section{Proof of stability: immediate feedback controller}
-%\input{appendix_immediatefeedbackproof}
-
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
-%\section{Proof of stability: cycle controller}
-%\input{appendix_cycleproof}
-
-%\section{Proof of stability: allocated controller}
-%\input{appendix_distributedproof}
-
 % use section* for acknowledgement
-\section*{Acknowledgment}
-
-The authors would like to thank Pravin Varaiya for his insights on this work, as well as Brian Peterson and Joe Butler for their support for the implementation.
-
+\vspace{-.5em}
+\section*{Acknowledgments}
+This work was sponsored by the California Department of Transportation under the Connected Corridors program at UC Berkeley PATH. The authors would like to thank Pravin Varaiya for his insights on this work, as well as Brian Peterson and Joe Butler for their support in the implementation.
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
 \ifCLASSOPTIONcaptionsoff
   \newpage
 \fi
-
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
@@ -592,7 +531,9 @@ The authors would like to thank Pravin Varaiya for his insights on this work, as
 %\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-
+\appendices
+\section{Feasible flows with a $\tau$-updated controller}
+\input{appendix_tauadmissible} 
 
 %\begin{IEEEbiography}{Thomas Pumir}
 %received a BSc in mathematics from

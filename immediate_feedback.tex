@@ -1,29 +1,44 @@
 % !TEX root = ./MParticle_resubmit.tex
 \section{Standard Max Pressure Controller} \label{sec:immediatefeedback}
-%This section summarizes results from \cite{MaxPressureStochastic} and \cite{MaxPressureOriginal} that we later extend.
-%
-%\subsection*{Principle}
-
 Consider a weight assigned to each queue $(l,m)$ as a function of all network queue lengths $X$:
+\begin{small}
 \begin{equation} \label{linkweight}
 w(l,m)(X(t))= x(l,m)(t) - \sum_{p \in Out(m)} r(m,p)x(m,p)(t)
 \end{equation}
+\end{small}
 where $Out(m)$ is the set of all links receiving flow from link $m$. 
 %At time step $t+1$, the standard max pressure controller actuates the phase $S^* \in U$ which alleviates the most \emph{pressure} at the intersection based on feedback obtained at the immediately previous time step $t$. 
 The \emph{pressure} $\gamma(S)$ that is potentially alleviated by a control action $S$ at time step $t$ is defined as follows: 
 \begin{align}
-\gamma(S)(X(t)) &= \sum_{l,m}c(l,m)w(l,m)(X(t))S(l,m)(t) \\
-&= \sum_{l,m: S(l,m)(t) = 1}c(l,m)w(l,m)(X(t))
+\gamma(S)(X(t)) &= \sum_{l,m}c(l,m)w(l,m)(X(t))S(l,m)(t) 
+%\\
+%&= \sum_{l,m: S(l,m)(t) = 1}c(l,m)w(l,m)(X(t))
 \end{align}
 At each time step $t$, the standard max pressure controller $u^{*}(X(t))$ explicitly choses the phase $S^*\in U$ that maximizes $\gamma(S)(X(t))$:
 \begin{equation} \label{original_MP}
 S^*(t)  = u^{*}(X(t)) = \arg\max\{\gamma(S)(X(t)) \vert S \in U\} 
 \end{equation}
-
-Varaiya \cite{MaxPressureStochastic} shows the following stability result for the standard max pressure controller on a vertical queueing network:
+Varaiya \cite{MaxPressureStochastic} shows the following stability result for the standard max pressure controller:
 \begin{Thm}\label{StabMP}
-The max pressure control $u^{*}$ is stabilizing whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands $D^0$. There is no stabilizing control when $d\not \in D^0$.
+The max pressure control $u^{*}$ is stabilizing whenever the average demand vector $d = \lbrace d_{l}\rbrace$ is within the set of feasible demands $D^0$. 
+%There is no stabilizing control when $d\not \in D^0$.
 \end{Thm}
+
+This theoretical guarantee is one of the many attractive qualities of max pressure for controlling vehicular traffic in urban road networks. Yet the controller as originally formulated is not practical for application on a signalized traffic network for three reasons:
+\begin{enumerate}[a)]
+\item it does not account for capacity reductions (lost time) due to excessive signal switching, 
+\item it cannot enforce coordination between subsequent intersections for purposes of maximizing flow continuity, and
+\item it does not provide guarantees that low-demand queues will be served within a finite time period. 
+\end{enumerate} 
+These limitations motivate our extension of the standard immediate feedback max pressure control algorithm. In the following section, we define a new \emph{cycle-based} max pressure controller which bounds the number of signal switches per fixed time period, provides capacity for standard signal coordination methods, and can easily guarantee a minimum service rate for all intersection phases. We then show that the application of this controller yields a similar stability guarantee to that shown by Varaiya for the standard controller given slightly weaker conditions on demand flow. The structure of this proof is as follows: 
+\begin{enumerate}[i.]
+\item First, we formalize a calculation of the \emph{lost time} incurred by signal switching actions. 
+\item Then we introduce a formulation of the cycle-based max pressure algorithm and briefly describe how it inherently rectifies issues a), b), and c) above. 
+\item Next, we introduce the concept of a \emph{$\tau$-updated} controller and we show that switching control only once every $\tau$ time steps does not impact the set of feasible demands.  
+\item We finally show that queue stability holds with a cycle-based max pressure controller consisting of \emph{$\tau$-updated sequences of relaxed control matrices with minimum proportion constraints}. 
+%However, network stability requires \emph{slightly stricter conditions on demand flows} than assumed for stability using the original max pressure formulation.
+\end{enumerate}
+
 
 %To prove this theorem, \cite{MaxPressureStochastic} shows that the quantity described in \eqref{stability_condition} is bounded when the controller is applied to the system dynamics \eqref{entrydynamics}-\eqref{internaldynamics}. It is however sufficient to show that there exists an $\varepsilon > 0$ such that
 %\begin{equation} \label{stability_sufficient}
