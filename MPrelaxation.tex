@@ -1,5 +1,5 @@
 % !TEX root = ./MParticle_resubmit.tex
-\section{A Cycle-based Max Pressure Controller} 
+\section{A Cycle-Based Max Pressure Controller} 
 For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{Varaiya2013}. 
 
 In this work, we explicitly specify the number of signal switches that occur in a fixed number of model time steps using the familiar concept of a \emph{signal cycle}. As typical with modern traffic signals, the \emph{cycle-based max pressure controller} rotates through all available signal phases within a known time period. We define \emph{cycle time} $\tau$ as a predefined number of model time steps and require that each controller phase $S$ must be green for some proportion $\lambda_S \geq \kappa_S$ of the $\tau$ steps, where the \emph{minimum green splits} $\kappa_S \in (0,1) \; \forall \; S \in U $ are parameters selected by a network manager to enforce equity in movement actuation.  
@@ -112,7 +112,7 @@ First we consider $\beta(t) = \vert \delta (t)\vert^{2}$.
 \begin{Lem} \label{betalemma}
 \begin{equation}\label{betabound}
 \beta(t)  = \big| \delta(t) \big|^2 \leq NB^2 \end{equation}
-where $B = \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline{d}(l,m) \right\}$, 
+where $B =\max \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline{d}(l,m) \right\}$, 
 $N$ is the number of queues in the network, $\overline{C} (l,m)$ is the maximum value of the random service rate $C(l,m)(t)$, and $ \overline{d}(l,m)$ is the maximum value of random demand $d(l,m)$.
 \end{Lem}
 The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{Varaiya2013} and will therefore not be repeated here. Note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our extension.
@@ -160,7 +160,7 @@ For all $l$, $m$, $t$,
 % \end{align*}
 The proof of Lemma \ref{alpha2bound} again directly follows that presented in \cite{Varaiya2013}; an extension from a binary controller $S\in \{0,1\}$ to a relaxed controller $S^r\in [0,1]$ is trivial. 
 
-In fact, the extension made here only affects the $\alpha_1 (t)$ term. To demonstrate a bound on $\alpha_1(t)$ given application of a cycle-based max pressure controller $u^{c*}$, we first examine the stability of a standard max pressure controller using relaxed controllers with minimum phase proportion constraints and a stricter limitation on network demands. We will then show that a $\tau$-updated cycle-based max pressure controller also stabilizes a network, but results in a larger bound on queue lengths. 
+In fact, the extension made here only affects the $\alpha_1 (t)$ term. To demonstrate a bound on $\alpha_1(t)$ given application of a cycle-based max pressure controller $u^{c*}$, we first examine the stability of a standard max pressure controller using relaxed controllers with minimum phase proportion constraints and a stricter limitation on network demands. We will then show that a $\tau$-updated cycle-based max pressure controller also stabilizes a network, but results in an increase in queue length bounds that is proportional to cycle length $\tau$. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% %%%%%%%%%%%%%     BEGIN REAL PROOF HERE    %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,8 +408,16 @@ By \eqref{stability_condition}, the bound
 %& \frac{1}{2\varepsilon\eta\ K\tau }\expectation{\vert X( 1)\vert^2} + \frac{ 1}{2\varepsilon\eta \tau} \left(\sum_{p=0 }^{\tau - 1} h(p) + \tau Y\right) 
 \dfrac{1}{K \tau} \sum_{t=1}^{K \tau}  \expectation{\vert X(t )\vert} <  \frac{1}{2\varepsilon\eta \tau }\bigg[ \tfrac{1}{K} \expectation{\vert X( 1)\vert^2} +  \sum_{p=0 }^{\tau - 1} h(p) + \tau Y  \bigg]
 \end{equation*}
-\end{small}establishes that the cycle-based max pressure controller $u^{c*}(X(t))$ defined in \eqref{uc*} will stabilize a vertical queueing network with dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}. However, the maximum expected queue lengths will be higher in the case of a cycle-based max pressure than in the standard frequent update setting. This relative increase can be shown to be linear in cycle length $\tau$. 
-% {\color{red} Note that \eqref{CYCLE_BOUNDS} is larger than \eqref{IF_BOUNDS} by a factor of} 
+\end{small}establishes that the cycle-based max pressure controller $u^{c*}(X(t))$ defined in \eqref{uc*} will stabilize a vertical queueing network with dynamics $X(t)$ as in \eqref{entrydynamics}-\eqref{internaldynamics}. However, the maximum expected queue lengths will be higher in the case of a cycle-based max pressure than in the  frequent update setting by a term that increases linearly in cycle length $\tau$:
+\begin{small}
+\begin{equation*}
+\frac{1}{2\varepsilon\eta \tau }\sum_{p=0 }^{\tau - 1} h(p)    = (\tau - 1)NB\Big( 1 +\frac{1}{\varepsilon\eta}  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Big)
+\end{equation*}
+\end{small}
+
+%{}, which is linear in cycle length $\tau$. 
+%$\frac{1}{2\varepsilon\eta \tau }\sum_{p=0 }^{\tau - 1} h(p)    = (\tau - 1)\dfrac{NB}{\varepsilon\eta}\Big(\varepsilon\eta +  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Big)$
+%% {\color{red} Note that \eqref{CYCLE_BOUNDS} is larger than \eqref{IF_BOUNDS} by a factor of} 
 %\begin{equation}
 %\dfrac{1}{\varepsilon \tau} \sum_{p=1}^{\tau - 1} h(p) = \dfrac{\tau - 1}{2\varepsilon} \cdot\textit{[constant]}
 %\end{equation}
