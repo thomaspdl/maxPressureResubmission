@@ -2,17 +2,18 @@
 \section{Introduction}
 
 %The expansion of transportation networks over the past twenty years has motivated much study on the performance of queuing networks. 
-This article investigates the design and stability of decentralized controller for vertical queueing networks. In a \emph{vertical queueing network}, agents traveling across the network are stored in ``point queues'' which do not inhabit a ``horizontal'' position along the length of a network edge, but instead are considered to be stored in ``vertical'' stacks at each node. Such models are inherited from fields such as supply chain management or internet routing, but are also representative of signalized urban traffic networks. In the present work we examine a vertical queueing model in which the flows passing through each node are constrained by a controller, similar to how a traffic light dictates allowable flows across a traffic intersection: only a finite set of non-conflicting turning movements or \emph{phases} can be permitted to flow simultaneously across each node. 
+This article investigates the design and stability of decentralized controller for vertical queueing networks. In a \emph{vertical queueing network}, agents traveling across the network are stored in ``point queues'' which do not inhabit a ``horizontal'' position along the length of a network edge, but instead are considered to be stored in ``vertical'' stacks at each node. Such models are inherited from fields such as supply chain management or internet routing, but are also representative of signalized urban traffic networks \cite{Aboudolas2009}\cite{vandenBerg2003}\cite{Zhang2013}.  The concept of a \emph{stabilizing} network controller, or one which ensures that the mean length of all queues in the network remain bounded, is relevant to many applications such as communications networks \cite{Giaccone2005}\cite{Neely2005}\cite{Pajic2013} or industrial systems \cite{Dai2005}\cite{Egerstedt2002}\cite{Brockett1995}\cite{Ishii2001}.
 
-The concept of a \emph{stabilizing} controller, or one which ensures that the mean length of all queues in the network remain bounded, is relevant to many applications such as wireless networks \cite{StabRelayNetworks}\cite{ControlWireless}, oscillatory networks \cite{SynchroComplexNetworks}, or general queuing networks \cite{MultiQueues}\cite{CDC03OptSwitch}. Comprehensive summaries on this topic spanning many different fields are provided in \cite{NetworkBarasOne}-\cite{NetworkBarasTwo},  \cite{Mirchandani}, \cite{Papageorgiou}, \cite{ModelSignalOpt}, and \cite{Xie}.
+In the present work we examine a vertical queueing model in which only a finite set of non-conflicting turning movements (or \emph{phases}) can be permitted to flow simultaneously across each network node. The set of phases permitted at any one time is dictated by a controller, similar to how a traffic light dictates allowable flows across a traffic intersection. Specifically, we suppose that phase actuation is governed by a \emph{max pressure controller}. 
 
-The max pressure controller is a distributed network signal control policy derived from the concept of a ``back pressure controller'', which was first studied in the context of routing packets through a communications network \cite{MaxPressureOriginal}. The idea was applied to road traffic management more recently by Varaiya \cite{MaxPressureStochastic}, as well as in the work of Wongpiromsarn et al. \cite{MaxPressureStochasticConcurrent}. The concept of max pressure control is intuitive: at each intersection, priority is given to the phase which will be able to service the most traffic given knowledge of both available upstream demand and the subsequent feasibility of downstream queues. It is a particularly attractive concept for control of a signalized urban traffic network because it can be operated in a distributed manner on local controller hardware but still provides theoretical guarantees on network-wide performance. Variaya's original formulation of this controller in \cite{MaxPressureStochastic}, however, does not fully consider the practical limitations on the rate of queue measurement and signal actuation in vehicle traffic networks. For example, a standard max pressure controller has no bound on the rate of signal switches which may occur relative to the rate of modeled queue formation and dissipation in the network. In implementation, a traffic signal incurs a penalty upon every change in actuation in the form of capacity loss due to ``intersection clearance time'': a 2-3 second period where all movements are given a red light in order to allow traffic from the previous phase to clear the intersection before possibly conflicting traffic can be permitted to enter. Also, max pressure lacks the ability to synchronize adjacent signals in a network by constraining the actuation periods of critical phases to fixed relative offsets. This feature is valued by traffic managers who wish to promote continuity of flow and limit vehicle stops on a preferred throughway. Furthermore, a standard max pressure implementation provides no explicit lower bound on the service rate of queues on minor approaches where demand may be very low relative to the main direction. 
+Max Pressure is a distributed network control policy derived from the concept of a ``back pressure controller'', which was first studied in the context of routing packets through a communications network \cite{Tassiulas1992}. The idea was applied to road traffic management more recently by Varaiya \cite{Varaiya2013} as well as Wongpiromsarn et al. \cite{Wongpiromsarn2012}. The concept of max pressure control is intuitive: at each intersection, priority is given to the signal phase which will be able to service the most traffic given knowledge of both available upstream demand and the subsequent feasibility of downstream queues. It is a particularly attractive concept for control of a signalized urban traffic network because it can be operated in a distributed manner on local controller hardware but still provides theoretical guarantees on network-wide performance. Variaya's original formulation of this controller, however, does not fully consider the practical limitations on the rate of queue measurement and signal actuation in vehicle traffic networks. For example, a standard max pressure controller has no bound on the rate of signal switches which may occur relative to the rate of modeled queue formation and dissipation in the network. In implementation, a traffic signal incurs a penalty upon every change in actuation in the form of capacity loss due to ``intersection clearance time'': a 2-3 second period where all movements are given a red light in order to allow traffic from the previous phase to clear the intersection before possibly conflicting traffic can be permitted to enter. Max pressure also lacks the ability to synchronize adjacent signals in a network by constraining the actuation periods of critical phases to fixed relative offsets. This feature is valued by traffic managers who wish to promote continuity of flow and limit vehicle stops on a preferred throughway. Furthermore, a standard max pressure implementation provides no explicit lower bound on the service rate of queues on minor approaches where demand may be very low relative to the main direction. 
 
-These constraints motivate a new extension of the max pressure control algorithm which bounds signal switches and can maintain timed cyclical behaviors for signal coordination and queue service equity. While a similar concept was suggested in \cite{MaxPressureStochastic}, this work further extends a simple proportional phase controller to allow model dynamics to explicitly act at a faster rate than the controller update period. Using Variaya's stability proof as a starting point, we prove that our proposed extension of a max pressure controller still provides the desired guarantee of queue stability in a vertical queueing network. We then discuss the penalty to the theoretical bound on queue lengths (relative to the standard max pressure controller) due to this constrained controller formulation. 
+ 
+These constraints motivate a new extension of the max pressure control algorithm which bounds signal switches and can maintain timed cyclical behaviors for signal coordination and queue service equity. While a similar concept was suggested in \cite{Varaiya2013}, this work further extends a simple proportional phase controller to allow model dynamics to explicitly act at a faster rate than the controller update period. We then extend the stability proof of \cite{Varaiya2013} to prove that our \emph{cycle-based max pressure} controller still provides the desired guarantee of queue stability with a penalty to the theoretical bound on queue lengths due to the decreased rate of controller update.
 
 %Specifically, we address the fact that a practical control policy cannot be updated at the same time scale as that at which queues form: due to hardware limitations and safety constraints, most existing signal controllers must cycle through all allowable sets of phases while adhering to a fixed cycle length and strict limitations on the minimum and maximum allowable actuation time for each phase within the cycle. During the course of one signal cycle, however, vehicle queues may aggregate (or dissipate) significantly. Therefore, we first show that a ``non-updated'' max pressure controller, or one which only received occasional feedback upon which to update its actuation policy, will still stabilize network queues. We then show that under slightly stronger conditions on admissible input flows, a ``relaxed'' max pressure controller that allocates an entire actuation cycle between each signal phase given occasional feedback will also stabilize the network. We also examine the effect that each of these limitations on control will have on the ultimate bound on queue length relative to the chosen cycle time and network parameters. 
 
-The remainder of this article is organized as follows: Sections II-III describes the modeling framework and standard max pressure controller from \cite{MaxPressureStochastic}; Section IV formulates an extended cycle-based max pressure controller; Section V proves that this extended controller stabilizes a vertical queueing network; finally, Section VI presents numerical results provided by this controller using a microscopic traffic simulation running in the Aimsun platform. %which was part of a pilot program operated by the San Diego Association of Governments (SANDAG) in San Diego, CA. 
+The remainder of this article is organized as follows: Sections II-III describes the modeling framework and standard max pressure controller from \cite{Varaiya2013}; Section IV formulates an extended cycle-based max pressure controller; Section V proves that this extended controller stabilizes a vertical queueing network; finally, Section VI presents numerical results provided by this controller using a microscopic traffic simulation running in the Aimsun platform. %which was part of a pilot program operated by the San Diego Association of Governments (SANDAG) in San Diego, CA. 
 
 
 %
@@ -20,65 +21,12 @@ The remainder of this article is organized as follows: Sections II-III describes
 %
 %So far, many work has been published on the problem of networks stabilization. 
 %We give a brief, and non exhaustive, overview of the problem of designing feedback policies/control policies for the traffic signals that are function of the current traffic state.
-%This problem has first been considered from the point of view of multihop radio networks by Tassiulas et Ephremides \cite{MaxPressureOriginal}. 
+
+
 %In the case of  small scales some interesting properties have been shown by Baras \cite{NetworkBarasOne} and \cite{NetworkBarasTwo}.
+
 %Pappas focused on the control of wireless networks \cite{StabRelayNetworks} and \cite{ControlWireless}.
-%While Bullo \cite{SynchroComplexNetworks} studied the case of oscillatory networks.
+
 %Some works have been made in the general cases of control of  Networked Systems (Murray).
-%In the particular case of arterial modelling,
-%Osorio and Bierlaire \cite{ModelSignalOpt} and \cite{ModelFiniteNetwork} set the framework of network of queues that we use in the present article.
-%In the present work we adopt the point of view of Varaiya's work on max pressure control of a network of signalized intersections.
 
 
-%\subsection{Contribution of the article}
-%
-%%Shortcoming of Pravin's Model
-%%Clear statement of contribution -> difference with
-%%Problem statement (more equation)
-%%Numerics
-%
-%In the article of P. Varaiya \cite{varaiyaStochastic}, it is demonstrated  that under an admissibility condition, Max Pressure Controller stabilizes the network. The condition for stability states that, in average, the input flow can be accommodated by a fixed controller.
-%In this particular case, the controller is updated at every time step.
-%The model for traffic management assumes infinite capacity links with random iid arrivals at entries links (point queue model).
-%The outgoing flow from each link is limited only by the number of vehicles in the upstreams links.
-%We assume that the vehicles are stored before leaving each link (store and forward model).
-%The first vehicles to arrive within the network are also the first to leave (first in first out model).
-
-
-%In the special case of a traffic road network, we suppose that the evolution of a single queue  follow an evolution equation:
-%For a single intersection
-%\begin{equation}
-%x(t + 1) = x(t) + c(t) \wedge x(t)+ d(t)
-%\end{equation}
-%This can be generalized to a network of intersections (network of queues)
-%\begin{equation}
-%x_{k}(t + 1) = x_{k}(t)  - C_{k}(t + 1)S_{k}(t) \wedge x_{k}(t) + \sum_{l} a_{k,l}(t)  + d_{k}(t + 1)
-%\end{equation}
-
-
-
-
-
-%\section*{Biblio (to do!!)}
-
-%Stabilisation of networks
-
-%%John Baras \texttt{http://www.isr.umd.edu/~baras/}->traffic networks
-%X. Liu, J.S. Baras, “Understanding Multi-Scaling Network Traffic: A Structural TCP Traffic Model”, submitted.
-%N. Liu, J.S. Baras, “On Scaling Property of Network Traffic in Small Scales”, submitted.
-
-%%George Pappas \texttt{http://www.georgejpappas.org/publications/index.html}
-%Stabilizability over Deterministic Relay Networks. Miroslav Pajic, Shreyas Sundaram, and George J. Pappas. In %Proceedings of the 52nd IEEE Conference on Decision and Control,Florence, Italy, December 2013.
-%Closing the Loop: A simple distributed method for control over wireless networks. Miroslav Pajic, Shreyas %Sundaram, Jerome Le Ny, George J. Pappas, and Rahul Mangharam. In Proceedings of the 11th ACM/IEEE %Conference on Information Processing in Sensor Networks (IPSN), Beijing, China, April 2012.
-
-%%Richard Murray \texttt{http://www.cds.caltech.edu/~murray/wiki/Main_Page}->scheduling policies
-
-%%Francesco Bullo \texttt{http://motion.mee.ucsb.edu/}->oscillatory networks
-%F. Dorfler and F. Bullo. Synchronization in Complex Oscillator Networks: A Survey. Automatica, April 2013. %Note: Submitted.  Keyword(s): Power Networks. [bibtex-entry]
-
-%Magnus Egerstedt http://users.ece.gatech.edu/magnus/
-%Jorge Cortes http://tintoretto.ucsd.edu/jorge/
-%S. Martinez http://motion.me.ucsb.edu/papers/Author/MARTINEZ-S.html
-%Carolina Osorio http://web.mit.edu/osorioc/www/research.html
-
-%\end{document}

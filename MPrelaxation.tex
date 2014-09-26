@@ -1,11 +1,11 @@
 % !TEX root = ./MParticle_resubmit.tex
 \section{A Cycle-based Max Pressure Controller} 
-For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{MaxPressureStochastic}. 
+For safety reasons, an intersection controller cannot switch signal phase actuation immediately. Instead, it must incorporate a pause of $R\approx2.5$ seconds in which all signal phases have a red light. This \emph{clearance time} allows all vehicles in the previously actuated phase to clear the intersection before a conflicting phase can be permitted to use the intersection. In the standard formulation of max pressure, the controller chooses an appropriate action based feedback received at every time step of the modeled dynamics. To accurately capture queuing behaviors observed on arterial roadways, a model would need to operate with a time discretization of $\Delta t< 10$ seconds. A signal switch at every time step could therefore result in more than 25\% loss of intersection service capacity, which is not considered in the theoretical examination presented in \cite{Varaiya2013}. 
 
 In this work, we explicitly specify the number of signal switches that occur in a fixed number of model time steps using the familiar concept of a \emph{signal cycle}. As typical with modern traffic signals, the \emph{cycle-based max pressure controller} rotates through all available signal phases within a known time period. We define \emph{cycle time} $\tau$ as a predefined number of model time steps and require that each controller phase $S$ must be green for some proportion $\lambda_S \geq \kappa_S$ of the $\tau$ steps, where the \emph{minimum green splits} $\kappa_S \in (0,1) \; \forall \; S \in U $ are parameters selected by a network manager to enforce equity in movement actuation.  
 
 The selection of a cycle time $\tau$ intuitively affects intersection capacity. Our proof of network stability in the following sections relies on the fact that road links are \emph{undersaturated}: that is, the expected demand is served (on average) within a signal cycle. To avoid link saturation, 
-we pose the following convex optimization problem (extended from that in \cite{MaxPressureStochastic}) to determine minimum constrained feasible actuation time $\Lambda^*$:
+we pose the following convex optimization problem (extended from that in \cite{Allsop1972}) to determine minimum constrained feasible actuation time $\Lambda^*$:
 \begin{equation} \label{sum_lambda}
 \begin{aligned}
 \Lambda ^{*} = & \min_{\lambda = \{\lambda_S\}}
@@ -45,7 +45,7 @@ Note that this controller is modeled such that all phases in an intersection are
 Because cycle-based max pressure can be implemented such that phases occur in a predictable order, a controller running cycle-based max pressure can be synchronized with neighboring controllers to enforce a ``green-wave progression'' as is standard practice in existing traffic signal control design. 
 
 \section{Stability of Cycle-Based Max Pressure}
-Cycle-based max pressure is fundamentally different from the standard max pressure formulation of Variaya \cite{MaxPressureStochastic} in two ways: first, it only updates the controller once every signal cycle (or $\tau$ model time steps); second, it applies a relaxed phase actuation (which is some convex combination of standard phase actuations). This section will address how each of these modifications individually affects the stability of the resulting controlled networks. 
+Cycle-based max pressure is fundamentally different from the standard max pressure formulation in \cite{Varaiya2013} in two ways: first, it only updates the controller once every signal cycle (or $\tau$ model time steps); second, it applies a relaxed phase actuation (which is some convex combination of standard phase actuations). This section will address how each of these modifications individually affects the stability of the resulting controlled networks. 
 
 \subsection*{Properties of a $\tau$-updated controller}
 Suppose that we impose that the control actuation $S^*(t)$ can only be updated every $\tau$ model time steps. A resulting \emph{$\tau$-updated control sequence} is composed of a single  control matrix repeated for $\tau$ time steps of the model dynamics:
@@ -115,11 +115,11 @@ First we consider $\beta(t) = \vert \delta (t)\vert^{2}$.
 where $B = \left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline{d}(l,m) \right\}$, 
 $N$ is the number of queues in the network, $\overline{C} (l,m)$ is the maximum value of the random service rate $C(l,m)(t)$, and $ \overline{d}(l,m)$ is the maximum value of random demand $d(l,m)$.
 \end{Lem}
-The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{MaxPressureStochastic} and will therefore not be repeated here. Note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our extension.
+The proof of Lemma \ref{betalemma} is exactly the same as presented in \cite{Varaiya2013} and will therefore not be repeated here. Note that because these bounds hold for any arbitrary $S(l,m)(t) \in [0,1]$, this bound on $\beta$ is trivially extended to any convex combination of control matrices; hence it is still valid in our extension.
 % {\color{red}(as will be shown later in this article, WHERE IS THIS SHOWN?)}.
 
 %\subsection*{Bound on $\alpha (t) = X(t)^{T}\delta(t) $}
-Now we examine a bound on $\alpha (t) = X(t)^{T}\delta(t) $. Again following \cite{MaxPressureStochastic}, we define additional sub-terms:
+Now we examine a bound on $\alpha (t) = X(t)^{T}\delta(t) $. Again following \cite{Varaiya2013}, we define additional sub-terms:
 \begin{small}
 \begin{align} \label{expected_short}
  & \mathbb{E}\{\alpha (t) | X(t)\} = \sum_{l \in \linkset,m} w(l,m)(t) \; \cdot   \\
@@ -158,7 +158,7 @@ For all $l$, $m$, $t$,
 %& \qquad \left[ c(l,m)- \expectation{ \big[C(l,m)(t+1)\wedge x(l,m)(t)\big] \big| X(t) }  \right] \\
 %& \leq \sum_{l \in \linkset,m} c(l,m) \overline{C}(l,m)
 % \end{align*}
-The proof of Lemma \ref{alpha2bound} again directly follows that presented in \cite{MaxPressureStochastic}; an extension from a binary controller $S\in \{0,1\}$ to a relaxed controller $S^r\in [0,1]$ is trivial. 
+The proof of Lemma \ref{alpha2bound} again directly follows that presented in \cite{Varaiya2013}; an extension from a binary controller $S\in \{0,1\}$ to a relaxed controller $S^r\in [0,1]$ is trivial. 
 
 In fact, the extension made here only affects the $\alpha_1 (t)$ term. To demonstrate a bound on $\alpha_1(t)$ given application of a cycle-based max pressure controller $u^{c*}$, we first examine the stability of a standard max pressure controller using relaxed controllers with minimum phase proportion constraints and a stricter limitation on network demands. We will then show that a $\tau$-updated cycle-based max pressure controller also stabilizes a network, but results in a larger bound on queue lengths. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -167,7 +167,7 @@ In fact, the extension made here only affects the $\alpha_1 (t)$ term. To demons
 
 % 1) relaxed. 
 Define an intermediate ``relaxed max pressure'' policy in which relaxed controllers are applied at the standard max pressure update rate (once per time step of the model dynamics). 
-This situation was suggested in \cite{MaxPressureStochastic} to simulate enforcing minimum phase proportions in a cycle formulation of max pressure. Yet it still unrealistically models ``cycle'' updates at the same rate as the model of queueing and discharging behaviors on a realistic traffic network (hence the introduction of the $\tau$-updated formulation in this work). Nonetheless, we use this intermediate formulation to demonstrate that queue stability is still achieved upon use of a relaxed controller. 
+This situation was suggested in \cite{Varaiya2013} to simulate enforcing minimum phase proportions in a cycle formulation of max pressure. Yet it still unrealistically models ``cycle'' updates at the same rate as the model of queueing and discharging behaviors on a realistic traffic network (hence the introduction of the $\tau$-updated formulation in this work). Nonetheless, we use this intermediate formulation to demonstrate that queue stability is still achieved upon use of a relaxed controller. 
 
  \begin{Lem} \label{alpha1bound}
 If a ``relaxed'' max pressure control policy $S^{r*}$ is updated and applied at each time step $t$ and the demand $d$ is in the set of feasible undersaturated demands $D^\kappa$, then there exists an $\varepsilon>0$, $\eta>0$ such that 
@@ -255,7 +255,7 @@ where $\beta$, $\alpha_{1}$ and $\alpha_{2}$ are quantities that depend on the c
 %\label{a2bound_original} \alpha_2 (\cdot)&<  \sum_{l \in \linkset,m} c(l,m)\overline{C} (l,m) \\ 
 %\label{bbound_original} \beta (\cdot)  &<  N \displaystyle\sum_{l,m} \max\left\{ \overline{C}(l,m), \sum_{k} \overline{C}(k,l),  \overline d (l,m) \right\}^2
 %\end{align}
-The remainder of the bound proposed in \eqref{boundCycleMP} originates from the $2 \alpha_1 (t+p)$ term, which is directly dependent on the explicit form of the controller $S$. Rewrite the expression for $2\cdot \alpha_1$ in \eqref{pa1} as follows:
+The remainder of the bound proposed in \eqref{boundCycleMP} originates from the $2 \alpha_1 (t+p)$ term, which is directly dependent on the explicit form of the controller $S$. Rewrite $2\cdot\alpha_1$ from \eqref{pa1} as follows:
 %\begin{align}
 %\nonumber
 %&\expectation{\vert X(t + p + 1)\vert^2 - \vert X(t + p)\vert^2 \vert X(t) \ldots X(t + p)} \\

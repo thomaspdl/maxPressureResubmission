@@ -464,7 +464,8 @@ max pressure, vertical queueing network, network stability, adaptive signal cont
 \section{Conclusion}
 In this work we have defined an extension of the max pressure controller required for application on a real network of signalized traffic intersections. Given only the constraint that the network demands are serviceable in average, we have proven that updating a max pressure controller which allocates a fixed minimum proportion of service to each permissible phase at a slower rate than that which governs traffic flow will not destroy the stabilizing properties of the controller. 
 
-While there are additional modifications to the control model that must be addressed before max pressure can be considered a feasible algorithm for real-time operation of traffic signal controllers, our implementation in the referenced micro-simulation platform demonstrates how it could comply with the hardware and communications constraints commonly encountered in existing roadway infrastructure. These numerical simulations furthermore reveal that an implementation of cycle-based max pressure competes with the existing standard feedback controller in many performance metrics, especially during periods of high congestion. It also appears to provide less variance in delays than the existing alternative.  Furthermore, max pressure provides theoretical guarantees on network-wide performance that are lacking in other existing signal control algorithms. 
+%While there are additional modifications to the control model that must be addressed before max pressure can be considered a feasible algorithm for real-time operation of traffic signal controllers, 
+Max pressure provides theoretical guarantees on network-wide performance that are lacking in other existing signal control algorithms. Our implementation in the referenced micro-simulation platform furthermore demonstrates how it could comply with the hardware and communications constraints commonly encountered in existing roadway infrastructure. These numerical simulations  reveal that an implementation of cycle-based max pressure competes with the existing standard feedback controller in many performance metrics, especially during periods of high congestion. It also appears to provide less variance in delays than the existing alternative. Future work will involve further analysis of the effect of cycle length on the performance of cycle-based max pressure, as well as performance improvements that can be achieved via the addition of common signal coordination practices in a network running cycle-based max pressure. 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
@@ -518,7 +519,7 @@ This work was sponsored by the California Department of Transportation under the
 %\end{thebibliography}
 
 \bibliographystyle{IEEEtran}
-\bibliography{references}
+\bibliography{mp_references}
 
 % biography section
 % 

@@ -37,7 +37,7 @@ In general, the selection of such a controller can be based on feedback represen
 
 \vspace{-.5em}
 \subsection*{Queue Dynamics}
-The evolution of queue state $X(t)$ can be seen as a Markov chain: the state of the network at time $(t+1)$ is a function of only the network state at time $t$ and external demand $d$,
+The evolution of network queue lengths $X(t)$ can be seen as a Markov chain: the state at time $(t+1)$ is a function of only the state at time $t$ and external demand $d$,
 \begin{equation}
 X(t+1) = F(X(t),d)
 \end{equation}
@@ -61,7 +61,7 @@ We focus on networks for which the boundary inflow demands $d = (d_{l})_{(l\in \
 %M_{\overline{S}}(l,m) = \lim\inf_{T}\dfrac{1}{T}\sum_{t=1}^{T} S(l,m)(t)
 %\end{equation}
 %Also, d
-Define $conv(U)$ to be the convex hull of the set of permissible control matrices $U$. The following properties are then shown in \cite{MaxPressureStochastic}: 
+Define $conv(U)$ to be the convex hull of the set of permissible control matrices $U$. The following properties are then shown in \cite{Varaiya2013}: 
 \begin{Prop} A matrix 
 $M$ is in $conv(U)$ if and only if $\exists$ a sequence of control matrices $\overline S = \{S(1),S(2),...,S(t),... \vert S(\cdot) \in U\}$ such that $\forall (l,m)$
 \begin{equation}\label{longterm_proportion}
