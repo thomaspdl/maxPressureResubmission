@@ -4,7 +4,7 @@
 \begin{Lem}
 All flows which satisfy Property \ref{feasible_property} given a controller $u$ updated at every model time step will also satisfy Property \ref{feasible_property} with a $\tau$-updated controller for some $\tau$. 
 \end{Lem}
-\begin{IEEEproof}
+\begin{proof}
 Given the set admissible phases $U$, define:
 \begin{itemize}
 \item $\mathcal U$ is the set of control sequences with distinct elements $\{S(1), S(2) \ldots S(t) \ldots |  S(\cdot) \in U\} $,
@@ -27,4 +27,4 @@ M_{\hat{S}} &= \lim\inf_{T} \dfrac{1}{T}\sum_{t=1}^{T} S(t) = \lim\inf_{T} \dfra
 & \qquad \text{ where } \tilde{S} = \{S(1), S(1), \ldots, S(t), S(t), \ldots \} \\
 &= \lim\inf_{T} \dfrac{1}{ T}\sum_{t=1}^{T}  \tilde{S}(t) \in M_{U_\tau}  \quad \implies M_{\mathcal U}  \subset M_{\mathcal {U}_\tau}
 \end{align*}\end{small}
-\end{IEEEproof}
+\end{proof}

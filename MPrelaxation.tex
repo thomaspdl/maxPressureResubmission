@@ -175,7 +175,7 @@ If a ``relaxed'' max pressure control policy $S^{r*}$ is updated and applied at 
 \alpha_1(t)  \leq -\varepsilon \eta \big| X(t)\big| 
 \end{equation}
 \end{Lem}
-\begin{IEEEproof}
+\begin{proof}
 Consider the relaxed max pressure control matrix $S^{r*}$ defined in \eqref{uc*} for $\tau =1$. By construction, $ \forall \; S^r \in conv_{\kappa}$
 \begin{align} \nonumber
 \sum_{l,m}c(l,m)& w(l,m)(X(t))S^r (l,m) \\
@@ -197,7 +197,7 @@ c(l,m)\hat{S} (l,m) = \begin{cases}
 \end{equation}
 Therefore, 
 \begin{align} \nonumber
- \alpha_1(t) &= \sum_{l,m}\big[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)\big] w(l,m)(X(t))  \\ \nonumber
+ \alpha_1(t) &= \sum_{l,m}[f_{l}r(l,m) -  c(l,m)S^{r*}(l,m)(t)] w(l,m)(X(t))  \\ \nonumber
  &< \sum_{l,m}\big[f_{l}r(l,m) -  c(l,m)\hat{S}(l,m)(t)\big] w(l,m)(X(t)) \\ 
 &  = -\varepsilon \sum_{l \in \linkset,m} \max\{w(l,m)(X(t)) ,0\} \\ \nonumber
 &\qquad \qquad +  \sum_{l \in \linkset,m}  f_l r(l,m)  \min\{ w(l,m)(X(t)) ,0\}
@@ -207,7 +207,7 @@ We assume that by our choice of $\hat{S}$, $f_{l}r(l,m) > \varepsilon$. Hence
 $\alpha_1(t) < -\varepsilon \sum_{l,m}w(l,m)(t)$. 
 %\end{equation}
 Given the linearity of \eqref{linkweight} and the known properties of $r(l,m)(t)$, it can be show that $\sum_{l,m}w(l,m)(t) \geq \eta |X(t)|$ for some $\eta >0$. This completes the derivation of \eqref{a1eqn}.
-\end{IEEEproof}
+\end{proof}
 For ease of notation, now combine \eqref{betabound}, \eqref{a2eqn} and \eqref{a1eqn} to obtain the following expression given application of the  ``relaxed max pressure'' controller:
 \begin{align}
 \expectation{&|X(t+1)|^{2} - |X(t)|^{2}  |   X(t)} = \expectation{2\alpha(t) + \beta(t)} \nonumber \\
@@ -230,7 +230,7 @@ $p \in [0, \tau - 1]$:
 \text{ \normalsize{ for }\quad} Y = 2 \sum_{l,m} c(l,m)\overline{C}(l,m) + N B^2  \text{ \; \normalsize{and}} \\
 h(p) =  2 pNB\Big(\varepsilon\eta +  \sum_{l,m}\big[f_{l}r(l,m) + c(l,m)\big]\Big)  
 \end{gather}\end{Lem}
-\begin{IEEEproof}
+\begin{proof}
 As in Lemmas \ref{betalemma}-\ref{alpha1bound} above, begin by dividing the argument of \eqref{boundCycleMP} into three parts: $|X(t+ p + 1)|^{2} - |X(t + p)|^{2}  = 2(\alpha_1(t + p)+\alpha_2(t + p)) + \beta(t + p)$, 
 %\begin{align} \label{immediate_to_bound} 
 % |X(t+ p + 1)|^{2} &- |X(t + p)|^{2} \\  \nonumber
@@ -347,7 +347,7 @@ To bound $\xi_2$, we study the term
 &w(l,m)(X(t+p))   -  w(l,m)(X(t)) \\ \nonumber
 & = \sum_{n=1}^{p} w(l,m)(X(t+n)) - w(l,m)(X(t + n - 1)) \\ \nonumber
 &= \sum_{n=1}^{p} \Big\{ x(l,m)(t + n) - x(l,m)(t + n - 1)   \\ \nonumber 
-&  \quad - \sum_{s \in Out(m)}[ x(m,s)(t + n) - x(m,s)(t + n - 1) ]r(m,s)  \Big\} \\ 
+&  \; - \sum_{s \in Out(m)}[ x(m,s)(t + n) - x(m,s)(t + n - 1) ]r(m,s)  \Big\} \\ 
 &= \sum_{n=1}^{p}  w(l,m)( \delta(t + n - 1)) 
 \end{align}
 By \eqref{betabound} and the fact that $w(\cdot)$ is linear,  
@@ -368,16 +368,18 @@ Plugging \eqref{wdelta} back into the definition of $\xi_2$, we obtain
 & = 2NB \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \label{2xi2_bound1}
 \end{align}
 \end{small}Also note that 
+\begin{small}
 \begin{equation*}
 \Big| \sum_{n=1}^{p}  \sum_{l,m}[f_{l}r(l,m) - c(l,m)S(l,m)] \Big| < p \sum_{l,m}[f_{l}r(l,m) + c(l,m)]
 \end{equation*}
+\end{small}
 so \eqref{2xi2_bound1} becomes
 \begin{equation} \label{xi2_bound}
 \xi_2(t,p,S) < 2 NB p \cdot \Big( \sum_{l,m}[f_{l}r(l,m) + c(l,m)]\Big)
 %\\ \nonumber &\cdot\left( \sum_{l,m} \max\Big\{  \overline{C}(l,m), \sum_{k}\overline{C}(k,l), \overline{d}(l,m)\Big\} \right)
 \end{equation}
 Substituting \eqref{xi1_bound} and \eqref{xi2_bound} into \eqref{cbmpcombined1} yields \eqref{boundCycleMP}.
-\end{IEEEproof}\vspace{-1em}
+\end{proof}\vspace{-1em}
 
 Given Lemma \ref{lemma_p}, we show that for a time $t$ within any number $K$ of $\tau$-updated cycles, the following quantity is bounded:
 \begin{align} \nonumber 
